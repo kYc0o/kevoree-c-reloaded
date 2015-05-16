@@ -55,8 +55,7 @@ NetworkInfo_addValues(NetworkInfo * const this, NetworkProperty *ptr)
 		}
 		if(hashmap_get(this->values, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/values[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/values[%s]", this->path, internalKey);
 			} else {

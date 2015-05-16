@@ -118,8 +118,8 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 				/*
 				 * TODO add if == NULL
 				 */
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				if (ptr->eContainer) { printf("muy mal in %s\n", __FILE__, __LINE__); free(ptr->eContainer); }
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/provided[%s]", this->path, internalKey);
 			} else {
@@ -147,8 +147,8 @@ ComponentInstance_addRequired(ComponentInstance * const this, Port *ptr)
 		if(hashmap_get(this->required, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK)
 			{
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				if (ptr->eContainer) { printf("muy mal in %s\n", __FILE__, __LINE__); free(ptr->eContainer); }
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/required[%s]", this->path, internalKey);
 			} else {

@@ -82,8 +82,7 @@ PortTypeRef_addMappings(PortTypeRef * const this, PortTypeMapping *ptr)
 		{
 			if(hashmap_put(this->mappings, internalKey, ptr) == MAP_OK)
 			{
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/mappings[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/mappings[%s]", this->path, internalKey);
 			}

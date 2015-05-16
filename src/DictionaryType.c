@@ -88,8 +88,7 @@ DictionaryType_addAttributes(DictionaryType * const this, DictionaryAttribute *p
 		}
 		if(hashmap_get(this->attributes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->attributes, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/attributes[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/attributes[%s]", this->path, internalKey);
 			} else {

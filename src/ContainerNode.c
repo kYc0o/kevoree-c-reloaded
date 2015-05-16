@@ -142,8 +142,7 @@ ContainerNode_addComponents(ContainerNode * const this, ComponentInstance *ptr)
 		if(hashmap_get(this->components, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (ComponentInstance*)ptr;*/
 			if(hashmap_put(this->components, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/components[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/components[%s]", this->path, internalKey);
 			} else {
@@ -239,8 +238,7 @@ ContainerNode_addNetworkInformation(ContainerNode * const this, NetworkInfo *ptr
 		if(hashmap_get(this->networkInformation, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (NetworkInfo*)ptr;*/
 			if(hashmap_put(this->networkInformation, internalKey, ptr) == 0) {
-				ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-				strcpy(ptr->eContainer, this->path);
+				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/networkInformation[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/networkInformation[%s]", this->path, internalKey);
 			} else {
