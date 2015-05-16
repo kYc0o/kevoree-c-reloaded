@@ -61,8 +61,7 @@ void
 Instance_addDictionary(Instance * const this, Dictionary *ptr)
 {
 	this->dictionary = ptr;
-	ptr->eContainer = malloc(sizeof(char) * (strlen(this->path)) + 1);
-	strcpy(ptr->eContainer, this->path);
+	ptr->eContainer = strdup(this->path);
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
 	sprintf(ptr->path, "%s/dictionary[%s]", this->path, ptr->VT->internalGetKey(ptr));
 }

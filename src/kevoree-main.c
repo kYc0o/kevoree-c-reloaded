@@ -122,34 +122,29 @@ int main(void)
 
 	/* ContainerNode contikiNode */
 	ContainerNode* contikiNode = new_ContainerNode();
-	contikiNode->name = malloc(sizeof(char) * (strlen("nodeX")) + 1);
-	sprintf(contikiNode->name, "node0");
+	contikiNode->name = strdup("node0");
 	contikiNode->started = true;
-	contikiNode->metaData = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(contikiNode->metaData, "");
+	contikiNode->metaData = strdup("");
+	
+	printf("========>>> %p ========>>>\n", contikiNode->name);
 
 	current_model->VT->addNodes(current_model, contikiNode);
 
 	/* NetworkInfo ip */
 	NetworkInfo* serverNodeIP = new_NetworkInfo();
-	serverNodeIP->name = malloc(sizeof(char) * (strlen("ip")) + 1);
-	strcpy(serverNodeIP->name, "ip");
+	serverNodeIP->name = strdup("ip");
 
 	contikiNode->VT->addNetworkInformation(contikiNode, serverNodeIP);
 
 	/* NeworkProperty front */
 	NetworkProperty* serverNodeFront = new_NetworkProperty();
-	serverNodeFront->name = malloc(sizeof(char) * (strlen("front")) + 1);
-	strcpy(serverNodeFront->name, "front");
-	serverNodeFront->value = malloc(sizeof(char) * (strlen("m3-XX.lille.iotlab.info")) + 1);
-	strcpy(serverNodeFront->value, "m3-XX.lille.iotlab.info");
+	serverNodeFront->name = strdup("front");
+	serverNodeFront->value = strdup("m3-XX.lille.iotlab.info");
 
 	/* NeworkProperty local */
 	NetworkProperty* serverNodeLocal = new_NetworkProperty();
-	serverNodeLocal->name = malloc(sizeof(char) * (strlen("local")) + 1);
-	strcpy(serverNodeLocal->name, "local");
-	serverNodeLocal->value = malloc(sizeof(char) * strlen("aaaa::0:0:5") + 1);
-	strcpy(serverNodeLocal->value, "aaaa::0:0:5");
+	serverNodeLocal->name = strdup("local");
+	serverNodeLocal->value = strdup("aaaa::0:0:5");
 
 	serverNodeIP->VT->addValues(serverNodeIP, serverNodeFront);
 	serverNodeIP->VT->addValues(serverNodeIP, serverNodeLocal);
@@ -158,14 +153,10 @@ int main(void)
 
 	/* TypeDefinition ContikiNode/1.0.0 */
 	TypeDefinition* contikiNodeType = new_NodeType();
-	contikiNodeType->name = malloc(sizeof(char) * (strlen("ContikiNode")) + 1);
-	strcpy(contikiNodeType->name, "ContikiNode");
-	contikiNodeType->version = malloc(sizeof(char) * (strlen("0.0.1")) + 1);
-	strcpy(contikiNodeType->version, "0.0.1");
-	contikiNodeType->bean = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(contikiNodeType->bean, "");
-	contikiNodeType->factoryBean = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(contikiNodeType->factoryBean, "");
+	contikiNodeType->name = strdup("ContikiNode");
+	contikiNodeType->version = strdup("0.0.1");
+	contikiNodeType->bean = strdup("");
+	contikiNodeType->factoryBean = strdup("");
 	contikiNodeType->abstract = false;
 
 	/*serverNode->VT->addTypeDefinition(serverNode, contikiNodeType);*/
@@ -339,7 +330,7 @@ int main(void)
 	printf("INFO: Starting Kevoree adaptations\n");
 	mtrace();
 
-	FILE *new_model_json = fopen("../new_model-compact.json", "r");
+	FILE *new_model_json = fopen("new_model-compact.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
 	int modelLength = ftell(new_model_json);
 	fseek(new_model_json, 0L, SEEK_SET);
