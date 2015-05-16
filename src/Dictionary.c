@@ -276,7 +276,7 @@ static void
 	}
 }
 
-Dictionary_VT dictionary_VT = {
+const Dictionary_VT dictionary_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

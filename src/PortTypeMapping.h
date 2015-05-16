@@ -42,6 +42,6 @@ typedef struct _PortTypeMapping {
 PortTypeMapping* new_PortTypeMapping(void);
 void initPortTypeMapping(PortTypeMapping * const this);
 
-extern PortTypeMapping_VT portTypeMapping_VT;
+extern const PortTypeMapping_VT portTypeMapping_VT;
 
 #endif /*__PortTypeMapping_H */

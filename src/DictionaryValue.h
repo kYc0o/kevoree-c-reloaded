@@ -36,6 +36,6 @@ typedef struct _DictionaryValue {
 DictionaryValue* new_DictionaryValue(void);
 void initDictionaryValue(DictionaryValue * const this);
 
-extern DictionaryValue_VT dictionaryValue_VT;
+extern const DictionaryValue_VT dictionaryValue_VT;
 
 #endif /* __DictionaryValue_H */

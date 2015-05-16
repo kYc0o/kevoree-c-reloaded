@@ -92,7 +92,7 @@ void
 	}
 }
 
-DictionaryValue_VT dictionaryValue_VT = {
+const DictionaryValue_VT dictionaryValue_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

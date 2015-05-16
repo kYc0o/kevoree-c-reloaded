@@ -55,7 +55,7 @@ static void *NodeType_findByPath(NodeType * const this, char *attribute)
 	return typeDefinition_VT.findByPath((TypeDefinition*)this, attribute);
 }
 
-NodeType_VT nodeType_VT = {
+const NodeType_VT nodeType_VT = {
 		/*
 		 * KMFContainer
 		 * NamedElement

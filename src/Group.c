@@ -239,7 +239,7 @@ void
 	}
 }
 
-Group_VT group_VT = {
+const Group_VT group_VT = {
 		/*
 		 * KMFContainer_VT
 		 * NamedElement_VT

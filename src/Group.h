@@ -71,6 +71,6 @@ typedef struct _Group {
 Group* new_Group(void);
 void initGroup(Group * const this);
 
-extern Group_VT group_VT;
+extern const Group_VT group_VT;
 
 #endif /* H_Group */

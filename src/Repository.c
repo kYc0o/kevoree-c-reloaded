@@ -82,7 +82,7 @@ static void
 	}
 }
 
-Repository_VT repository_VT = {
+const Repository_VT repository_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

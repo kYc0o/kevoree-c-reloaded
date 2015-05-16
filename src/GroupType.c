@@ -50,7 +50,7 @@ delete_GroupType(GroupType * const this)
 	 */
 }
 
-GroupType_VT groupType_VT = {
+const GroupType_VT groupType_VT = {
 		/*
 		 * KMFContainer
 		 * NamedElement

@@ -61,6 +61,6 @@ typedef struct _PortTypeRef {
 
 PortTypeRef* new_PortTypeRef(void);
 void initPortTypeRef(PortTypeRef * const this);
-extern PortTypeRef_VT portTypeRef_VT;
+extern const PortTypeRef_VT portTypeRef_VT;
 
 #endif /* __PortTypeRef_H */

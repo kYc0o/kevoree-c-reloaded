@@ -58,6 +58,6 @@ typedef struct _NodeType {
 NodeType* new_NodeType(void);
 void initNodeType(NodeType * const this);
 
-extern NodeType_VT nodeType_VT;
+extern const NodeType_VT nodeType_VT;
 
 #endif /* H_NodeType */

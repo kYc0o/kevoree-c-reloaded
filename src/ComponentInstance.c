@@ -357,7 +357,7 @@ static void
 	}
 }
 
-ComponentInstance_VT componentInstance_VT = {
+const ComponentInstance_VT componentInstance_VT = {
 		/*
 		 * KMFContainer_VT
 		 * NamedElement_VT

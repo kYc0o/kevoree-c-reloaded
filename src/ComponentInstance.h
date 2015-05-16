@@ -76,6 +76,6 @@ typedef struct _ComponentInstance {
 ComponentInstance* new_ComponentInstance(void);
 void initComponentInstance(ComponentInstance * const this);
 
-extern ComponentInstance_VT componentInstance_VT;
+extern const ComponentInstance_VT componentInstance_VT;
 
 #endif /* H_ComponentInstance */

@@ -1,7 +1,7 @@
 #ifndef __GroupType_H
 #define __GroupType_H
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include <stdbool.h>
 #include "hashmap.h"
 #include "NamedElement.h"
@@ -65,6 +65,6 @@ typedef struct _GroupType {
 GroupType* new_GroupType(void);
 void initGroupType(GroupType * const this);
 
-extern GroupType_VT groupType_VT;
+extern const GroupType_VT groupType_VT;
 
 #endif /* __GroupType_H */

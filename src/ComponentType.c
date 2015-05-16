@@ -325,7 +325,7 @@ static void
 	}
 }
 
-ComponentType_VT componentType_VT = {
+const ComponentType_VT componentType_VT = {
 		.super = &typeDefinition_VT,
 		/*
 		 * KMFContainer

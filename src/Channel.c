@@ -248,7 +248,7 @@ static void
 	}
 }
 
-Channel_VT channel_VT = {
+const Channel_VT channel_VT = {
 		/*
 		 * KMFContainer
 		 * NamedElement

@@ -131,7 +131,7 @@ static void
 	}
 }
 
-DictionaryAttribute_VT dictionaryAttribute_VT = {
+const DictionaryAttribute_VT dictionaryAttribute_VT = {
 		.super = &typedElement_VT,
 		/*
 		 * KMFContainer

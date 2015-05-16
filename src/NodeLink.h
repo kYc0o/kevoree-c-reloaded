@@ -53,6 +53,6 @@ typedef struct _NodeLink {
 NodeLink* new_NodeLink(void);
 void initNodeLink(NodeLink * const this);
 
-extern NodeLink_VT nodeLink_VT;
+extern const NodeLink_VT nodeLink_VT;
 
 #endif /* __NodeLink_H */

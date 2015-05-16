@@ -314,7 +314,7 @@ static void
 	}
 }
 
-NodeLink_VT nodeLink_VT = {
+const NodeLink_VT nodeLink_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

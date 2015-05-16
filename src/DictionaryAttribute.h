@@ -61,6 +61,6 @@ typedef struct _DictionaryAttribute {
 DictionaryAttribute* new_DictionaryAttribute(void);
 void initDictionaryAttribute(DictionaryAttribute * const this);
 
-extern DictionaryAttribute_VT dictionaryAttribute_VT;
+extern const DictionaryAttribute_VT dictionaryAttribute_VT;
 
 #endif /* __DictionaryAttribute_H */

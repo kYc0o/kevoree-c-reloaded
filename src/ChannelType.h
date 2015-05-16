@@ -1,7 +1,7 @@
 #ifndef __ChannelType_H
 #define __ChannelType_H
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include <stdbool.h>
 
 #include "hashmap.h"
@@ -68,6 +68,6 @@ typedef struct _ChannelType {
 ChannelType* new_ChannelType(void);
 void initChannelType(ChannelType * const this);
 
-extern ChannelType_VT channelType_VT;
+extern const ChannelType_VT channelType_VT;
 
 #endif /* __ChannelType_H */

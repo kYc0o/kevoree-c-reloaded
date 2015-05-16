@@ -357,7 +357,7 @@ static void
 	}
 }
 
-NodeNetwork_VT nodeNetwork_VT = {
+const NodeNetwork_VT nodeNetwork_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

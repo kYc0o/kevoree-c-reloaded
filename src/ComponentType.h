@@ -1,7 +1,7 @@
 #ifndef __ComponentType_H
 #define __ComponentType_H
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include <stdbool.h>
 #include "hashmap.h"
 #include "NamedElement.h"
@@ -83,6 +83,6 @@ typedef struct _ComponentType {
 ComponentType* new_ComponentType(void);
 void initComponentType(ComponentType * const this);
 
-extern ComponentType_VT componentType_VT;
+extern const ComponentType_VT componentType_VT;
  
 #endif /* __ComponentType_H */

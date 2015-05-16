@@ -57,6 +57,6 @@ typedef struct _DeployUnit {
 DeployUnit* new_DeployUnit(void);
 void initDeployUnit(DeployUnit * const this);
 
-extern DeployUnit_VT deployUnit_VT;
+extern const DeployUnit_VT deployUnit_VT;
 
 #endif /* H_DeployUnit */

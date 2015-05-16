@@ -247,7 +247,7 @@ static void
 	}
 }
 
-MBinding_VT mBinding_VT = {
+const MBinding_VT mBinding_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

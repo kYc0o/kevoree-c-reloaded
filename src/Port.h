@@ -61,6 +61,6 @@ typedef struct _Port {
 Port* new_Port(void);
 void initPort(Port * const this);
 
-extern Port_VT port_VT;
+extern const Port_VT port_VT;
 
 #endif /* __Port_H */

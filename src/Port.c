@@ -285,7 +285,7 @@ static void
 	}
 }
 
-Port_VT port_VT = {
+const Port_VT port_VT = {
 		.super = &namedElement_VT,
 		/*
 		 * KMFContainer

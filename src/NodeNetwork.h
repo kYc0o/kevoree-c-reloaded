@@ -1,7 +1,7 @@
 #ifndef H_NodeNetwork
 #define H_NodeNetwork
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include "hashmap.h"
 
 typedef struct _NodeNetwork NodeNetwork;
@@ -58,6 +58,6 @@ typedef struct _NodeNetwork {
 NodeNetwork* new_NodeNetwork(void);
 void initNodeNetwork(NodeNetwork * const this);
 
-extern NodeNetwork_VT nodeNetwork_VT;
+extern const NodeNetwork_VT nodeNetwork_VT;
 
 #endif /* H_NodeNetwork */

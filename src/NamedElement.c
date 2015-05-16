@@ -65,7 +65,7 @@ static void
 	}
 }
 
-NamedElement_VT namedElement_VT = {
+const NamedElement_VT namedElement_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

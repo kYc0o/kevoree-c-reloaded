@@ -316,7 +316,7 @@ static void
 	}
 }
 
-DeployUnit_VT deployUnit_VT = {
+const DeployUnit_VT deployUnit_VT = {
 		.super = &namedElement_VT,
 		/*
 		 * KMFContainer

@@ -1,7 +1,7 @@
 #ifndef H_NamedElement
 #define H_NamedElement
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 
 typedef struct _NamedElement NamedElement;
 
@@ -33,7 +33,7 @@ typedef struct _NamedElement {
 } NamedElement;
 
 NamedElement* new_NamedElement(void);
-extern NamedElement_VT namedElement_VT;
+extern const NamedElement_VT namedElement_VT;
 void initNamedElement(NamedElement * const this);
 
 #endif

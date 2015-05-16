@@ -51,6 +51,6 @@ typedef struct _TypeLibrary {
 TypeLibrary* new_TypeLibrary(void);
 void initTypeLibrary(TypeLibrary * const this);
 
-extern TypeLibrary_VT typeLibrary_VT;
+extern const TypeLibrary_VT typeLibrary_VT;
 
 #endif /* __TypeLibrary_H */

@@ -248,7 +248,7 @@ static void
 	}
 }
 
-TypeLibrary_VT typeLibrary_VT = {
+const TypeLibrary_VT typeLibrary_VT = {
 		.super = &namedElement_VT,
 		/*
 		 * KMFContainer

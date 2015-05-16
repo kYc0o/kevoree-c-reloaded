@@ -1,7 +1,7 @@
 #ifndef H_NetworkInfo
 #define H_NetworkInfo
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include <stdbool.h>
 #include "hashmap.h"
 #include "NamedElement.h"
@@ -53,6 +53,6 @@ typedef struct _NetworkInfo {
 NetworkInfo* new_NetworkInfo(void);
 void initNetworkInfo(NetworkInfo * const this);
 
-extern NetworkInfo_VT networkInfo_VT;
+extern const NetworkInfo_VT networkInfo_VT;
 
 #endif /* H_NetworkInfo */

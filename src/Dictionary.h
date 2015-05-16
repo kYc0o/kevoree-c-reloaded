@@ -52,6 +52,6 @@ DictionaryValue *Dictionary_findValuesByID(Dictionary * const this, char *id);
 void Dictionary_addValues(Dictionary * const this, DictionaryValue *ptr);
 void Dictionary_removeValues(Dictionary * const this, DictionaryValue *ptr);
 
-extern Dictionary_VT dictionary_VT;
+extern const Dictionary_VT dictionary_VT;
 
 #endif /* __Dictionary_H */

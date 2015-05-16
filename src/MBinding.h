@@ -1,7 +1,7 @@
 #ifndef __MBinding_H
 #define __MBinding_H
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include <stdbool.h>
 
 typedef struct _Channel Channel;
@@ -52,6 +52,6 @@ typedef struct _MBinding {
 MBinding* new_MBinding(void);
 void initMBinding(MBinding * const this);
 
-extern MBinding_VT mBinding_VT;
+extern const MBinding_VT mBinding_VT;
 
 #endif /* __MBinding_H */

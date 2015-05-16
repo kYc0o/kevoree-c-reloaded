@@ -115,7 +115,7 @@ static void
 	}
 }
 
-PortTypeMapping_VT portTypeMapping_VT = {
+const PortTypeMapping_VT portTypeMapping_VT = {
 		.super = &KMF_VT,
 		/*
 		 * KMFContainer

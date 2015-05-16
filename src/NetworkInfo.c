@@ -263,7 +263,7 @@ static void
 	}
 }
 
-NetworkInfo_VT networkInfo_VT = {
+const NetworkInfo_VT networkInfo_VT = {
 		.super = &namedElement_VT,
 		/*
 		 * KMFContainer

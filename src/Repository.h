@@ -1,7 +1,7 @@
 #ifndef __Repository_H
 #define __Repository_H
 
-#include <KMFContainer.h>
+#include "KMFContainer.h"
 #include "hashmap.h"
 
 typedef struct _Repository Repository;
@@ -38,6 +38,6 @@ typedef struct _Repository {
 Repository* new_Repository(void);
 void initRepository(Repository * const this);
 
-extern Repository_VT repository_VT;
+extern const Repository_VT repository_VT;
 
 #endif
