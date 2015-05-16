@@ -330,7 +330,7 @@ int main(void)
 	printf("INFO: Starting Kevoree adaptations\n");
 	mtrace();
 
-	FILE *new_model_json = fopen("new_model-compact.json", "r");
+	FILE *new_model_json = fopen("../models/new_model-compact.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
 	int modelLength = ftell(new_model_json);
 	fseek(new_model_json, 0L, SEEK_SET);
