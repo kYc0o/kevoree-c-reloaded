@@ -61,6 +61,8 @@ void
 Instance_addDictionary(Instance * const this, Dictionary *ptr)
 {
 	this->dictionary = ptr;
+	/* fot some reason, this method is being called more than one times for ptr. It is up to you and Eclipse to discover why */
+	if (ptr->eContainer) { printf("Muy mal, the previous value was %s. Next is %s. Detectect at %s:%d\n", ptr->eContainer, this->path, __FILE__, __LINE__); free(ptr->eContainer); }
 	ptr->eContainer = strdup(this->path);
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
 	sprintf(ptr->path, "%s/dictionary[%s]", this->path, ptr->VT->internalGetKey(ptr));
