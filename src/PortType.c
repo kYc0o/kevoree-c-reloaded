@@ -63,19 +63,14 @@ PortType_visit(PortType * const this, char *parent, fptrVisitAction action, fptr
 void
 *PortType_findByPath(PortType * const this, char *attribute)
 {
-	void *try = NULL;
 	/* TypeDefinition attributes */
-	if ((try = typeDefinition_VT.findByPath((TypeDefinition*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("synchrone", attribute)) {
+	if(!strcmp("synchrone", attribute)) {
 		return (void*)this->synchrone;
 	}
 	/* TypeDefinition references */
 	else {
-		PRINTF("WARNING: Wrong attribute or reference\n");
-		return NULL;
+		return typeDefinition_VT.findByPath((TypeDefinition*)this, attribute);
 	}
 }
 

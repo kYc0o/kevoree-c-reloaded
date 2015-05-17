@@ -1128,7 +1128,7 @@ static void
 			}
 		} else {
 			free(obj);
-			PRINTF("WARNING: Object not found %s\n", key);
+			PRINTF("WARNING: Object not found %s\n", attribute);
 			return NULL;
 		}
 	}

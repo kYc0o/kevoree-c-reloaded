@@ -99,14 +99,14 @@ TypeLibrary_removeSubTypes(TypeLibrary * const this, TypeDefinition *ptr)
 
 void delete_TypeLibrary(TypeLibrary * const this)
 {
-		/* destroy base object */
-		namedElement_VT.delete((NamedElement*)this);
+	/* destroy base object */
+	namedElement_VT.delete((NamedElement*)this);
 
-		/* destroy data members */
-		if (this->subTypes != NULL) {
-			/*deleteContainerContents(this->subTypes);*/
-			hashmap_free(this->subTypes);
-		}
+	/* destroy data members */
+	if (this->subTypes != NULL) {
+		/*deleteContainerContents(this->subTypes);*/
+		hashmap_free(this->subTypes);
+	}
 }
 
 static void
@@ -138,113 +138,105 @@ TypeLibrary_visit(TypeLibrary * const this, char *parent, fptrVisitAction action
 static void
 *TypeLibrary_findByPath(TypeLibrary * const this, char *attribute)
 {
-	void *try = NULL;
 	/* There are no local attributes */
 
 	/* NamedElement */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local references */
+	char path[250];
+	memset(&path[0], 0, sizeof(path));
+	char token[100];
+	memset(&token[0], 0, sizeof(token));
+	char *obj = NULL;
+	char key[50];
+	memset(&key[0], 0, sizeof(key));
+	char nextPath[150];
+	memset(&nextPath[0], 0, sizeof(nextPath));
+	char *nextAttribute = NULL;
+
+	strcpy(path, attribute);
+
+	if(strchr(path, '[') != NULL)
+	{
+		obj = strdup(strtok(path, "["));
+		strcpy(path, attribute);
+		PRINTF("Object: %s\n", obj);
+		strcpy(token, strtok(path, "]"));
+		strcpy(path, attribute);
+		sprintf(token, "%s]", token);
+		PRINTF("Token: %s\n", token);
+		sscanf(token, "%*[^[][%[^]]", key);
+		PRINTF("Key: %s\n", key);
+
+		if((strchr(path, '\\')) != NULL)
+		{
+			nextAttribute = strtok(NULL, "\\");
+			PRINTF("Attribute: %s\n", nextAttribute);
+
+			if(strchr(nextAttribute, '['))
+			{
+				sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			else
+			{
+				strcpy(nextPath, nextAttribute);
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+		}
+		else
+		{
+			nextAttribute = strtok(path, "]");
+			bool isFirst = true;
+			char *fragPath = NULL;
+			while ((fragPath = strtok(NULL, "]")) != NULL) {
+				PRINTF("Attribute: %s]\n", fragPath);
+				if (isFirst) {
+					sprintf(nextPath, "%s]", ++fragPath);
+					isFirst = false;
+				} else {
+					sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
+				}
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			if (strlen(nextPath) == 0) {
+				PRINTF("Attribute: NULL\n");
+				PRINTF("Next Path: NULL\n");
+				nextAttribute = NULL;
+			}
+		}
+	}
 	else
 	{
-		char path[250];
-		memset(&path[0], 0, sizeof(path));
-		char token[100];
-		memset(&token[0], 0, sizeof(token));
-		char *obj = NULL;
-		char key[50];
-		memset(&key[0], 0, sizeof(key));
-		char nextPath[150];
-		memset(&nextPath[0], 0, sizeof(nextPath));
-		char *nextAttribute = NULL;
-
-		strcpy(path, attribute);
-
-		if(strchr(path, '[') != NULL)
-		{
-			obj = strdup(strtok(path, "["));
-			strcpy(path, attribute);
-			PRINTF("Object: %s\n", obj);
-			strcpy(token, strtok(path, "]"));
-			strcpy(path, attribute);
-			sprintf(token, "%s]", token);
-			PRINTF("Token: %s\n", token);
-			sscanf(token, "%*[^[][%[^]]", key);
-			PRINTF("Key: %s\n", key);
-
-			if((strchr(path, '\\')) != NULL)
-			{
-				nextAttribute = strtok(NULL, "\\");
+		if ((nextAttribute = strtok(path, "\\")) != NULL) {
+			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
+			} else {
+				nextAttribute = strtok(path, "\\");
+				PRINTF("Attribute: %s\n", nextAttribute);
+			}
+		}
+	}
 
-				if(strchr(nextAttribute, '['))
-				{
-					sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				else
-				{
-					strcpy(nextPath, nextAttribute);
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-			}
-			else
-			{
-				nextAttribute = strtok(path, "]");
-				bool isFirst = true;
-				char *fragPath = NULL;
-				while ((fragPath = strtok(NULL, "]")) != NULL) {
-					PRINTF("Attribute: %s]\n", fragPath);
-					if (isFirst) {
-						sprintf(nextPath, "%s]", ++fragPath);
-						isFirst = false;
-					} else {
-						sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
-					}
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				if (strlen(nextPath) == 0) {
-					PRINTF("Attribute: NULL\n");
-					PRINTF("Next Path: NULL\n");
-					nextAttribute = NULL;
-				}
-			}
+	if(!strcmp("subTypes", obj))
+	{
+		free(obj);
+		if(nextAttribute == NULL)
+		{
+			return this->VT->findSubTypesByID(this, key);
 		}
 		else
 		{
-			if ((nextAttribute = strtok(path, "\\")) != NULL) {
-				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
-					PRINTF("Attribute: %s\n", nextAttribute);
-				} else {
-					nextAttribute = strtok(path, "\\");
-					PRINTF("Attribute: %s\n", nextAttribute);
-				}
-			}
-		}
-
-		if(!strcmp("subTypes", obj))
-		{
-			free(obj);
-			if(nextAttribute == NULL)
-			{
-				return this->VT->findSubTypesByID(this, key);
-			}
+			TypeDefinition* typdef = this->VT->findSubTypesByID(this, key);
+			if(typdef != NULL)
+				return typdef->VT->findByPath(typdef, nextPath);
 			else
-			{
-				TypeDefinition* typdef = this->VT->findSubTypesByID(this, key);
-				if(typdef != NULL)
-					return typdef->VT->findByPath(typdef, nextPath);
-				else
-					return NULL;
-			}
+				return NULL;
 		}
-		else
-		{
-			free(obj);
-			PRINTF("Wrong attribute or reference\n");
-			return NULL;
-		}
+	}
+	else
+	{
+		free(obj);
+		return namedElement_VT.findByPath((NamedElement*)this, attribute);
 	}
 }
 

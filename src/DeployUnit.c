@@ -183,15 +183,11 @@ DeployUnit_visit(DeployUnit * const this, char *parent, fptrVisitAction action, 
 static void
 *DeployUnit_findByPath(DeployUnit * const this, char *attribute)
 {
-	void *try = NULL;
 	/* There are no local attributes */
 
 	/* NamedElement */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("groupName", attribute))
+	if(!strcmp("groupName", attribute))
 	{
 		return this->groupName;
 	}
@@ -310,8 +306,7 @@ static void
 		else
 		{
 			free(obj);
-			PRINTF("WARNING: Wrong attribute or reference\n");
-			return NULL;
+			return namedElement_VT.findByPath((NamedElement*)this, attribute);
 		}
 	}
 }

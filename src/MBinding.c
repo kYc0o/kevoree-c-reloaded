@@ -241,7 +241,7 @@ static void
 		else
 		{
 			free(obj);
-			PRINTF("WARNING: Wrong attribute or reference\n");
+			PRINTF("WARNING: Wrong attribute or reference %s\n", attribute);
 			return NULL;
 		}
 	}

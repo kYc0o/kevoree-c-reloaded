@@ -87,7 +87,7 @@ void
 	}
 	/* There is no local references */
 	else {
-		PRINTF("WARNING: Wrong attribute or reference\n");
+		PRINTF("WARNING: Wrong attribute or reference %s\n", attribute);
 		return NULL;
 	}
 }

@@ -81,15 +81,11 @@ static void
 	void *try = NULL;
 
 	/* Local attributes */
-	if ((try = dictionary_VT.findByPath((Dictionary*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Dictionary attributes and references */
-	else if (!strcmp("name", attribute)) {
+	if (!strcmp("name", attribute)) {
 		return this->name;
 	} else {
-		PRINTF("WARNING: Wrong attribute or reference\n");
-		return NULL;
+		return dictionary_VT.findByPath((Dictionary*)this, attribute);
 	}
 }
 

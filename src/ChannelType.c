@@ -123,26 +123,19 @@ ChannelType_visit(ChannelType * const this, char *parent, fptrVisitAction action
 static void
 *ChannelType_findByPath(ChannelType * const this, char *attribute)
 {
-	void *try = NULL;
-
-	/* TypeDefinition */
-	if ((try = typeDefinition_VT.findByPath((TypeDefinition*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("lowerBindings",attribute)) {
+	if(!strcmp("lowerBindings", attribute)) {
 		return (void*)this->lowerBindings;
-	} else if(!strcmp("upperBindings",attribute)) {
+	} else if(!strcmp("upperBindings", attribute)) {
 		return (void*)this->upperBindings;
-	} else if(!strcmp("lowerFragments",attribute)) {
+	} else if(!strcmp("lowerFragments", attribute)) {
 		return (void*)this->lowerFragments;
-	} else if(!strcmp("upperFragments",attribute)) {
+	} else if(!strcmp("upperFragments", attribute)) {
 		return (void*)this->upperFragments;
 	}
 	/* TypeDefinition references */
 	else {
-		PRINTF("WARNING: Wrong attribute or reference\n");
-		return NULL;
+		return typeDefinition_VT.findByPath((TypeDefinition*)this, attribute);
 	}
 }
 

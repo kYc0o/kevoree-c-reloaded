@@ -118,7 +118,10 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 				/*
 				 * TODO add if == NULL
 				 */
-				if (ptr->eContainer) { printf("muy mal in %s\n", __FILE__, __LINE__); free(ptr->eContainer); }
+				if (ptr->eContainer) {
+					printf("muy mal in %s\n", __FILE__, __LINE__);
+					free(ptr->eContainer);
+				}
 				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/provided[%s]", this->path, internalKey);
@@ -250,110 +253,103 @@ ComponentInstance_visit(ComponentInstance * const this, char *parent, fptrVisitA
 static void
 *ComponentInstance_findByPath(ComponentInstance * const this, char *attribute)
 {
-	void *try = NULL;
 	/* There is no local attributes */
 
 	/* Instance */
-	if ((try = instance_VT.findByPath((Instance*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local references */
-	else {
-		char path[250];
-		memset(&path[0], 0, sizeof(path));
-		char token[100];
-		memset(&token[0], 0, sizeof(token));
-		char *obj = NULL;
-		char key[50];
-		memset(&key[0], 0, sizeof(key));
-		char nextPath[150];
-		memset(&nextPath[0], 0, sizeof(nextPath));
-		char *nextAttribute = NULL;
+	char path[250];
+	memset(&path[0], 0, sizeof(path));
+	char token[100];
+	memset(&token[0], 0, sizeof(token));
+	char *obj = NULL;
+	char key[50];
+	memset(&key[0], 0, sizeof(key));
+	char nextPath[150];
+	memset(&nextPath[0], 0, sizeof(nextPath));
+	char *nextAttribute = NULL;
 
+	strcpy(path, attribute);
+
+	if(strchr(path, '[') != NULL) {
+		obj = strdup(strtok(path, "["));
 		strcpy(path, attribute);
+		PRINTF("Object: %s\n", obj);
+		strcpy(token, strtok(path, "]"));
+		strcpy(path, attribute);
+		sprintf(token, "%s]", token);
+		PRINTF("Token: %s\n", token);
+		sscanf(token, "%*[^[][%[^]]", key);
+		PRINTF("Key: %s\n", key);
 
-		if(strchr(path, '[') != NULL) {
-			obj = strdup(strtok(path, "["));
-			strcpy(path, attribute);
-			PRINTF("Object: %s\n", obj);
-			strcpy(token, strtok(path, "]"));
-			strcpy(path, attribute);
-			sprintf(token, "%s]", token);
-			PRINTF("Token: %s\n", token);
-			sscanf(token, "%*[^[][%[^]]", key);
-			PRINTF("Key: %s\n", key);
+		if((strchr(path, '\\')) != NULL) {
+			nextAttribute = strtok(NULL, "\\");
+			PRINTF("Attribute: %s\n", nextAttribute);
 
-			if((strchr(path, '\\')) != NULL) {
-				nextAttribute = strtok(NULL, "\\");
+			if(strchr(nextAttribute, '[')) {
+				sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
+				PRINTF("Next Path: %s\n", nextPath);
+			} else {
+				strcpy(nextPath, nextAttribute);
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+		} else {
+			nextAttribute = strtok(path, "]");
+			bool isFirst = true;
+			char *fragPath = NULL;
+			while ((fragPath = strtok(NULL, "]")) != NULL) {
+				PRINTF("Attribute: %s]\n", fragPath);
+				if (isFirst) {
+					sprintf(nextPath, "%s]", ++fragPath);
+					isFirst = false;
+				} else {
+					sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
+				}
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			if (strlen(nextPath) == 0) {
+				PRINTF("Attribute: NULL\n");
+				PRINTF("Next Path: NULL\n");
+				nextAttribute = NULL;
+			}
+		}
+	} else {
+		if ((nextAttribute = strtok(path, "\\")) != NULL) {
+			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
-
-				if(strchr(nextAttribute, '[')) {
-					sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
-					PRINTF("Next Path: %s\n", nextPath);
-				} else {
-					strcpy(nextPath, nextAttribute);
-					PRINTF("Next Path: %s\n", nextPath);
-				}
 			} else {
-				nextAttribute = strtok(path, "]");
-				bool isFirst = true;
-				char *fragPath = NULL;
-				while ((fragPath = strtok(NULL, "]")) != NULL) {
-					PRINTF("Attribute: %s]\n", fragPath);
-					if (isFirst) {
-						sprintf(nextPath, "%s]", ++fragPath);
-						isFirst = false;
-					} else {
-						sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
-					}
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				if (strlen(nextPath) == 0) {
-					PRINTF("Attribute: NULL\n");
-					PRINTF("Next Path: NULL\n");
-					nextAttribute = NULL;
-				}
-			}
-		} else {
-			if ((nextAttribute = strtok(path, "\\")) != NULL) {
-				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
-					PRINTF("Attribute: %s\n", nextAttribute);
-				} else {
-					nextAttribute = strtok(path, "\\");
-					PRINTF("Attribute: %s\n", nextAttribute);
-				}
+				nextAttribute = strtok(path, "\\");
+				PRINTF("Attribute: %s\n", nextAttribute);
 			}
 		}
+	}
 
-		if(!strcmp("provided", obj)) {
-			free(obj);
-			if(nextAttribute == NULL) {
-				return this->VT->findProvidedByID(this, key);
-			} else {
-				Port* port = this->VT->findProvidedByID(this, key);
-				if(port != NULL) {
-					return port->VT->findByPath(port, nextPath);
-				} else {
-					PRINTF("ERROR: Cannot retrieve provided %s\n", key);
-					return NULL;
-				}
-			}
-		} else if(!strcmp("required", obj)) {
-			free(obj);
-			if(nextAttribute == NULL) {
-				return this->VT->findRequiredByID(this, key);
-			} else {
-				Port* port = this->VT->findRequiredByID(this, key);
-				if(port != NULL)
-					return port->VT->findByPath(port, nextPath);
-				else
-					return NULL;
-			}
+	if(!strcmp("provided", obj)) {
+		free(obj);
+		if(nextAttribute == NULL) {
+			return this->VT->findProvidedByID(this, key);
 		} else {
-			free(obj);
-			PRINTF("WARNING: Object not found %s\n", key);
-			return NULL;
+			Port* port = this->VT->findProvidedByID(this, key);
+			if(port != NULL) {
+				return port->VT->findByPath(port, nextPath);
+			} else {
+				PRINTF("ERROR: Cannot retrieve provided %s\n", key);
+				return NULL;
+			}
 		}
+	} else if(!strcmp("required", obj)) {
+		free(obj);
+		if(nextAttribute == NULL) {
+			return this->VT->findRequiredByID(this, key);
+		} else {
+			Port* port = this->VT->findRequiredByID(this, key);
+			if(port != NULL)
+				return port->VT->findByPath(port, nextPath);
+			else
+				return NULL;
+		}
+	} else {
+		free(obj);
+		return instance_VT.findByPath((Instance*)this, attribute);
 	}
 }
 

@@ -62,6 +62,9 @@ TypeDefinition_addDeployUnit(TypeDefinition * const this, DeployUnit *ptr)
 void
 TypeDefinition_addDictionaryType(TypeDefinition * const this, DictionaryType *ptr)
 {
+	if (this->dictionaryType != NULL) {
+		this->VT->removeDictionaryType(this, ptr);
+	}
 	this->dictionaryType = ptr;
 	ptr->eContainer = strdup(this->path);
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionaryType[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
@@ -247,13 +250,9 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 void
 *TypeDefinition_findByPath(TypeDefinition * const this, char *attribute)
 {
-	void *try = NULL;
 	/* NamedElement attributes */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("version",attribute)) {
+	if(!strcmp("version",attribute)) {
 		return this->version;
 	} else if(!strcmp("factoryBean",attribute)) {
 		return this->factoryBean;
@@ -318,6 +317,7 @@ void
 				}
 			}
 		} else {
+			obj = strdup(attribute);
 			if ((nextAttribute = strtok(path, "\\")) != NULL) {
 				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 					PRINTF("Attribute: %s\n", nextAttribute);
@@ -345,8 +345,7 @@ void
 			}
 		} else {
 			free(obj);
-			PRINTF("WARNING: Wrong attribute or reference\n");
-			return NULL;
+			return namedElement_VT.findByPath((NamedElement*)this, attribute);
 		}
 	}
 }

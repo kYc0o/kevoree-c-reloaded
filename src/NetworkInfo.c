@@ -152,113 +152,105 @@ NetworkInfo_visit(NetworkInfo * const this, char *parent, fptrVisitAction action
 static void
 *NetworkInfo_findByPath(NetworkInfo * const this, char *attribute)
 {
-	void *try = NULL;
 	/* NamedElement attributes */
-	if ((try = this->VT->findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local references */
+	char path[250];
+	memset(&path[0], 0, sizeof(path));
+	char token[100];
+	memset(&token[0], 0, sizeof(token));
+	char *obj = NULL;
+	char key[50];
+	memset(&key[0], 0, sizeof(key));
+	char nextPath[150];
+	memset(&nextPath[0], 0, sizeof(nextPath));
+	char *nextAttribute = NULL;
+
+	strcpy(path, attribute);
+
+	if(strchr(path, '[') != NULL)
+	{
+		obj = strdup(strtok(path, "["));
+		strcpy(path, attribute);
+		PRINTF("Object: %s\n", obj);
+		strcpy(token, strtok(path, "]"));
+		strcpy(path, attribute);
+		sprintf(token, "%s]", token);
+		PRINTF("Token: %s\n", token);
+		sscanf(token, "%*[^[][%[^]]", key);
+		PRINTF("Key: %s\n", key);
+
+		if((strchr(path, '\\')) != NULL)
+		{
+			nextAttribute = strtok(NULL, "\\");
+			PRINTF("Attribute: %s\n", nextAttribute);
+
+			if(strchr(nextAttribute, '['))
+			{
+				sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			else
+			{
+				strcpy(nextPath, nextAttribute);
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+		}
+		else
+		{
+			nextAttribute = strtok(path, "]");
+			bool isFirst = true;
+			char *fragPath = NULL;
+			while ((fragPath = strtok(NULL, "]")) != NULL) {
+				PRINTF("Attribute: %s]\n", fragPath);
+				if (isFirst) {
+					sprintf(nextPath, "%s]", ++fragPath);
+					isFirst = false;
+				} else {
+					sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
+				}
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			if (strlen(nextPath) == 0) {
+				PRINTF("Attribute: NULL\n");
+				PRINTF("Next Path: NULL\n");
+				nextAttribute = NULL;
+			}
+		}
+	}
 	else
 	{
-		char path[250];
-		memset(&path[0], 0, sizeof(path));
-		char token[100];
-		memset(&token[0], 0, sizeof(token));
-		char *obj = NULL;
-		char key[50];
-		memset(&key[0], 0, sizeof(key));
-		char nextPath[150];
-		memset(&nextPath[0], 0, sizeof(nextPath));
-		char *nextAttribute = NULL;
-
-		strcpy(path, attribute);
-
-		if(strchr(path, '[') != NULL)
-		{
-			obj = strdup(strtok(path, "["));
-			strcpy(path, attribute);
-			PRINTF("Object: %s\n", obj);
-			strcpy(token, strtok(path, "]"));
-			strcpy(path, attribute);
-			sprintf(token, "%s]", token);
-			PRINTF("Token: %s\n", token);
-			sscanf(token, "%*[^[][%[^]]", key);
-			PRINTF("Key: %s\n", key);
-
-			if((strchr(path, '\\')) != NULL)
-			{
-				nextAttribute = strtok(NULL, "\\");
+		if ((nextAttribute = strtok(path, "\\")) != NULL) {
+			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
+			} else {
+				nextAttribute = strtok(path, "\\");
+				PRINTF("Attribute: %s\n", nextAttribute);
+			}
+		}
+	}
 
-				if(strchr(nextAttribute, '['))
-				{
-					sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				else
-				{
-					strcpy(nextPath, nextAttribute);
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-			}
-			else
-			{
-				nextAttribute = strtok(path, "]");
-				bool isFirst = true;
-				char *fragPath = NULL;
-				while ((fragPath = strtok(NULL, "]")) != NULL) {
-					PRINTF("Attribute: %s]\n", fragPath);
-					if (isFirst) {
-						sprintf(nextPath, "%s]", ++fragPath);
-						isFirst = false;
-					} else {
-						sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
-					}
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				if (strlen(nextPath) == 0) {
-					PRINTF("Attribute: NULL\n");
-					PRINTF("Next Path: NULL\n");
-					nextAttribute = NULL;
-				}
-			}
+	if(!strcmp("values", obj))
+	{
+		free(obj);
+		if(nextAttribute == NULL)
+		{
+			return this->VT->findValuesByID(this, key);
 		}
 		else
 		{
-			if ((nextAttribute = strtok(path, "\\")) != NULL) {
-				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
-					PRINTF("Attribute: %s\n", nextAttribute);
-				} else {
-					nextAttribute = strtok(path, "\\");
-					PRINTF("Attribute: %s\n", nextAttribute);
-				}
+			NetworkProperty* netprop = this->VT->findValuesByID(this, key);
+			if(netprop != NULL) {
+				return netprop->VT->findByPath(netprop, nextPath);
+			} else {
+				PRINTF("ERROR: Cannot retrieve values %s\n", key);
+				return NULL;
 			}
 		}
-
-		if(!strcmp("values", obj))
-		{
-			free(obj);
-			if(nextAttribute == NULL)
-			{
-				return this->VT->findValuesByID(this, key);
-			}
-			else
-			{
-				NetworkProperty* netprop = this->VT->findValuesByID(this, key);
-				if(netprop != NULL) {
-					return netprop->VT->findByPath(netprop, nextPath);
-				} else {
-					PRINTF("ERROR: Cannot retrieve values %s\n", key);
-					return NULL;
-				}
-			}
-		}
-		else
-		{
-			free(obj);
-			PRINTF("WARNING: Wrong attribute or reference\n");
-			return NULL;
-		}
+	}
+	else
+	{
+		free(obj);
+		return namedElement_VT.findByPath((NamedElement*)this, attribute);
 	}
 }
 
