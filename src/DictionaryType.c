@@ -125,15 +125,14 @@ DictionaryType_visit(DictionaryType * const this, char *parent, fptrVisitAction 
 	char path[256];
 	memset(&path[0], 0, sizeof(path));
 
-	/*
-	 * Visit parent
-	 */
-	KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
-
 	if (visitPaths) {
 		sprintf(path, "%s\\generated_KMF_ID", parent);
 		action(path, STRING, this->generated_KMF_ID);
 	} else {
+		/*
+		 * Visit parent
+		 */
+		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("generated_KMF_ID", STRING, this->generated_KMF_ID);
 		action(NULL, COLON, NULL);
 	}

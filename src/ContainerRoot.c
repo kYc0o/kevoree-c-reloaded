@@ -804,7 +804,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("typeDefinitions", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -820,7 +820,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("repositories", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -835,7 +835,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("dataTypes", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -851,7 +851,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("libraries", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -867,7 +867,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("hubs", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -883,7 +883,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("mBindings", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -899,7 +899,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("deployUnits", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -915,7 +915,7 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKETCOLON, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("nodeNetworks", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKETCOLON, NULL);
 	}
@@ -930,12 +930,13 @@ ContainerRoot_visit(ContainerRoot * const this, char *parent, fptrVisitAction ac
 			action("groups", SQBRACKET, NULL);
 			Visitor_visitModelContainer(m, length, action);
 			action(NULL, CLOSESQBRACKET, NULL);
+			action(NULL, CLOSEBRACKET, NULL);
 		}
-	} else {
+	} else if (!visitPaths) {
 		action("groups", SQBRACKET, NULL);
 		action(NULL, CLOSESQBRACKET, NULL);
+		action(NULL, CLOSEBRACKET, NULL);
 	}
-	action(NULL, CLOSEBRACKET, NULL);
 }
 
 static void

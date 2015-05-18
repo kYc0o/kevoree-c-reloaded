@@ -5,7 +5,7 @@
 #include "DeployUnit.h"
 #include "Visitor.h"
 
-#define DEBUG 1
+#define DEBUG 0
 #if DEBUG
 #define PRINTF(...) printf(__VA_ARGS__)
 #else
@@ -168,7 +168,7 @@ DeployUnit_visit(DeployUnit * const this, char *parent, fptrVisitAction action, 
 	if((m = (hashmap_map*)this->requiredLibs) != NULL) {
 		length = hashmap_length(this->requiredLibs);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "requiredLibs", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "requiredLibs", path, action, secondAction, parent);
 		} else {
 			action("requiredLibs", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "requiredLibs", path, action);
@@ -275,6 +275,7 @@ static void
 		}
 		else
 		{
+			obj = strdup(attribute);
 			if ((nextAttribute = strtok(path, "\\")) != NULL) {
 				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 					PRINTF("Attribute: %s\n", nextAttribute);

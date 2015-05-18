@@ -136,7 +136,7 @@ Channel_visit(Channel * const this, char *parent, fptrVisitAction action, fptrVi
 	if((m = (hashmap_map*)this->bindings) != NULL) {
 		length = hashmap_length(this->bindings);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "bindings", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "bindings", path, action, secondAction, parent);
 		} else {
 			action("bindings", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "mBindings", path, action);

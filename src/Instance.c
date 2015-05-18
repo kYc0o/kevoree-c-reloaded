@@ -193,9 +193,9 @@ Instance_visit(Instance * const this, char *parent, fptrVisitAction action, fptr
 			sprintf(path, "%s/dictionary[%s]", parent, this->dictionary->VT->internalGetKey(this->dictionary));
 			if (secondAction != NULL) {
 				if (secondAction(path, "dictionary")) {
-					this->dictionary->VT->visit(this->dictionary, parent, action, secondAction, visitPaths);
+					this->dictionary->VT->visit(this->dictionary, path, action, secondAction, visitPaths);
 				} else {
-					this->dictionary->VT->visit(this->dictionary, parent, action, secondAction, visitPaths);
+					this->dictionary->VT->visit(this->dictionary, path, action, secondAction, visitPaths);
 				}
 			}
 		} else {

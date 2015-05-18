@@ -137,11 +137,6 @@ NodeLink_visit(NodeLink * const this, char *parent, fptrVisitAction action, fptr
 	char path[256];
 	memset(&path[0], 0, sizeof(path));
 
-	/*
-	 * Visit parent
-	 */
-	KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
-
 	if (visitPaths) {
 		sprintf(path, "%s\\ID", parent);
 		action(path, STRING, this->generated_KMF_ID);
@@ -154,6 +149,10 @@ NodeLink_visit(NodeLink * const this, char *parent, fptrVisitAction action, fptr
 		sprintf(path, "%s\\estimatedRate", parent);
 		action(path, BOOL, (void*)this->estimatedRate);
 	} else {
+		/*
+		 * Visit parent
+		 */
+		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("ID", STRING, this->generated_KMF_ID);
 		action(NULL, COLON, NULL);
 		action("networkType", STRING, this->networkType);

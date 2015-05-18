@@ -35,7 +35,7 @@ LIST(adaptations);
 
 static void AdaptationModel_add(AdaptationPrimitive *ptr)
 {
-	PRINTF("INFO: Adding trace %s\n", ptr->ref->path);
+	/*PRINTF("INFO: Adding trace %s\n", ptr->ref->path);*/
 	list_add(adaptations, ptr);
 }
 
@@ -53,7 +53,7 @@ void Planner_compareModels(ContainerRoot *currModel, ContainerRoot *targetModel,
 	list_init(adaptations);
 
 	for (trace = list_head(traces->traces_list); trace != NULL; trace = list_item_next(trace)) {
-		PRINTF("INFO: Passing trace %s\n", trace->refName);
+		/*PRINTF("INFO: Passing trace %s\n", trace->refName);*/
 
 		KMFContainer *modelElement = targetModel->VT->findByPath(targetModel, trace->srcPath);
 

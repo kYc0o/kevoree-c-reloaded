@@ -47,7 +47,6 @@ NamedElement_visit(NamedElement * const this, char *parent, fptrVisitAction acti
 		sprintf(path, "%s\\name", parent);
 		action(path, STRING, this->name);
 	} else {
-		/*KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);*/
 		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("name", STRING, this->name);
 		action(NULL, COLON, NULL);

@@ -211,9 +211,9 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 			sprintf(path, "%s/dictionaryType[%s]", parent, this->dictionaryType->VT->internalGetKey(this->dictionaryType));
 			if (secondAction != NULL) {
 				if (secondAction(path, "dictionaryType")) {
-					this->dictionaryType->VT->visit(this->dictionaryType, parent, action, secondAction, visitPaths);
+					this->dictionaryType->VT->visit(this->dictionaryType, path, action, secondAction, visitPaths);
 				} else {
-					this->dictionaryType->VT->visit(this->dictionaryType, parent, action, secondAction, visitPaths);
+					this->dictionaryType->VT->visit(this->dictionaryType, path, action, secondAction, visitPaths);
 				}
 			}
 		} else {
@@ -235,7 +235,7 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 	if((m = (hashmap_map*)this->superTypes) != NULL) {
 		length = hashmap_length(this->superTypes);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "superTypes", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "superTypes", path, action, secondAction, parent);
 		} else {
 			action("superTypes", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "superTypes", path, action);

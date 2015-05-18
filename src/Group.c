@@ -127,7 +127,7 @@ Group_visit(Group * const this, char *parent, fptrVisitAction action, fptrVisitA
 	if((m = (hashmap_map*)this->subNodes) != NULL) {
 		length = hashmap_length(this->subNodes);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "subNodes", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "subNodes", path, action, secondAction, parent);
 		} else {
 			action("subNodes", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "nodes", path, action);
@@ -202,6 +202,7 @@ void
 			}
 		}
 	} else {
+		obj = strdup(attribute);
 		if ((nextAttribute = strtok(path, "\\")) != NULL) {
 			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);

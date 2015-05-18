@@ -371,8 +371,8 @@ int main(void)
 	{
 		printf("ERROR: new_model cannot be loaded\n");
 	}
-/*
-	new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);
+
+	/*new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);*/
 
 	if(new_model != NULL)
 	{
@@ -406,7 +406,7 @@ int main(void)
 	} else {
 		PRINTF("ERROR: cannot create Adaptation primitives\n");
 	}
-*/
+
 	delete((KMFContainer*)current_model);
 	delete((KMFContainer*)new_model);
 	muntrace();

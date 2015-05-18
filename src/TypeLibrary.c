@@ -123,7 +123,7 @@ TypeLibrary_visit(TypeLibrary * const this, char *parent, fptrVisitAction action
 	if((m = (hashmap_map*)this->subTypes) != NULL) {
 		length = hashmap_length(this->subTypes);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "subTypes", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "subTypes", path, action, secondAction, parent);
 		} else {
 			action("subTypes", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "typeDefinitions", path, action);
@@ -207,6 +207,7 @@ static void
 	}
 	else
 	{
+		obj = strdup(attribute);
 		if ((nextAttribute = strtok(path, "\\")) != NULL) {
 			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
@@ -217,7 +218,7 @@ static void
 		}
 	}
 
-	if(!strcmp("subTypes", obj))
+	if(!strcmp("typeDefinitions", obj))
 	{
 		free(obj);
 		if(nextAttribute == NULL)

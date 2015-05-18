@@ -64,12 +64,12 @@ FragmentDictionary_visit(FragmentDictionary * const this, char *parent, fptrVisi
 	 */
 	dictionary_VT.visit((FragmentDictionary*)this, parent, action, secondAction, visitPaths);
 
-	action(NULL, COLON, NULL);
 
 	if (visitPaths) {
 		sprintf(path, "%s\\name", parent);
 		action(path, STRING, this->name);
 	} else {
+		action(NULL, COLON, NULL);
 		action("name", STRING, ((FragmentDictionary*)(this))->name);
 		action(NULL, RETURN, NULL);
 	}

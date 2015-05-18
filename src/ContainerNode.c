@@ -388,7 +388,7 @@ ContainerNode_visit(ContainerNode * const this, char *parent, fptrVisitAction ac
 	if((m = (hashmap_map*)this->hosts) != NULL) {
 		length = hashmap_length(this->hosts);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "hosts", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "hosts", path, action, secondAction, parent);
 		} else {
 			action("hosts", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "hosts", path, action);
@@ -418,7 +418,7 @@ ContainerNode_visit(ContainerNode * const this, char *parent, fptrVisitAction ac
 	if((m = (hashmap_map*)this->groups) != NULL) {
 		length = hashmap_length(this->groups);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "groups", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "groups", path, action, secondAction, parent);
 		} else {
 			action("groups", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "groups", path, action);

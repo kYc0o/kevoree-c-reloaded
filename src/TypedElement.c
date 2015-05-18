@@ -131,7 +131,7 @@ TypedElement_visit(TypedElement * const this, char *parent, fptrVisitAction acti
 	if((m = (hashmap_map*)this->genericTypes) != NULL) {
 		length = hashmap_length(this->genericTypes);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "genericTypes", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "genericTypes", path, action, secondAction, parent);
 		} else {
 			action("genericTypes", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "genericTypes", path, action);
@@ -214,6 +214,7 @@ static void
 	}
 	else
 	{
+		obj = strdup(attribute);
 		if ((nextAttribute = strtok(path, "\\")) != NULL) {
 			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);

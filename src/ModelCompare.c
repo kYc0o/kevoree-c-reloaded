@@ -235,7 +235,6 @@ void actionUpdate(char* _path, Type type, void* value)
 		break;
 
 	case STRING:
-	case BOOL:
 		if (container == NULL) {
 			/*
 			 * TODO check NULL
@@ -326,6 +325,7 @@ void actionUpdate(char* _path, Type type, void* value)
 		break;
 
 	case INTEGER:
+	case BOOL:
 		if(container == NULL)/*new_model->VT->findByPath(path, new_model) == NULL)*/
 		{
 			/*

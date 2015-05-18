@@ -189,7 +189,10 @@ ComponentType_visit(ComponentType * const this, char *parent, fptrVisitAction ac
 
 	/* TypeDefinition */
 	typeDefinition_VT.visit((TypeDefinition*)this, parent, action, secondAction, visitPaths);
-	action(NULL, COLON, NULL);
+
+	if (!visitPaths) {
+		action(NULL, COLON, NULL);
+	}
 
 	/* ComponentType */
 	Visitor_visitContainer(this->required, "required", parent, action, secondAction, visitPaths);
