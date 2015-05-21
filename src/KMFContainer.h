@@ -42,6 +42,8 @@ void delete(KMFContainer *object);
 void deleteContainerContents(map_t container);
 void initKMFContainer(KMFContainer * const this);
 
+char *my_strdup(const char *string);
+
 extern const KMFContainer_VT KMF_VT;
 
 #endif

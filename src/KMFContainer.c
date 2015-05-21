@@ -13,6 +13,16 @@
 #include <stdio.h>
 #include <string.h>
 
+char *my_strdup(const char *string)
+{
+	char *r = malloc (strlen(string) + 1);
+	strcpy(r, string);
+	if (!strcmp(string, "Group")) {
+		printf("Te agarramos cabron! : %s\n", string);
+	}
+	return r;
+}
+
 void
 initKMFContainer(KMFContainer * const this)
 {
