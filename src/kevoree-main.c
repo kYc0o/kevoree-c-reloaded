@@ -62,7 +62,11 @@ void actionstore(char *path, Type type, void *value)
 		break;
 
 	case BOOL:
-		sprintf(buffer, "\"%s\" : \"%d\"", path, (bool)value);
+		if ((bool)value == 1) {
+			sprintf(buffer, "\"%s\" : \"%s\"", path, "true");
+		} else {
+			sprintf(buffer, "\"%s\" : \"%s\"", path, "false");
+		}
 		write_to_file(buffer);
 		break;
 
@@ -113,224 +117,23 @@ void actionstore(char *path, Type type, void *value)
 	}
 }
 
+static const char *DEFAULTMODEL = "{\"eClass\":\"org.kevoree.ContainerRoot\",\"generated_KMF_ID\":\"BXX5q3eV\",\"nodes\":[{\"eClass\":\"org.kevoree.ContainerNode\",\"name\":\"n1759\",\"metaData\":\"\",\"started\":\"true\",\"components\":[],\"hosts\":[],\"host\":[],\"groups\":[\"groups[group0]\"],\"networkInformation\":[{\"eClass\":\"org.kevoree.NetworkInfo\",\"name\":\"ip\",\"values\":[{\"eClass\":\"org.kevoree.NetworkProperty\",\"name\":\"local\",\"value\":\"fe80::1759\"}]}],\"typeDefinition\":[\"typeDefinitions[ContikiNode/0.0.1]\"],\"dictionary\":[],\"fragmentDictionary\":[]}],\"typeDefinitions\":[{\"eClass\":\"org.kevoree.NodeType\",\"name\":\"ContikiNode\",\"version\":\"0.0.1\",\"factoryBean\":\"\",\"bean\":\"\",\"abstract\":\"0\",\"deployUnit\":[\"deployUnits[org.kevoree.library.c//kevoree-contiki-node/0.0.1]\"],\"dictionaryType\":[],\"superTypes\":[]},{\"eClass\":\"org.kevoree.GroupType\",\"name\":\"UDPGroup\",\"version\":\"0.0.1\",\"factoryBean\":\"\",\"bean\":\"\",\"abstract\":\"0\",\"deployUnit\":[\"deployUnits[//kevoree-group-udp/0.0.1]\"],\"dictionaryType\":[{\"eClass\":\"org.kevoree.DictionaryType\",\"generated_KMF_ID\":\"3dddTFpd\",\"attributes\":[{\"eClass\":\"org.kevoree.DictionaryAttribute\",\"name\":\"port\",\"optional\":\"false\",\"state\":\"true\",\"datatype\":\"int\",\"fragmentDependant\":\"false\",\"defaultValue\":\"1234\"}]}],\"superTypes\":[]}],\"repositories\":[],\"dataTypes\":[],\"libraries\":[{\"eClass\":\"org.kevoree.TypeLibrary\",\"name\":\"ContikiLib\",\"subTypes\":[\"typeDefinitions[ContikiNode/0.0.1]\",\"typeDefinitions[UDPGroup/0.0.1]\"]},{\"eClass\":\"org.kevoree.TypeLibrary\",\"name\":\"Default\",\"subTypes\":[]}],\"hubs\":[],\"mBindings\":[],\"deployUnits\":[{\"eClass\":\"org.kevoree.DeployUnit\",\"name\":\"kevoree-group-udp\",\"groupName\":\"\",\"version\":\"0.0.1\",\"url\":\"\",\"hashcode\":\"\",\"type\":\"ce\"},{\"eClass\":\"org.kevoree.DeployUnit\",\"name\":\"kevoree-contiki-node\",\"groupName\":\"org.kevoree.library.c\",\"version\":\"0.0.1\",\"url\":\"\",\"hashcode\":\"\",\"type\":\"ce\"}],\"nodeNetworks\":[],\"groups\":[{\"eClass\":\"org.kevoree.Group\",\"name\":\"group0\",\"metaData\":\"\",\"started\":\"true\",\"subNodes\":[\"nodes[n1759]\"],\"typeDefinition\":[\"typeDefinitions[UDPGroup/0.0.1]\"],\"dictionary\":[],\"fragmentDictionary\":[]}]}";
+
 int main(void)
 {
 	printf("INFO: Starting kevoree C implementation\n");
-
-	current_model = new_ContainerRoot();
+	struct jsonparse_state jsonState;
 	TraceSequence *ts;
 
-	/* ContainerNode contikiNode */
-	ContainerNode* contikiNode = new_ContainerNode();
-	contikiNode->name = strdup("node0");
-	contikiNode->started = true;
-	contikiNode->metaData = strdup("");
-	
-	printf("========>>> %p ========>>>\n", contikiNode->name);
-
-	current_model->VT->addNodes(current_model, contikiNode);
-
-	/* NetworkInfo ip */
-	NetworkInfo* serverNodeIP = new_NetworkInfo();
-	serverNodeIP->name = strdup("ip");
-
-	contikiNode->VT->addNetworkInformation(contikiNode, serverNodeIP);
-
-	/* NeworkProperty front */
-	NetworkProperty* serverNodeFront = new_NetworkProperty();
-	serverNodeFront->name = strdup("front");
-	serverNodeFront->value = strdup("m3-XX.lille.iotlab.info");
-
-	/* NeworkProperty local */
-	NetworkProperty* serverNodeLocal = new_NetworkProperty();
-	serverNodeLocal->name = strdup("local");
-	serverNodeLocal->value = strdup("aaaa::0:0:5");
-
-	serverNodeIP->VT->addValues(serverNodeIP, serverNodeFront);
-	serverNodeIP->VT->addValues(serverNodeIP, serverNodeLocal);
-
-	/*serverNode->VT->addNetworkInformation(serverNode, serverNodeIP);*/
-
-	/* TypeDefinition ContikiNode/1.0.0 */
-	TypeDefinition* contikiNodeType = new_NodeType();
-	contikiNodeType->name = strdup("ContikiNode");
-	contikiNodeType->version = strdup("0.0.1");
-	contikiNodeType->bean = strdup("");
-	contikiNodeType->factoryBean = strdup("");
-	contikiNodeType->abstract = false;
-
-	/*serverNode->VT->addTypeDefinition(serverNode, contikiNodeType);*/
-
-	/* TypeDefinition CoAPGroup/1.0.0 */
-	TypeDefinition* coapGroupType = new_GroupType();
-	coapGroupType->abstract = false;
-	coapGroupType->name = malloc(sizeof(char) * (strlen("CoAPGroup")) + 1);
-	strcpy(coapGroupType->name, "CoAPGroup");
-	coapGroupType->version = malloc(sizeof(char) * (strlen("0.0.1")) + 1);
-	strcpy(coapGroupType->version, "0.0.1");
-	coapGroupType->bean = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(coapGroupType->bean, "");
-	coapGroupType->factoryBean = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(coapGroupType->factoryBean, "");
-
-	current_model->VT->addTypeDefinitions(current_model, coapGroupType);
-
-	/* TypeLibrary Contiki */
-	TypeLibrary* contiki = new_TypeLibrary();
-	contiki->name = malloc(sizeof(char) * (strlen("ContikiLib")) + 1);
-	strcpy(contiki->name, "ContikiLib");
-	/*contiki->VT->addSubTypes(contiki, ctFakeConsole);*/
-	/*contiki->VT->addSubTypes(contiki, ctHelloWorld);*/
-	contiki->VT->addSubTypes(contiki, contikiNodeType);
-	contiki->VT->addSubTypes(contiki, coapGroupType);
-
-	/* TypeLibrary Default */
-	TypeLibrary* defLib = new_TypeLibrary();
-	defLib->name = malloc(sizeof(char) * (strlen("Default")) + 1);
-	strcpy(defLib->name, "Default");
-
-	/* GroupType DictionaryAttribute port */
-	DictionaryAttribute* gtDicAttrPort = new_DictionaryAttribute();
-	gtDicAttrPort->fragmentDependant = true;
-	gtDicAttrPort->optional = true;
-	gtDicAttrPort->name = malloc(sizeof(char) * (strlen("port")) + 1);
-	strcpy(gtDicAttrPort->name, "port");
-	gtDicAttrPort->state = false;
-	gtDicAttrPort->datatype = malloc(sizeof(char) * (strlen("number")) + 1);
-	strcpy(gtDicAttrPort->datatype, "number");
-	gtDicAttrPort->defaultValue = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(gtDicAttrPort->defaultValue, "");
-
-	/* GroupType DictionaryAttribute path */
-	DictionaryAttribute* gtDicAttrPath = new_DictionaryAttribute();
-	gtDicAttrPath->fragmentDependant = true;
-	gtDicAttrPath->optional = true;
-	gtDicAttrPath->name = malloc(sizeof(char) * (strlen("path")) + 1);
-	strcpy(gtDicAttrPath->name, "path");
-	gtDicAttrPath->state = false;
-	gtDicAttrPath->datatype = malloc(sizeof(char) * (strlen("string")) + 1);
-	strcpy(gtDicAttrPath->datatype, "string");
-	gtDicAttrPath->defaultValue = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(gtDicAttrPath->defaultValue, "");
-
-	/* GroupType DictionaryAttribute proxy_port */
-	DictionaryAttribute* gtDicAttrProxy = new_DictionaryAttribute();
-	gtDicAttrProxy->fragmentDependant = true;
-	gtDicAttrProxy->optional = true;
-	gtDicAttrProxy->name = malloc(sizeof(char) * (strlen("proxy_port")) + 1);
-	strcpy(gtDicAttrProxy->name, "proxy_port");
-	gtDicAttrProxy->state = false;
-	gtDicAttrProxy->datatype = malloc(sizeof(char) * (strlen("int")) + 1);
-	strcpy(gtDicAttrProxy->datatype, "int");
-	gtDicAttrProxy->defaultValue = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(gtDicAttrProxy->defaultValue, "20000");
-
-	/* GroupType DictionaryType */
-	DictionaryType* gtDicType = new_DictionaryType();
-	coapGroupType->VT->addDictionaryType(coapGroupType, gtDicType);
-
-	gtDicType->VT->addAttributes(gtDicType, gtDicAttrPort);
-	gtDicType->VT->addAttributes(gtDicType, gtDicAttrPath);
-	gtDicType->VT->addAttributes(gtDicType, gtDicAttrProxy);
-
-	/* DeployUnit //kevoree-contiki-node/0.0.1 */
-	DeployUnit* kevContikiNode = new_DeployUnit();
-	kevContikiNode->name = malloc(sizeof(char) * (strlen("kevoree-contiki-node")) + 1);
-	strcpy(kevContikiNode->name, "kevoree-contiki-node");
-	kevContikiNode->groupName = malloc(sizeof(char) * (strlen("org.kevoree.library.c")) + 1);
-	strcpy(kevContikiNode->groupName, "org.kevoree.library.c");
-	kevContikiNode->hashcode = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(kevContikiNode->hashcode, "");
-	kevContikiNode->version = malloc(sizeof(char) * (strlen("0.0.1")) + 1);
-	strcpy(kevContikiNode->version,"0.0.1");
-	kevContikiNode->url = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(kevContikiNode->url, "");
-	kevContikiNode->type = malloc(sizeof(char) * (strlen("ce")) + 1);
-	strcpy(kevContikiNode->type,"ce");
-
-	/* DeployUnit //kevoree-group-coap/0.0.1 */
-	DeployUnit* kevGroupCoap = new_DeployUnit();
-	kevGroupCoap->name = malloc(sizeof(char) * (strlen("kevoree-group-coap")) + 1);
-	strcpy(kevGroupCoap->name, "kevoree-group-coap");
-	kevGroupCoap->groupName = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(kevGroupCoap->groupName, "");
-	kevGroupCoap->hashcode = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(kevGroupCoap->hashcode, "");
-	kevGroupCoap->version = malloc(sizeof(char) * (strlen("0.0.1")) + 1);
-	strcpy(kevGroupCoap->version,"0.0.1");
-	kevGroupCoap->url = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(kevGroupCoap->url, "");
-	kevGroupCoap->type = malloc(sizeof(char) * (strlen("ce")) + 1);
-	strcpy(kevGroupCoap->type,"ce");
-
-	/* Group CoAP */
-	Group* coapGroup = new_Group();
-	/*coapGroup->name = malloc(sizeof(char) * (strlen("group0")) + 1);
-	strcpy(coapGroup->name, "group0");*/
-	coapGroup->name = strdup("group0");
-	coapGroup->started = true;
-	coapGroup->metaData = malloc(sizeof(char) * (strlen("")) + 1);
-	strcpy(coapGroup->metaData, "");
-
-	current_model->VT->addGroups(current_model, coapGroup);
-	coapGroup->VT->addTypeDefinition(coapGroup, coapGroupType);
-
-	/* FragmentDictionary contiki-node */
-	FragmentDictionary* coapGroupFragDico = new_FragmentDictionary();
-	coapGroupFragDico->name = malloc(sizeof(char) * (strlen("CoAPGroupFragDic")) + 1);
-	strcpy(coapGroupFragDico->name, "CoAPGroupFragDic");
-
-	/* Group DictionaryValue port */
-	DictionaryValue* groupValuePort = new_DictionaryValue();
-	groupValuePort->name = malloc(sizeof(char) * (strlen("port")) + 1);
-	strcpy(groupValuePort->name, "port");
-	groupValuePort->value = malloc(sizeof(char) * (strlen("5683")) + 1);
-	strcpy(groupValuePort->value, "5683");
-
-	/* Group DictionaryValue proxy_port */
-	DictionaryValue* groupValueProxy = new_DictionaryValue();
-	groupValueProxy->name = malloc(sizeof(char) * (strlen("proxy_port")) + 1);
-	strcpy(groupValueProxy->name, "proxy_port");
-	groupValueProxy->value = malloc(sizeof(char) * (strlen("20000")) + 1);
-	strcpy(groupValueProxy->value, "20000");
-
-	/* Group DictionaryValue path */
-	DictionaryValue* groupValuePath = new_DictionaryValue();
-	groupValuePath->name = malloc(sizeof(char) * (strlen("path")) + 1);
-	strcpy(groupValuePath->name, "path");
-	groupValuePath->value = malloc(sizeof(char) * (strlen("CoAPGroup")) + 1);
-	strcpy(groupValuePath->value, "CoAPGroup");
-
-	coapGroup->VT->addFragmentDictionary(coapGroup, coapGroupFragDico);
-	/* Adding values to FragmentDictionary ContikiNode */
-	coapGroupFragDico->VT->addValues(coapGroupFragDico, groupValuePort);
-	coapGroupFragDico->VT->addValues(coapGroupFragDico, groupValueProxy);
-	coapGroupFragDico->VT->addValues(coapGroupFragDico, groupValuePath);
-
-	contikiNodeType->VT->addDeployUnit(contikiNodeType, kevContikiNode);
-	coapGroupType->VT->addDeployUnit(coapGroupType, kevGroupCoap);
-
-	current_model->VT->addLibraries(current_model, contiki);
-	current_model->VT->addLibraries(current_model, defLib);
-
-	/*type definition*/
-	current_model->VT->addTypeDefinitions(current_model, contikiNodeType);
-
-	/*deploy unit*/
-	current_model->VT->addDeployUnits(current_model, kevContikiNode);
-	current_model->VT->addDeployUnits(current_model, kevGroupCoap);
-
-	/*contiki->VT->addSubTypes(contiki, coapChanType);*/
-	contikiNode->VT->addTypeDefinition(contikiNode, contikiNodeType);
-	contikiNode->VT->addGroups(contikiNode, coapGroup);
-	coapGroup->VT->addSubNodes(coapGroup, contikiNode);
+	jsonparse_setup(&jsonState, DEFAULTMODEL, strlen(DEFAULTMODEL) + 1);
+	current_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 
 	/*current_model->VT->visit(current_model, NULL, actionprintf, NULL, false);*/
 
 	printf("INFO: Starting Kevoree adaptations\n");
 	mtrace();
 
-	FILE *new_model_json = fopen("../models/new_model-compact.json", "r");
+	FILE *new_model_json = fopen("../models/20nodes1component.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
 	int modelLength = ftell(new_model_json);
 	fseek(new_model_json, 0L, SEEK_SET);
@@ -356,12 +159,12 @@ int main(void)
 
 	printf("INFO: new_model JSON loaded in RAM\n");
 
-	struct jsonparse_state jsonState;
-
 	jsonparse_setup(&jsonState, jsonModel, modelLength + 1);
 
 	new_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 	free(jsonModel);
+
+	/*new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);*/
 
 	if(new_model != NULL)
 	{
@@ -388,12 +191,10 @@ int main(void)
 		printf("ERROR: New model cannot be visited!\n");
 	}
 
-
-
 	LIST(plannedAdaptations);
 	list_init(plannedAdaptations);
 
-	Planner_compareModels(current_model, new_model, "node0", ts);
+	Planner_compareModels(current_model, new_model, "n1759", ts);
 	plannedAdaptations = Planner_schedule();
 
 	if (plannedAdaptations != NULL) {
