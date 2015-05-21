@@ -98,22 +98,16 @@ char *TraceSequence_toString(TraceSequence *const this)
 	sequences = malloc(strlen("[]"));
 	sprintf(sequences, "[");
 
-	for (i = 0; i < listLength; ++i) {
-		if (!isFirst) {
-			mt = list_item_next(mt);
-			sequences = realloc(sequences, strlen(sequences) +
-					strlen(",") +
-					strlen(mt->vt->ToString(mt)) + 1);
-			sprintf(sequences, "%s,%s", sequences, mt->vt->ToString(mt));
-		}
-		else
-		{
-			mt = list_head(this->traces_list);
-			sequences = realloc(sequences, strlen(sequences) +
-					strlen(mt->vt->ToString(mt)) + 1);
-			sprintf(sequences, "%s%s", sequences, mt->vt->ToString(mt));
-			isFirst = false;
-		}
+	while (listLength) {
+		mt = list_pop(this->traces_list);
+		char *mtString = mt->vt->ToString(mt);
+		sequences = realloc(sequences, strlen(sequences) +
+				strlen(",") +
+				strlen(mtString) + 1);
+		sprintf(sequences, "%s,%s", sequences, mtString);
+		free(mtString);
+		list_add(this->traces_list, mt);
+		listLength--;
 	}
 
 	sprintf(sequences, "%s]", sequences);
