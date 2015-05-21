@@ -181,7 +181,9 @@ int main(void)
 	{
 		ts = ModelCompare(new_model, current_model);
 		if (ts != NULL) {
-			printf("\n%s\n", ts->toString(ts));
+			char *tsString = ts->toString(ts);
+			printf("\n%s\n", tsString);
+			free(tsString);
 		} else {
 			printf("ERROR: Cannot create traceSequence\n");
 		}
@@ -203,10 +205,12 @@ int main(void)
 		while (list_length(plannedAdaptations) > 0) {
 			AdaptationPrimitive *c = (AdaptationPrimitive*)list_pop(plannedAdaptations);
 			printf("%s: Priority: %d Type: %d\n", c->ref->path, c->priority, c->primitiveType);
+			free(c);
 		}
 	} else {
 		PRINTF("ERROR: cannot create Adaptation primitives\n");
 	}
+	ts->delete(ts);
 
 	delete((KMFContainer*)current_model);
 	delete((KMFContainer*)new_model);
