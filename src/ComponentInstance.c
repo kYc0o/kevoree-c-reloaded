@@ -119,7 +119,6 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 				 * TODO add if == NULL
 				 */
 				if (ptr->eContainer) {
-					printf("muy mal in %s\n", __FILE__, __LINE__);
 					free(ptr->eContainer);
 				}
 				ptr->eContainer = strdup(this->path);
@@ -150,7 +149,6 @@ ComponentInstance_addRequired(ComponentInstance * const this, Port *ptr)
 		if(hashmap_get(this->required, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK)
 			{
-				if (ptr->eContainer) { printf("muy mal in %s\n", __FILE__, __LINE__); free(ptr->eContainer); }
 				ptr->eContainer = strdup(this->path);
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/required[%s]", this->path, internalKey);
@@ -313,6 +311,7 @@ static void
 			}
 		}
 	} else {
+		obj = strdup(attribute);
 		if ((nextAttribute = strtok(path, "\\")) != NULL) {
 			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
@@ -402,26 +401,11 @@ ComponentInstance
 	 * Virtual Table
 	 */
 	pCompInstanceObj->VT = &componentInstance_VT;
-	/*
-	 * KMFContainer
-	 */
-	pCompInstanceObj->eContainer = NULL;
-	pCompInstanceObj->path = NULL;
-	/*
-	 * NamedElement
-	 */
-	pCompInstanceObj->name = NULL;
-	/*
-	 * Instance
-	 */
-	pCompInstanceObj->metaData = NULL;
-	pCompInstanceObj->started = -1;
-	pCompInstanceObj->typeDefinition = NULL;
-	pCompInstanceObj->dictionary = NULL;
-	pCompInstanceObj->fragmentDictionary = NULL;
+
 	/*
 	 * ComponentInstance
 	 */
+	initComponentInstance(pCompInstanceObj);
 
 	return pCompInstanceObj;
 }
