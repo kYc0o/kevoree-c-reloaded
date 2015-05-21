@@ -121,6 +121,7 @@ static const char *DEFAULTMODEL = "{\"eClass\":\"org.kevoree.ContainerRoot\",\"g
 
 int main(void)
 {
+	mtrace();
 	printf("INFO: Starting kevoree C implementation\n");
 	struct jsonparse_state jsonState;
 	TraceSequence *ts;
@@ -131,7 +132,6 @@ int main(void)
 	/*current_model->VT->visit(current_model, NULL, actionprintf, NULL, false);*/
 
 	printf("INFO: Starting Kevoree adaptations\n");
-	mtrace();
 
 	FILE *new_model_json = fopen("../models/20nodes1component.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
@@ -181,9 +181,9 @@ int main(void)
 	{
 		ts = ModelCompare(new_model, current_model);
 		if (ts != NULL) {
-			char *tsString = ts->toString(ts);
+			/*char *tsString = ts->toString(ts);
 			printf("\n%s\n", tsString);
-			free(tsString);
+			free(tsString);*/
 		} else {
 			printf("ERROR: Cannot create traceSequence\n");
 		}
