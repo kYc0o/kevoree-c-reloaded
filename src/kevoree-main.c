@@ -181,9 +181,9 @@ int main(void)
 	{
 		ts = ModelCompare(new_model, current_model, "n1759");
 		if (ts != NULL) {
-			char *tsString = ts->toString(ts);
+			/*char *tsString = ts->toString(ts);
 			printf("\n%s\n", tsString);
-			free(tsString);
+			free(tsString);*/
 		} else {
 			printf("ERROR: Cannot create traceSequence\n");
 		}
