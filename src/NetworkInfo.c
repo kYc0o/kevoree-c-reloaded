@@ -55,7 +55,7 @@ NetworkInfo_addValues(NetworkInfo * const this, NetworkProperty *ptr)
 		}
 		if(hashmap_get(this->values, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/values[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/values[%s]", this->path, internalKey);
 			} else {
@@ -76,7 +76,6 @@ NetworkInfo_removeValues(NetworkInfo * const this, NetworkProperty *ptr)
 		PRINTF("ERROR: The NetworkProperty cannot be removed in NetworkInfo because the key is not defined\n");
 	} else {
 		if(hashmap_remove(this->values, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

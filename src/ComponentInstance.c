@@ -118,10 +118,7 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 				/*
 				 * TODO add if == NULL
 				 */
-				if (ptr->eContainer) {
-					free(ptr->eContainer);
-				}
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/provided[%s]", this->path, internalKey);
 			} else {
@@ -149,7 +146,7 @@ ComponentInstance_addRequired(ComponentInstance * const this, Port *ptr)
 		if(hashmap_get(this->required, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK)
 			{
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/required[%s]", this->path, internalKey);
 			} else {
@@ -170,7 +167,6 @@ ComponentInstance_removeProvided(ComponentInstance * const this, Port *ptr)
 		PRINTF("ERROR: The Port cannot be removed in ComponentInstance because the key is not defined\n");
 	} else {
 		if(hashmap_remove(this->provided, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;
@@ -189,7 +185,6 @@ ComponentInstance_removeRequired(ComponentInstance * const this, Port *ptr)
 		PRINTF("ERROR: The Port cannot be removed in ComponentInstance because the key is not defined\n");
 	} else {
 		if(hashmap_remove(this->required, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

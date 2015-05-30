@@ -23,7 +23,7 @@ typedef struct _NamedElement {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * NamedElement

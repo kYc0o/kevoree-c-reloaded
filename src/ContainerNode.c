@@ -142,7 +142,7 @@ ContainerNode_addComponents(ContainerNode * const this, ComponentInstance *ptr)
 		if(hashmap_get(this->components, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (ComponentInstance*)ptr;*/
 			if(hashmap_put(this->components, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/components[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/components[%s]", this->path, internalKey);
 			} else {
@@ -238,7 +238,7 @@ ContainerNode_addNetworkInformation(ContainerNode * const this, NetworkInfo *ptr
 		if(hashmap_get(this->networkInformation, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (NetworkInfo*)ptr;*/
 			if(hashmap_put(this->networkInformation, internalKey, ptr) == 0) {
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/networkInformation[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/networkInformation[%s]", this->path, internalKey);
 			} else {
@@ -259,7 +259,6 @@ ContainerNode_removeComponents(ContainerNode* const this, ComponentInstance* ptr
 		PRINTF("ERROR: ComponentInstance cannot be removed in ContainerNode because the key is not defined\n");
 	} else {
 		if(hashmap_remove(this->components, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;
@@ -316,7 +315,6 @@ ContainerNode_removeNetworkInformation(ContainerNode * const this, NetworkInfo *
 		PRINTF("The NetworkInfo cannot be removed in ContainerNode because the key is not defined\n");
 	} else {
 		if(hashmap_remove(this->networkInformation, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

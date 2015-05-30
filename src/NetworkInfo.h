@@ -37,7 +37,7 @@ typedef struct _NetworkInfo {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * NamedElement

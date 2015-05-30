@@ -26,7 +26,7 @@ typedef struct _Repository {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * Repository

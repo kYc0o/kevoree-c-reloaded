@@ -70,12 +70,12 @@ void Planner_compareModels(ContainerRoot *currModel, ContainerRoot *targetModel,
 			{
 				if (trace->vt->getType() == ADD) {
 					KMFContainer *elemToAdd = targetModel->VT->findByPath(targetModel, ((ModelAddTrace*)trace)->previousPath);
-					if (!strcmp(elemToAdd->eContainer, targetNode->path)) {
+					if (!strcmp(elemToAdd->eContainer->path, targetNode->path)) {
 						AdaptationModel_add(Planner_adapt(AddInstance, elemToAdd));
 					}
 				} else if (trace->vt->getType() == REMOVE) {
 					KMFContainer *elemToAdd = currModel->VT->findByPath(currModel, ((ModelRemoveTrace*)trace)->objPath);
-					if (!strcmp(elemToAdd->eContainer, targetNode->path)) {
+					if (!strcmp(elemToAdd->eContainer->path, targetNode->path)) {
 						AdaptationModel_add(Planner_adapt(StopInstance, elemToAdd));
 						AdaptationModel_add(Planner_adapt(RemoveInstance, elemToAdd));
 					}
@@ -99,7 +99,7 @@ void Planner_compareModels(ContainerRoot *currModel, ContainerRoot *targetModel,
 					PRINTF("HARAKIRI: %s\n", modelsettrace->vt->ToString(modelsettrace));
 				} else {
 					KMFContainer *comp = targetModel->VT->findByPath(targetModel, modelsettrace->srcPath);
-					if (comp != NULL && !strcmp(comp->eContainer, targetNode->path)) {
+					if (comp != NULL && !strcmp(comp->eContainer->path, targetNode->path)) {
 						if (!strcmp(modelsettrace->content, "true")) {
 							AdaptationModel_add(Planner_adapt(StartInstance, modelElement));
 						} else {
@@ -110,9 +110,9 @@ void Planner_compareModels(ContainerRoot *currModel, ContainerRoot *targetModel,
 			}
 		} else if(!strcmp(trace->refName, "value")) {
 			if (!strcmp(modelElement->VT->metaClassName(modelElement), "DictionaryValue")) {
-				KMFContainer *container = targetModel->VT->findByPath(targetModel, modelElement->eContainer);
-				KMFContainer *container2 = targetModel->VT->findByPath(targetModel, container->eContainer);
-				if (!strcmp(container2->eContainer, targetNode->path)) {
+				KMFContainer *container = targetModel->VT->findByPath(targetModel, modelElement->eContainer->path);
+				KMFContainer *container2 = targetModel->VT->findByPath(targetModel, container->eContainer->path);
+				if (!strcmp(container2->eContainer->path, targetNode->path)) {
 					AdaptationModel_add(Planner_adapt(UpdateDictionaryInstance, container2));
 				}
 				/*
@@ -122,7 +122,7 @@ void Planner_compareModels(ContainerRoot *currModel, ContainerRoot *targetModel,
 		} else if (!strcmp(trace->refName, "typeDefinition")) {
 			if (!strcmp(modelElement->VT->metaClassName(modelElement), "ComponentInstance")) {
 				ComponentInstance *ci = (ComponentInstance*)modelElement;
-				if (!strcmp(ci->eContainer, targetNode->path)) {
+				if (!strcmp(ci->eContainer->path, targetNode->path)) {
 					TypeDefinition *t = ci->typeDefinition;
 					DeployUnit *du = t->deployUnits;
 					AdaptationModel_add(Planner_adapt(AddDeployUnit, (KMFContainer*)du));

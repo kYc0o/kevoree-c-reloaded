@@ -34,7 +34,7 @@ typedef struct _Dictionary {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * Dictionary

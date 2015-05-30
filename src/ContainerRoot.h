@@ -99,7 +99,7 @@ typedef struct _ContainerRoot {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * ContainerRoot

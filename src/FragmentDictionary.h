@@ -33,7 +33,7 @@ typedef struct _FragmentDictionary {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * Dictionary

@@ -35,7 +35,7 @@ typedef struct _NodeType {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * TypeDefinition

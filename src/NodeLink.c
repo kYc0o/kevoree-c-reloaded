@@ -86,7 +86,7 @@ NodeLink_addNetworkProperties(NodeLink * const this, NetworkProperty *ptr)
 			/*container = (NetworkProperty*)ptr;*/
 			if(hashmap_put(this->networkProperties, internalKey, ptr) == MAP_OK)
 			{
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/networkProperties[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/networkProperties[%s]", this->path, internalKey);
 			}
@@ -107,7 +107,6 @@ NodeLink_removeNetworkProperties(NodeLink * const this, NetworkProperty *ptr)
 	{
 		if(hashmap_remove(this->networkProperties, internalKey) == MAP_OK)
 		{
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

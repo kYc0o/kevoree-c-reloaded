@@ -37,7 +37,7 @@ typedef struct _DictionaryAttribute {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * NamedElement

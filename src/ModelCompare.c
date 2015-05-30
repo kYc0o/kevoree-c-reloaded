@@ -179,14 +179,14 @@ void *actionRemove(char *_path, void *value)
 	if ((container = new_model->VT->findByPath(new_model, _path)) != NULL) {
 		return (void*)true;
 	} else if ((container = (KMFContainer*)current_model->VT->findByPath(current_model, _path)) != NULL) {
-		if ((src = strdup(container->eContainer)) != NULL) {
+		if ((src = strdup(container->eContainer->path)) != NULL) {
 			char *src2 = NULL;
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -228,14 +228,14 @@ void *actionAdd(char* _path, void *value)
 	if ((container = current_model->VT->findByPath(current_model, _path)) != NULL) {
 		return (void*)true;
 	} else if ((container = (KMFContainer*)new_model->VT->findByPath(new_model, _path)) != NULL) {
-		if ((src = strdup(container->eContainer)) != NULL) {
+		if ((src = strdup(container->eContainer->path)) != NULL) {
 			char *src2 = NULL;
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = new_model->VT->findByPath(new_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = new_model->VT->findByPath(new_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -315,9 +315,9 @@ void actionUpdate(char* _path, Type type, void* value)
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -343,14 +343,14 @@ void actionUpdate(char* _path, Type type, void* value)
 			 * TODO check NULL
 			 */
 			if ((container = (KMFContainer*)current_model->VT->findByPath(current_model, path)) != NULL) {
-				if ((src = strdup(container->eContainer)) != NULL) {
+				if ((src = strdup(container->eContainer->path)) != NULL) {
 					char *src2 = NULL;
 					char *metaClassName = container->VT->metaClassName(container);
 					if (!strcmp(metaClassName, "DictionaryValue")) {
 						KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-						src2 = elem->eContainer;
+						src2 = elem->eContainer->path;
 						KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-						src2 = elem2->eContainer;
+						src2 = elem2->eContainer->path;
 					}
 					if (!strcmp(metaClassName, "ComponentInstance") ||
 							!strcmp(metaClassName, "DictionaryValue") ||
@@ -380,9 +380,9 @@ void actionUpdate(char* _path, Type type, void* value)
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -436,15 +436,15 @@ void actionUpdate(char* _path, Type type, void* value)
 			 * TODO check NULL
 			 */
 			container = (KMFContainer*)current_model->VT->findByPath(current_model, path);
-			src = strdup(container->eContainer);
+			src = strdup(container->eContainer->path);
 			PRINTF("src: %s\n", src);
 			char *src2 = NULL;
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -469,9 +469,9 @@ void actionUpdate(char* _path, Type type, void* value)
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -508,15 +508,15 @@ void actionUpdate(char* _path, Type type, void* value)
 			 * TODO check NULL
 			 */
 			if ((container = (KMFContainer*)current_model->VT->findByPath(current_model, path)) != NULL) {
-				src = strdup(container->eContainer);
+				src = strdup(container->eContainer->path);
 				PRINTF("src: %s\n", src);
 				char *src2 = NULL;
 				char *metaClassName = container->VT->metaClassName(container);
 				if (!strcmp(metaClassName, "DictionaryValue")) {
 					KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-					src2 = elem->eContainer;
+					src2 = elem->eContainer->path;
 					KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-					src2 = elem2->eContainer;
+					src2 = elem2->eContainer->path;
 				}
 				if (!strcmp(metaClassName, "ComponentInstance") ||
 						!strcmp(metaClassName, "DictionaryValue") ||
@@ -542,9 +542,9 @@ void actionUpdate(char* _path, Type type, void* value)
 			char *metaClassName = container->VT->metaClassName(container);
 			if (!strcmp(metaClassName, "DictionaryValue")) {
 				KMFContainer *elem = current_model->VT->findByPath(current_model, src);
-				src2 = elem->eContainer;
+				src2 = elem->eContainer->path;
 				KMFContainer *elem2 = current_model->VT->findByPath(current_model, src2);
-				src2 = elem2->eContainer;
+				src2 = elem2->eContainer->path;
 			}
 			if (!strcmp(metaClassName, "ComponentInstance") ||
 					!strcmp(metaClassName, "DictionaryValue") ||
@@ -635,7 +635,7 @@ void actionAddSet(char *_path, Type type, void *value)
 			}
 			if (!strcmp(src, myself->path) ||
 					(!strcmp(refname, "typeDefinition") &&
-							!strcmp(container2->eContainer, myself->path))) {
+							!strcmp(container2->eContainer->path, myself->path))) {
 				ModelTrace *mt = newPoly_ModelAddTrace((char*)value, refname, container->path, NULL);
 				/*char *strTrace = mt->ToString(mt->pDerivedObj);
 				PRINTF(strTrace);
@@ -661,12 +661,12 @@ void actionAddSet(char *_path, Type type, void *value)
 					char *metaClassName = container->VT->metaClassName(container);
 					if (!strcmp(metaClassName, "DictionaryValue")) {
 						KMFContainer *elem = new_model->VT->findByPath(new_model, src);
-						src2 = elem->eContainer;
+						src2 = elem->eContainer->path;
 						KMFContainer *elem2 = new_model->VT->findByPath(new_model, src2);
-						src2 = elem2->eContainer;
+						src2 = elem2->eContainer->path;
 						KMFContainer *elem3 = new_model->VT->findByPath(new_model, src2);
 
-						if (!strcmp(myself->path, elem3->eContainer)) {
+						if (!strcmp(myself->path, elem3->eContainer->path)) {
 							ModelTrace *mt = newPoly_ModelSetTrace(src, refname, (char*)value);
 							/*char *strTrace = mt->ToString(mt->pDerivedObj);
 																PRINTF(strTrace);
@@ -717,7 +717,7 @@ void actionAddSet(char *_path, Type type, void *value)
 			if ((container = (KMFContainer*)new_model->VT->findByPath(new_model, path)) != NULL) {
 				if ((src = strdup(container->path)) != NULL) {
 					if (!strcmp(src, myself->path) ||
-							!strcmp(myself->path, container->eContainer)) {
+							!strcmp(myself->path, container->eContainer->path)) {
 						char v2str[MAX_NUMBER] = {0};
 						if ((bool)value == 1) {
 							sprintf(v2str, "%s", "true");

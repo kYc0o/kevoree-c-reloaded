@@ -39,9 +39,6 @@ delete_KMFContainer(KMFContainer * const this)
 	if (this->path != NULL) {
 		free(this->path);
 	}
-	if (this->eContainer != NULL) {
-		free(this->eContainer);
-	}
 }
 
 void

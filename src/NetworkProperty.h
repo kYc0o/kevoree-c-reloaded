@@ -29,7 +29,7 @@ typedef struct _NetworkProperty {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * NamedElement

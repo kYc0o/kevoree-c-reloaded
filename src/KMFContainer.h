@@ -32,7 +32,7 @@ typedef struct _KMFContainer {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 } KMFContainer;
 

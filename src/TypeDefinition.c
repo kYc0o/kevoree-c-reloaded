@@ -66,7 +66,7 @@ TypeDefinition_addDictionaryType(TypeDefinition * const this, DictionaryType *pt
 		this->VT->removeDictionaryType(this, ptr);
 	}
 	this->dictionaryType = ptr;
-	ptr->eContainer = strdup(this->path);
+	ptr->eContainer = this;
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionaryType[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
 	sprintf(ptr->path, "%s/dictionaryType[%s]", this->path, ptr->VT->internalGetKey(ptr));
 }
@@ -81,7 +81,6 @@ void
 TypeDefinition_removeDictionaryType(TypeDefinition * const this, DictionaryType *ptr)
 {
 	this->dictionaryType = NULL;
-	free(ptr->eContainer);
 	ptr->eContainer = NULL;
 	free(ptr->path);
 	ptr->path = NULL;

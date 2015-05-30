@@ -81,7 +81,7 @@ Dictionary_addValues(Dictionary * const this, DictionaryValue *ptr)
 			/*container = (DictionaryValue*)ptr;*/
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK)
 			{
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/values[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/values[%s]", this->path, internalKey);
 			}
@@ -102,7 +102,6 @@ Dictionary_removeValues(Dictionary * const this, DictionaryValue *ptr)
 	{
 		if(hashmap_remove(this->values, internalKey) == MAP_OK)
 		{
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

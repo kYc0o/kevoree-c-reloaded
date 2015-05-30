@@ -88,7 +88,7 @@ DictionaryType_addAttributes(DictionaryType * const this, DictionaryAttribute *p
 		}
 		if(hashmap_get(this->attributes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->attributes, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/attributes[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/attributes[%s]", this->path, internalKey);
 			} else {
@@ -109,7 +109,6 @@ DictionaryType_removeAttributes(DictionaryType * const this, DictionaryAttribute
 		PRINTF("ERROR: The DictionaryValue cannot be removed in Dictionary because the key is not defined\n");
 	} else {
 		if(hashmap_remove(this->attributes, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

@@ -64,7 +64,7 @@ Instance_addDictionary(Instance * const this, Dictionary *ptr)
 		this->VT->removeDictionary(this, ptr);
 	}
 	this->dictionary = ptr;
-	ptr->eContainer = strdup(this->path);
+	ptr->eContainer = this;
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
 	sprintf(ptr->path, "%s/dictionary[%s]", this->path, ptr->VT->internalGetKey(ptr));
 }
@@ -85,7 +85,7 @@ Instance_addFragmentDictionary(Instance * const this, FragmentDictionary *ptr)
 		if(hashmap_get(this->fragmentDictionary, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (FragmentDictionary*)ptr;*/
 			if(hashmap_put(this->fragmentDictionary, internalKey, ptr) == MAP_OK) {
-				ptr->eContainer = strdup(this->path);
+				ptr->eContainer = this;
 				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/fragmentDictionary[]") + strlen(internalKey)) + 1);
 				sprintf(ptr->path, "%s/fragmentDictionary[%s]", this->path, internalKey);
 			} else {
@@ -106,7 +106,6 @@ Instance_removeTypeDefinition(Instance * const this, TypeDefinition *ptr)
 void
 Instance_removeDictionary(Instance * const this, Dictionary *ptr)
 {
-	free(ptr->eContainer);
 	free(ptr->path);
 	ptr->eContainer = NULL;
 	ptr->path = NULL;
@@ -123,7 +122,6 @@ Instance_removeFragmentDictionary(Instance * const this, FragmentDictionary *ptr
 	}
 	else {
 		if(hashmap_remove(this->fragmentDictionary, internalKey) == MAP_OK) {
-			free(ptr->eContainer);
 			ptr->eContainer = NULL;
 			free(ptr->path);
 			ptr->path = NULL;

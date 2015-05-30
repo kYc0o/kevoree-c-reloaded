@@ -45,7 +45,7 @@ typedef struct _TypeDefinition {
 	/*
 	 * KMFContainer
 	 */
-	char *eContainer;
+	KMFContainer *eContainer;
 	char *path;
 	/*
 	 * NamedElement
