@@ -19,7 +19,6 @@ typedef struct _NamedElement_VT {
 } NamedElement_VT;
 
 typedef struct _NamedElement {
-	NamedElement *next;
 	NamedElement_VT *VT;
 	/*
 	 * KMFContainer

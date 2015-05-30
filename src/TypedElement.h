@@ -31,7 +31,6 @@ typedef struct _TypedElement_VT {
 } TypedElement_VT;
 
 typedef struct _TypedElement {
-	TypedElement *next;
 	TypedElement_VT *VT;
 	/*
 	 * KMFContainer

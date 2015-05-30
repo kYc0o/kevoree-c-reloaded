@@ -43,7 +43,6 @@ typedef struct _Group_VT {
 } Group_VT;
 
 typedef struct _Group {
-	Group *next;
 	Group_VT *VT;
 	/*
 	 * KMFContainer

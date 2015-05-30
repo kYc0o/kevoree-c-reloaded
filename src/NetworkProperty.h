@@ -25,7 +25,6 @@ typedef struct _NetworkProperty_VT {
 } NetworkProperty_VT;
 
 typedef struct _NetworkProperty {
-	NetworkProperty *next;
 	NetworkProperty_VT *VT;
 	/*
 	 * KMFContainer

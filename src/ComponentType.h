@@ -51,7 +51,6 @@ typedef struct _ComponentType_VT {
 } ComponentType_VT;
 
 typedef struct _ComponentType {
-	ComponentType *next;
 	ComponentType_VT *VT;
 	/*
 	 * KMFContainer

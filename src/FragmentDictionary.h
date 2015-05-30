@@ -29,7 +29,6 @@ typedef struct _FragmentDictionary_VT {
 } FragmentDictionary_VT;
 
 typedef struct _FragmentDictionary {
-	FragmentDictionary *next;
 	FragmentDictionary_VT *VT;
 	/*
 	 * KMFContainer

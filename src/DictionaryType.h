@@ -30,7 +30,6 @@ typedef struct _DictionaryType_VT {
 } DictionaryType_VT;
 
 typedef struct _DictionaryType {
-	DictionaryType *next;
 	DictionaryType_VT *VT;
 	/*
 	 * KMFContainer

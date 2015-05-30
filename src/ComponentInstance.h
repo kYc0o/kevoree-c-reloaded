@@ -47,7 +47,6 @@ typedef struct _ComponentInstance_VT {
 } ComponentInstance_VT;
 
 typedef struct _ComponentInstance {
-	ComponentInstance *next;
 	ComponentInstance_VT *VT;
 	/*
 	 * KMFContainer

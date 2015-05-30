@@ -31,7 +31,6 @@ typedef struct _DeployUnit_VT {
 } DeployUnit_VT;
 
 typedef struct _DeployUnit {
-	DeployUnit *next;
 	DeployUnit_VT *VT;
 	/*
 	 * KMFContainer

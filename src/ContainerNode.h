@@ -68,7 +68,6 @@ typedef struct _ContainerNode_VT {
 } ContainerNode_VT;
 
 typedef struct _ContainerNode {
-	ContainerNode *next;
 	ContainerNode_VT *VT;
 	/*
 	 * KMFContainer

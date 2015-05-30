@@ -33,7 +33,6 @@ typedef struct _PortType_VT {
 } PortType_VT;
 
 typedef struct _PortType {
-	PortType *next;
 	PortType_VT *VT;
 	/*
 	 * KMFContainer

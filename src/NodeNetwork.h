@@ -39,7 +39,6 @@ typedef struct _NodeNetwork_VT {
 } NodeNetwork_VT;
 
 typedef struct _NodeNetwork {
-	NodeNetwork *next;
 	NodeNetwork_VT *VT;
 	/*
 	 * KMFContainer

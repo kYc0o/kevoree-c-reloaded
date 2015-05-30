@@ -28,7 +28,6 @@ typedef struct _KMFContainer_VT {
 } KMFContainer_VT;
 
 typedef struct _KMFContainer {
-	KMFContainer *next;
 	KMFContainer_VT *VT;
 	/*
 	 * KMFContainer

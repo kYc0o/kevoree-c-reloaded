@@ -35,7 +35,6 @@ typedef struct _GroupType_VT {
 } GroupType_VT;
 
 typedef struct _GroupType {
-	GroupType *next;
 	GroupType_VT *VT;
 	/*
 	 * KMFContainer

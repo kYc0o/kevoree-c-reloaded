@@ -22,7 +22,6 @@ typedef struct _Repository_VT {
 } Repository_VT;
 
 typedef struct _Repository {
-	Repository *next;
 	Repository_VT *VT;
 	/*
 	 * KMFContainer

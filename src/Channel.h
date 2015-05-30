@@ -43,7 +43,6 @@ typedef struct _Channel_VT {
 } Channel_VT;
 
 typedef struct _Channel {
-	Channel *next;
 	Channel_VT *VT;
 	/*
 	 * KMFContainer

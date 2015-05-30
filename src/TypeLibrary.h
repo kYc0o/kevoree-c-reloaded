@@ -31,7 +31,6 @@ typedef struct _TypeLibrary_VT {
 } TypeLibrary_VT;
 
 typedef struct _TypeLibrary {
-	TypeLibrary *next;
 	TypeLibrary_VT *VT;
 	/*
 	 * KMFContainer

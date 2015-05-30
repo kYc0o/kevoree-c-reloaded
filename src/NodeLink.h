@@ -32,7 +32,6 @@ typedef struct _NodeLink_VT {
 } NodeLink_VT;
 
 typedef struct _NodeLink {
-	NodeLink *next;
 	NodeLink_VT *VT;
 	/*
 	 * KMFContainer

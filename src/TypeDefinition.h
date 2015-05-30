@@ -41,7 +41,6 @@ typedef struct _TypeDefinition_VT {
 } TypeDefinition_VT;
 
 typedef struct _TypeDefinition {
-	TypeDefinition *next;
 	TypeDefinition_VT *VT;
 	/*
 	 * KMFContainer

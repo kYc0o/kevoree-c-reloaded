@@ -40,7 +40,6 @@ typedef struct _Port_VT {
 } Port_VT;
 
 typedef struct _Port {
-	Port *next;
 	Port_VT *VT;
 	/*
 	 * KMFContainer

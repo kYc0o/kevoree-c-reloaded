@@ -95,7 +95,6 @@ typedef struct _ContainerRoot_VT {
 } ContainerRoot_VT;
 
 typedef struct _ContainerRoot {
-	ContainerRoot *next;
 	ContainerRoot_VT *VT;
 	/*
 	 * KMFContainer

@@ -23,7 +23,6 @@ typedef struct _PortTypeMapping_VT {
 } PortTypeMapping_VT;
 
 typedef struct _PortTypeMapping {
-	PortTypeMapping *next;
 	PortTypeMapping_VT *VT;
 	/*
 	 * KMFContainer

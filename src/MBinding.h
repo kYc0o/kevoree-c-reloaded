@@ -34,7 +34,6 @@ typedef struct _MBinding_VT {
 } MBinding_VT;
 
 typedef struct _MBinding {
-	MBinding *next;
 	MBinding_VT *VT;
 	/*
 	 * KMFContainer

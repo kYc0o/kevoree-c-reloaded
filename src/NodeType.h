@@ -31,7 +31,6 @@ typedef struct _NodeType_VT {
 } NodeType_VT;
 
 typedef struct _NodeType {
-	TypeDefinition *next;
 	NodeType_VT *VT;
 	/*
 	 * KMFContainer

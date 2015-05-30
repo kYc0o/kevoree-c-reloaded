@@ -33,7 +33,6 @@ typedef struct _NetworkInfo_VT {
 } NetworkInfo_VT;
 
 typedef struct _NetworkInfo {
-	NetworkInfo *next;
 	NetworkInfo_VT *VT;
 	/*
 	 * KMFContainer
