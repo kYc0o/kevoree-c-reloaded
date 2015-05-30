@@ -327,8 +327,9 @@ int main(void)
 
 	/*current_model->VT->visit(current_model, NULL, actionprintf, NULL, false);*/
 
-	printf("INFO: Starting Kevoree adaptations\n");
 	mtrace();
+
+	printf("INFO: Starting Kevoree adaptations\n");
 
 	FILE *new_model_json = fopen("new_model-compact.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
@@ -371,6 +372,9 @@ int main(void)
 	{
 		printf("ERROR: new_model cannot be loaded\n");
 	}
+	
+	muntrace();
+	
 /*
 	new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);
 
@@ -408,8 +412,8 @@ int main(void)
 	}
 */
 	delete((KMFContainer*)current_model);
-	delete((KMFContainer*)new_model);
-	muntrace();
+	//delete((KMFContainer*)new_model);
+	
 
 	return EXIT_SUCCESS;
 }
