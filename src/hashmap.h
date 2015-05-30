@@ -23,7 +23,6 @@ typedef void *any_t;
 /* We need to keep keys and values */
 typedef struct _hashmap_element{
 	char* key;
-	int in_use;
 	any_t data;
 } hashmap_element;
 
@@ -31,7 +30,6 @@ typedef struct _hashmap_element{
  * as well as the data to hold. */
 typedef struct _hashmap_map{
 	int table_size;
-	int size;
 	hashmap_element *data;
 } hashmap_map;
 

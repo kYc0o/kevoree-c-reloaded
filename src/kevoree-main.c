@@ -121,7 +121,7 @@ static const char *DEFAULTMODEL = "{\"eClass\":\"org.kevoree.ContainerRoot\",\"g
 
 int main(void)
 {
-	mtrace();
+	
 	printf("INFO: Starting kevoree C implementation\n");
 	struct jsonparse_state jsonState;
 	TraceSequence *ts;
@@ -133,12 +133,14 @@ int main(void)
 
 	printf("INFO: Starting Kevoree adaptations\n");
 
-	FILE *new_model_json = fopen("../models/20nodes1component.json", "r");
+	FILE *new_model_json = fopen("models/20nodes1component.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
 	int modelLength = ftell(new_model_json);
 	fseek(new_model_json, 0L, SEEK_SET);
 
 	printf("INFO: Trying to load new_model with length %d\n", modelLength);
+
+	mtrace();
 
 	char *jsonModel = malloc(modelLength + 1);
 	int ch;
@@ -163,6 +165,8 @@ int main(void)
 
 	new_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 	free(jsonModel);
+	
+	muntrace();
 
 	/*new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);*/
 

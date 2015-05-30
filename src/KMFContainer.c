@@ -58,11 +58,9 @@ deleteContainerContents(map_t container)
 	hashmap_map *m = (hashmap_map*)container;
 	int i;
 	for(i = 0; i< m->table_size; i++) {
-		if(m->data[i].in_use != 0) {
-			any_t data = (any_t) (m->data[i].data);
-			KMFContainer *n = data;
-			delete(n);
-		}
+		any_t data = (any_t) (m->data[i].data);
+		KMFContainer *n = data;
+		delete(n);
 	}
 }
 
