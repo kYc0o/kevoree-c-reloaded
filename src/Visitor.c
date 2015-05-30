@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void Visitor_visitModelContainer(hashmap_map *m, int length, fptrVisitAction action)
 {
@@ -35,12 +36,13 @@ void Visitor_visitModelContainer(hashmap_map *m, int length, fptrVisitAction act
 void Visitor_visitPaths(hashmap_map *m, char *container, char *path, fptrVisitAction action, fptrVisitActionRef secondAction)
 {
 	int i;
+	char *originalPath = strdup(path);
 
 	for(i = 0; i< m->table_size; i++) {
 		if(m->data[i].in_use != 0) {
 			any_t data = (any_t) (m->data[i].data);
 			KMFContainer *n = data;
-			sprintf(path, "%s[%s]", path, n->VT->internalGetKey(n));
+			sprintf(path, "%s[%s]", originalPath, n->VT->internalGetKey(n));
 			if (secondAction != NULL) {
 				if (secondAction(path, container)) {
 					n->VT->visit(n, path, action, secondAction, true);
@@ -50,6 +52,7 @@ void Visitor_visitPaths(hashmap_map *m, char *container, char *path, fptrVisitAc
 			}
 		}
 	}
+	free(originalPath);
 }
 
 void Visitor_visitModelRefs(hashmap_map *m, int length, char* ref, char *path, fptrVisitAction action)
@@ -81,7 +84,7 @@ void Visitor_visitPathRefs(hashmap_map *m, char *container, char *path, fptrVisi
 		if(m->data[i].in_use != 0) {
 			any_t data = (any_t) (m->data[i].data);
 			KMFContainer* n = data;
-			sprintf(path, "%s/%s\\%s", path, n->path, container);
+			sprintf(path, "%s/%s\\%s", parent, n->path, container);
 			action(path, REFERENCE, parent);
 		}
 	}

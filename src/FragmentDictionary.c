@@ -64,12 +64,12 @@ FragmentDictionary_visit(FragmentDictionary * const this, char *parent, fptrVisi
 	 */
 	dictionary_VT.visit((FragmentDictionary*)this, parent, action, secondAction, visitPaths);
 
-	action(NULL, COLON, NULL);
 
 	if (visitPaths) {
 		sprintf(path, "%s\\name", parent);
 		action(path, STRING, this->name);
 	} else {
+		action(NULL, COLON, NULL);
 		action("name", STRING, ((FragmentDictionary*)(this))->name);
 		action(NULL, RETURN, NULL);
 	}
@@ -81,15 +81,11 @@ static void
 	void *try = NULL;
 
 	/* Local attributes */
-	if ((try = dictionary_VT.findByPath((Dictionary*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Dictionary attributes and references */
-	else if (!strcmp("name", attribute)) {
+	if (!strcmp("name", attribute)) {
 		return this->name;
 	} else {
-		PRINTF("WARNING: Wrong attribute or reference\n");
-		return NULL;
+		return dictionary_VT.findByPath((Dictionary*)this, attribute);
 	}
 }
 

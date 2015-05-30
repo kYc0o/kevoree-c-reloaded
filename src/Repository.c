@@ -53,15 +53,14 @@ Repository_visit(Repository * const this, char *parent, fptrVisitAction action, 
 	char path[256];
 	memset(&path[0], 0, sizeof(path));
 
-	/*
-	 * Visit parent
-	 */
-	KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
-
 	if (visitPaths) {
 		sprintf(path, "%s\\url", parent);
 		action(path, STRING, this->url);
 	} else {
+		/*
+		 * Visit parent
+		 */
+		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("url", STRING, this->url);
 		action(NULL, RETURN, NULL);
 	}

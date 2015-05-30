@@ -62,6 +62,9 @@ TypeDefinition_addDeployUnit(TypeDefinition * const this, DeployUnit *ptr)
 void
 TypeDefinition_addDictionaryType(TypeDefinition * const this, DictionaryType *ptr)
 {
+	if (this->dictionaryType != NULL) {
+		this->VT->removeDictionaryType(this, ptr);
+	}
 	this->dictionaryType = ptr;
 	ptr->eContainer = strdup(this->path);
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionaryType[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
@@ -208,9 +211,9 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 			sprintf(path, "%s/dictionaryType[%s]", parent, this->dictionaryType->VT->internalGetKey(this->dictionaryType));
 			if (secondAction != NULL) {
 				if (secondAction(path, "dictionaryType")) {
-					this->dictionaryType->VT->visit(this->dictionaryType, parent, action, secondAction, visitPaths);
+					this->dictionaryType->VT->visit(this->dictionaryType, path, action, secondAction, visitPaths);
 				} else {
-					this->dictionaryType->VT->visit(this->dictionaryType, parent, action, secondAction, visitPaths);
+					this->dictionaryType->VT->visit(this->dictionaryType, path, action, secondAction, visitPaths);
 				}
 			}
 		} else {
@@ -232,7 +235,7 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 	if((m = (hashmap_map*)this->superTypes) != NULL) {
 		length = hashmap_length(this->superTypes);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "superTypes", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "superTypes", path, action, secondAction, parent);
 		} else {
 			action("superTypes", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "superTypes", path, action);
@@ -247,13 +250,9 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 void
 *TypeDefinition_findByPath(TypeDefinition * const this, char *attribute)
 {
-	void *try = NULL;
 	/* NamedElement attributes */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("version",attribute)) {
+	if(!strcmp("version",attribute)) {
 		return this->version;
 	} else if(!strcmp("factoryBean",attribute)) {
 		return this->factoryBean;
@@ -318,6 +317,7 @@ void
 				}
 			}
 		} else {
+			obj = strdup(attribute);
 			if ((nextAttribute = strtok(path, "\\")) != NULL) {
 				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 					PRINTF("Attribute: %s\n", nextAttribute);
@@ -333,7 +333,11 @@ void
 			if(nextAttribute == NULL) {
 				return this->deployUnits;
 			} else {
-				return this->deployUnits->VT->findByPath(this->deployUnits, nextPath);
+				if (this->deployUnits != NULL) {
+					return this->deployUnits->VT->findByPath(this->deployUnits, nextPath);
+				} else {
+					return NULL;
+				}
 			}
 		} else if(!strcmp("dictionaryType", obj)) {
 			free(obj);
@@ -345,8 +349,7 @@ void
 			}
 		} else {
 			free(obj);
-			PRINTF("WARNING: Wrong attribute or reference\n");
-			return NULL;
+			return namedElement_VT.findByPath((NamedElement*)this, attribute);
 		}
 	}
 }

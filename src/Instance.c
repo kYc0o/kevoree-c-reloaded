@@ -60,9 +60,10 @@ Instance_addTypeDefinition(Instance * this, TypeDefinition *ptr)
 void
 Instance_addDictionary(Instance * const this, Dictionary *ptr)
 {
+	if (this->dictionary != NULL) {
+		this->VT->removeDictionary(this, ptr);
+	}
 	this->dictionary = ptr;
-	/* fot some reason, this method is being called more than one times for ptr. It is up to you and Eclipse to discover why */
-	if (ptr->eContainer) { printf("Muy mal, the previous value was %s. Next is %s. Detectect at %s:%d\n", ptr->eContainer, this->path, __FILE__, __LINE__); free(ptr->eContainer); }
 	ptr->eContainer = strdup(this->path);
 	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
 	sprintf(ptr->path, "%s/dictionary[%s]", this->path, ptr->VT->internalGetKey(ptr));
@@ -106,7 +107,9 @@ void
 Instance_removeDictionary(Instance * const this, Dictionary *ptr)
 {
 	free(ptr->eContainer);
+	free(ptr->path);
 	ptr->eContainer = NULL;
+	ptr->path = NULL;
 	this->dictionary = NULL;
 }
 
@@ -188,9 +191,9 @@ Instance_visit(Instance * const this, char *parent, fptrVisitAction action, fptr
 			sprintf(path, "%s/dictionary[%s]", parent, this->dictionary->VT->internalGetKey(this->dictionary));
 			if (secondAction != NULL) {
 				if (secondAction(path, "dictionary")) {
-					this->dictionary->VT->visit(this->dictionary, parent, action, secondAction, visitPaths);
+					this->dictionary->VT->visit(this->dictionary, path, action, secondAction, visitPaths);
 				} else {
-					this->dictionary->VT->visit(this->dictionary, parent, action, secondAction, visitPaths);
+					this->dictionary->VT->visit(this->dictionary, path, action, secondAction, visitPaths);
 				}
 			}
 		} else {
@@ -228,16 +231,11 @@ Instance_visit(Instance * const this, char *parent, fptrVisitAction action, fptr
 static void
 *Instance_findByPath(Instance * const this, char *attribute)
 {
-	void *try = NULL;
-	/* NamedElement attributes */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("metaData",attribute)) {
+	if(!strcmp("metaData",attribute)) {
 		return this->metaData;
 	} else if(!strcmp("started",attribute)) {
-		return this->started?"true":"false";
+		return (void*)this->started;
 	}
 	/* Local references */
 	else {
@@ -297,6 +295,7 @@ static void
 				}
 			}
 		} else {
+			obj = strdup(attribute);
 			if ((nextAttribute = strtok(path, "\\")) != NULL) {
 				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 					PRINTF("Attribute: %s\n", nextAttribute);
@@ -312,14 +311,22 @@ static void
 			if(nextAttribute == NULL) {
 				return this->typeDefinition;
 			} else {
-				return this->typeDefinition->VT->findByPath(this->typeDefinition, nextPath);
+				if (this->typeDefinition != NULL) {
+					return this->typeDefinition->VT->findByPath(this->typeDefinition, nextPath);
+				} else {
+					return NULL;
+				}
 			}
 		} else if(!strcmp("dictionary", obj)) {
 			free(obj);
 			if(nextAttribute == NULL) {
 				return this->dictionary;
 			} else {
-				return this->dictionary->VT->findByPath(this->dictionary, nextPath);
+				if (this->dictionary != NULL) {
+					return this->dictionary->VT->findByPath(this->dictionary, nextPath);
+				} else {
+					return NULL;
+				}
 			}
 		} else if(!strcmp("fragmentDictionary", obj)) {
 			free(obj);
@@ -336,8 +343,8 @@ static void
 			}
 		} else {
 			free(obj);
-			PRINTF(" WARNING: Wrong attribute or reference\n");
-			return NULL;
+			/* NamedElement attributes */
+			return namedElement_VT.findByPath((NamedElement*)this, attribute);
 		}
 	}
 }

@@ -97,13 +97,9 @@ DictionaryAttribute_visit(DictionaryAttribute * const this, char *parent, fptrVi
 static void
 *DictionaryAttribute_findByPath(DictionaryAttribute * const this, char *attribute)
 {
-	void *try = NULL;
 	/* TypedElement attributes and references */
-	if ((try = this->VT->findByPath((DictionaryAttribute*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("optional", attribute))
+	if(!strcmp("optional", attribute))
 	{
 		return (void*)this->optional;
 	}
@@ -126,8 +122,7 @@ static void
 	/* There is no local references */
 	else
 	{
-		PRINTF("WARNING: Wrong attribute or reference\n");
-		return NULL;
+		return typedElement_VT.findByPath((TypedElement*)this, attribute);
 	}
 }
 

@@ -71,17 +71,12 @@ NetworkProperty_visit(NetworkProperty * const this, char *parent, fptrVisitActio
 static void
 *NetworkProperty_findByPath(NetworkProperty * const this, char *attribute)
 {
-	void *try = NULL;
 	/* NamedElement attributes */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("value", attribute)) {
+	if(!strcmp("value", attribute)) {
 		return this->value;
 	} else {
-		PRINTF("WARNING: Object not found %s\n", attribute);
-		return NULL;
+		return namedElement_VT.findByPath((NamedElement*)this, attribute);
 	}
 }
 

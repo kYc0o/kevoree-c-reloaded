@@ -154,11 +154,6 @@ NodeNetwork_visit(NodeNetwork * const this, char *parent, fptrVisitAction action
 	char path[256];
 	memset(&path[0], 0, sizeof(path));
 
-	/*
-	 * Visit parent
-	 */
-	KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
-
 	hashmap_map* m = NULL;
 
 	int length;
@@ -167,6 +162,10 @@ NodeNetwork_visit(NodeNetwork * const this, char *parent, fptrVisitAction action
 		sprintf(path,"%s\\ID", parent);
 		action(path, STRING, this->generated_KMF_ID);
 	} else {
+		/*
+		 * Visit parent
+		 */
+		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("ID", STRING, this->VT->metaClassName(this));
 		action(NULL, RETURN, NULL);
 	}
@@ -352,7 +351,7 @@ static void
 		else
 		{
 			free(obj);
-			PRINTF("WARNING: Object not found %s\n", key);
+			PRINTF("WARNING: Object not found %s\n", attribute);
 			return NULL;
 		}
 	}

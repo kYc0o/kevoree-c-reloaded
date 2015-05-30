@@ -136,7 +136,7 @@ Channel_visit(Channel * const this, char *parent, fptrVisitAction action, fptrVi
 	if((m = (hashmap_map*)this->bindings) != NULL) {
 		length = hashmap_length(this->bindings);
 		if (visitPaths) {
-			Visitor_visitPathRefs(m, "bindings", parent, action, secondAction, parent);
+			Visitor_visitPathRefs(m, "bindings", path, action, secondAction, parent);
 		} else {
 			action("bindings", SQBRACKET, NULL);
 			Visitor_visitModelRefs(m, length, "mBindings", path, action);
@@ -151,100 +151,93 @@ Channel_visit(Channel * const this, char *parent, fptrVisitAction action, fptrVi
 static void
 *Channel_findByPath(Channel * const this, char *attribute)
 {
-	void *try = NULL;
 	/* There is no local attributes */
 
-	/* Instance attributes and references */
-	if ((try = instance_VT.findByPath((Instance*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local references */
-	else {
-		char path[250];
-		memset(&path[0], 0, sizeof(path));
-		char token[100];
-		memset(&token[0], 0, sizeof(token));
-		char *obj = NULL;
-		char key[50];
-		memset(&key[0], 0, sizeof(key));
-		char nextPath[150];
-		memset(&nextPath[0], 0, sizeof(nextPath));
-		char *nextAttribute = NULL;
+	char path[250];
+	memset(&path[0], 0, sizeof(path));
+	char token[100];
+	memset(&token[0], 0, sizeof(token));
+	char *obj = NULL;
+	char key[50];
+	memset(&key[0], 0, sizeof(key));
+	char nextPath[150];
+	memset(&nextPath[0], 0, sizeof(nextPath));
+	char *nextAttribute = NULL;
 
+	strcpy(path, attribute);
+
+	if(strchr(path, '[') != NULL) {
+		obj = strdup(strtok(path, "["));
 		strcpy(path, attribute);
+		PRINTF("Object: %s\n", obj);
+		strcpy(token, strtok(path, "]"));
+		strcpy(path, attribute);
+		sprintf(token, "%s]", token);
+		PRINTF("Token: %s\n", token);
+		sscanf(token, "%*[^[][%[^]]", key);
+		PRINTF("Key: %s\n", key);
 
-		if(strchr(path, '[') != NULL) {
-			obj = strdup(strtok(path, "["));
-			strcpy(path, attribute);
-			PRINTF("Object: %s\n", obj);
-			strcpy(token, strtok(path, "]"));
-			strcpy(path, attribute);
-			sprintf(token, "%s]", token);
-			PRINTF("Token: %s\n", token);
-			sscanf(token, "%*[^[][%[^]]", key);
-			PRINTF("Key: %s\n", key);
+		if((strchr(path, '\\')) != NULL) {
+			nextAttribute = strtok(NULL, "\\");
+			PRINTF("Attribute: %s\n", nextAttribute);
 
-			if((strchr(path, '\\')) != NULL) {
-				nextAttribute = strtok(NULL, "\\");
+			if(strchr(nextAttribute, '[')) {
+				sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
+				PRINTF("Next Path: %s\n", nextPath);
+			} else {
+				strcpy(nextPath, nextAttribute);
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+		} else {
+			nextAttribute = strtok(path, "]");
+			bool isFirst = true;
+			char *fragPath = NULL;
+			while ((fragPath = strtok(NULL, "]")) != NULL) {
+				PRINTF("Attribute: %s]\n", fragPath);
+				if (isFirst) {
+					sprintf(nextPath, "%s]", ++fragPath);
+					isFirst = false;
+				} else {
+					sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
+				}
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			if (strlen(nextPath) == 0) {
+				PRINTF("Attribute: NULL\n");
+				PRINTF("Next Path: NULL\n");
+				nextAttribute = NULL;
+			}
+		}
+	} else {
+		if ((nextAttribute = strtok(path, "\\")) != NULL) {
+			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
-
-				if(strchr(nextAttribute, '[')) {
-					sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
-					PRINTF("Next Path: %s\n", nextPath);
-				} else {
-					strcpy(nextPath, nextAttribute);
-					PRINTF("Next Path: %s\n", nextPath);
-				}
 			} else {
-				nextAttribute = strtok(path, "]");
-				bool isFirst = true;
-				char *fragPath = NULL;
-				while ((fragPath = strtok(NULL, "]")) != NULL) {
-					PRINTF("Attribute: %s]\n", fragPath);
-					if (isFirst) {
-						sprintf(nextPath, "%s]", ++fragPath);
-						isFirst = false;
-					} else {
-						sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
-					}
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				if (strlen(nextPath) == 0) {
-					PRINTF("Attribute: NULL\n");
-					PRINTF("Next Path: NULL\n");
-					nextAttribute = NULL;
-				}
-			}
-		} else {
-			if ((nextAttribute = strtok(path, "\\")) != NULL) {
-				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
-					PRINTF("Attribute: %s\n", nextAttribute);
-				} else {
-					nextAttribute = strtok(path, "\\");
-					PRINTF("Attribute: %s\n", nextAttribute);
-				}
+				nextAttribute = strtok(path, "\\");
+				PRINTF("Attribute: %s\n", nextAttribute);
 			}
 		}
+	}
 
-		if(!strcmp("bindings", obj))
-		{
-			free(obj);
-			if(nextAttribute == NULL) {
-				return this->VT->findBindingsByID(this, key);
-			} else {
-				MBinding* binding = this->VT->findBindingsByID(this, key);
-				if(binding != NULL) {
-					return binding->VT->findByPath(binding, nextPath);
-				} else {
-					PRINTF("ERROR: Cannot retrieve binding %s\n", key);
-					return NULL;
-				}
-			}
+	if(!strcmp("bindings", obj))
+	{
+		free(obj);
+		if(nextAttribute == NULL) {
+			return this->VT->findBindingsByID(this, key);
 		} else {
-			free(obj);
-			PRINTF("WARNING: Object not found %s\n", key);
-			return NULL;
+			MBinding* binding = this->VT->findBindingsByID(this, key);
+			if(binding != NULL) {
+				return binding->VT->findByPath(binding, nextPath);
+			} else {
+				PRINTF("ERROR: Cannot retrieve binding %s\n", key);
+				return NULL;
+			}
 		}
+	} else {
+		free(obj);
+		/* Instance attributes and references */
+		return instance_VT.findByPath((Instance*)this, attribute);
 	}
 }
 

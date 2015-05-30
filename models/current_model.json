@@ -1,0 +1,167 @@
+{  
+   "eClass":"org.kevoree.ContainerRoot",
+   "generated_KMF_ID":"BXX5q3eV",
+   "nodes":[  
+      {  
+         "eClass":"org.kevoree.ContainerNode",
+         "name":"n1759",
+         "metaData":"",
+         "started":"true",
+         "components":[  
+
+         ],
+         "hosts":[  
+
+         ],
+         "host":[  
+
+         ],
+         "groups":[  
+            "groups[group0]"
+         ],
+         "networkInformation":[  
+            {  
+               "eClass":"org.kevoree.NetworkInfo",
+               "name":"ip",
+               "values":[
+                  {  
+                     "eClass":"org.kevoree.NetworkProperty",
+                     "name":"local",
+                     "value":"fe80::1759"
+                  }
+               ]
+            }
+         ],
+         "typeDefinition":[  
+            "typeDefinitions[ContikiNode/0.0.1]"
+         ],
+         "dictionary":[  
+
+         ],
+         "fragmentDictionary":[  
+
+         ]
+      }
+   ],
+   "typeDefinitions":[  
+      {  
+         "eClass":"org.kevoree.NodeType",
+         "name":"ContikiNode",
+         "version":"0.0.1",
+         "factoryBean":"",
+         "bean":"",
+         "abstract":"0",
+         "deployUnit":[  
+            "deployUnits[org.kevoree.library.c//kevoree-contiki-node/0.0.1]"
+         ],
+         "dictionaryType":[
+         ],
+         "superTypes":[  
+
+         ]
+      },
+      {  
+         "eClass":"org.kevoree.GroupType",
+         "name":"UDPGroup",
+         "version":"0.0.1",
+         "factoryBean":"",
+         "bean":"",
+         "abstract":"0",
+         "deployUnit":[  
+            "deployUnits[//kevoree-group-udp/0.0.1]"
+         ],
+         "dictionaryType":[  
+            {  
+               "eClass":"org.kevoree.DictionaryType",
+               "generated_KMF_ID":"3dddTFpd",
+               "attributes":[
+                  {  
+                     "eClass":"org.kevoree.DictionaryAttribute",
+                     "name":"port",
+                     "optional":"false",
+                     "state":"true",
+                     "datatype":"int",
+                     "fragmentDependant":"false",
+                     "defaultValue":"1234"
+                  }
+               ]
+            }
+         ],
+         "superTypes":[  
+
+         ]
+      }
+   ],
+   "repositories":[  
+
+   ],
+   "dataTypes":[  
+
+   ],
+   "libraries":[  
+      {  
+         "eClass":"org.kevoree.TypeLibrary",
+         "name":"ContikiLib",
+         "subTypes":[  
+            "typeDefinitions[ContikiNode/0.0.1]",
+            "typeDefinitions[UDPGroup/0.0.1]"
+         ]
+      },
+      {  
+         "eClass":"org.kevoree.TypeLibrary",
+         "name":"Default",
+         "subTypes":[  
+
+         ]
+      }
+   ],
+   "hubs":[  
+
+   ],
+   "mBindings":[  
+
+   ],
+   "deployUnits":[  
+      {  
+         "eClass":"org.kevoree.DeployUnit",
+         "name":"kevoree-group-udp",
+         "groupName":"",
+         "version":"0.0.1",
+         "url":"",
+         "hashcode":"",
+         "type":"ce"
+      },
+      {  
+         "eClass":"org.kevoree.DeployUnit",
+         "name":"kevoree-contiki-node",
+         "groupName":"org.kevoree.library.c",
+         "version":"0.0.1",
+         "url":"",
+         "hashcode":"",
+         "type":"ce"
+      }
+   ],
+   "nodeNetworks":[  
+
+   ],
+   "groups":[  
+      {  
+         "eClass":"org.kevoree.Group",
+         "name":"group0",
+         "metaData":"",
+         "started":"true",
+         "subNodes":[  
+            "nodes[n1759]"
+         ],
+         "typeDefinition":[  
+            "typeDefinitions[UDPGroup/0.0.1]"
+         ],
+         "dictionary":[  
+
+         ],
+         "fragmentDictionary":[  
+            
+         ]
+      }
+   ]
+}

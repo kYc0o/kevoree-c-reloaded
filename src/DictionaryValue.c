@@ -56,11 +56,6 @@ DictionaryValue_visit(DictionaryValue * const this, char *parent, fptrVisitActio
 	char path[256];
 	memset(&path[0], 0, sizeof(path));
 
-	/*
-	 * Visit parent
-	 */
-	KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
-
 	if (visitPaths) {
 		sprintf(path, "%s\\name", parent);
 		action(path, STRING, this->name);
@@ -68,6 +63,10 @@ DictionaryValue_visit(DictionaryValue * const this, char *parent, fptrVisitActio
 		sprintf(path, "%s\\value", parent);
 		action(path, STRING, this->value);
 	} else {
+		/*
+		 * Visit parent
+		 */
+		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("name", STRING, this->name);
 		action(NULL, COLON, NULL);
 		action("value", STRING, this->value);
@@ -87,7 +86,7 @@ void
 	}
 	/* There is no local references */
 	else {
-		PRINTF("WARNING: Wrong attribute or reference\n");
+		PRINTF("WARNING: Wrong attribute or reference %s\n", attribute);
 		return NULL;
 	}
 }

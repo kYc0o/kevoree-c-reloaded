@@ -191,13 +191,9 @@ PortTypeRef_visit(PortTypeRef * const this, char *parent, fptrVisitAction action
 static void
 *PortTypeRef_findByPath(PortTypeRef * const this, char *attribute)
 {
-	void *try = NULL;
 	/* NamedElement attributes */
-	if ((try = namedElement_VT.findByPath((NamedElement*)this, attribute)) != NULL) {
-		return try;
-	}
 	/* Local attributes */
-	else if(!strcmp("optional", attribute))
+	if(!strcmp("optional", attribute))
 	{
 		return (void*)this->optional;
 	}
@@ -314,8 +310,7 @@ static void
 		else
 		{
 			free(obj);
-			PRINTF("WARNING: Object not found %s\n", attribute);
-			return NULL;
+			return namedElement_VT.findByPath((NamedElement*)this, attribute);
 		}
 	}
 }

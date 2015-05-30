@@ -76,9 +76,7 @@ void TypeDefinition_addSuperTypes(TypeDefinition * const this, TypeDefinition *p
 void TypeDefinition_removeDeployUnit(TypeDefinition * const this, DeployUnit *ptr);
 void TypeDefinition_removeDictionaryType(TypeDefinition * const this, DictionaryType *ptr);
 void TypeDefinition_removeSuperTypes(TypeDefinition * const this, TypeDefinition *ptr);
-
 void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAction action, fptrVisitActionRef secondAction, bool visitPaths);
-void *TypeDefinition_findByPath(TypeDefinition * const this, char *attribute);
 
 extern const TypeDefinition_VT typeDefinition_VT;
 

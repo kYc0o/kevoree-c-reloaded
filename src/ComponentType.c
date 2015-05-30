@@ -189,7 +189,10 @@ ComponentType_visit(ComponentType * const this, char *parent, fptrVisitAction ac
 
 	/* TypeDefinition */
 	typeDefinition_VT.visit((TypeDefinition*)this, parent, action, secondAction, visitPaths);
-	action(NULL, COLON, NULL);
+
+	if (!visitPaths) {
+		action(NULL, COLON, NULL);
+	}
 
 	/* ComponentType */
 	Visitor_visitContainer(this->required, "required", parent, action, secondAction, visitPaths);
@@ -218,108 +221,103 @@ ComponentType_visit(ComponentType * const this, char *parent, fptrVisitAction ac
 static void
 *ComponentType_findByPath(ComponentType * const this, char *attribute)
 {
-	void *try = NULL;
 	/* There is no local attributes */
 	/* TypeDefinition attributes */
-	if ((try = typeDefinition_VT.findByPath((TypeDefinition*)this, attribute)) != NULL) {
-		return try;
-	} else {
-		char path[250];
-		memset(&path[0], 0, sizeof(path));
-		char token[100];
-		memset(&token[0], 0, sizeof(token));
-		char *obj = NULL;
-		char key[50];
-		memset(&key[0], 0, sizeof(key));
-		char nextPath[150];
-		memset(&nextPath[0], 0, sizeof(nextPath));
-		char *nextAttribute = NULL;
+	char path[250];
+	memset(&path[0], 0, sizeof(path));
+	char token[100];
+	memset(&token[0], 0, sizeof(token));
+	char *obj = NULL;
+	char key[50];
+	memset(&key[0], 0, sizeof(key));
+	char nextPath[150];
+	memset(&nextPath[0], 0, sizeof(nextPath));
+	char *nextAttribute = NULL;
 
+	strcpy(path, attribute);
+
+	if(strchr(path, '[') != NULL) {
+		obj = strdup(strtok(path, "["));
 		strcpy(path, attribute);
+		PRINTF("Object: %s\n", obj);
+		strcpy(token, strtok(path, "]"));
+		strcpy(path, attribute);
+		sprintf(token, "%s]", token);
+		PRINTF("Token: %s\n", token);
+		sscanf(token, "%*[^[][%[^]]", key);
+		PRINTF("Key: %s\n", key);
 
-		if(strchr(path, '[') != NULL) {
-			obj = strdup(strtok(path, "["));
-			strcpy(path, attribute);
-			PRINTF("Object: %s\n", obj);
-			strcpy(token, strtok(path, "]"));
-			strcpy(path, attribute);
-			sprintf(token, "%s]", token);
-			PRINTF("Token: %s\n", token);
-			sscanf(token, "%*[^[][%[^]]", key);
-			PRINTF("Key: %s\n", key);
+		if((strchr(path, '\\')) != NULL) {
+			nextAttribute = strtok(NULL, "\\");
+			PRINTF("Attribute: %s\n", nextAttribute);
 
-			if((strchr(path, '\\')) != NULL) {
-				nextAttribute = strtok(NULL, "\\");
+			if(strchr(nextAttribute, '[')) {
+				sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
+				PRINTF("Next Path: %s\n", nextPath);
+			} else {
+				strcpy(nextPath, nextAttribute);
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+		} else {
+			nextAttribute = strtok(path, "]");
+			bool isFirst = true;
+			char *fragPath = NULL;
+			while ((fragPath = strtok(NULL, "]")) != NULL) {
+				PRINTF("Attribute: %s]\n", fragPath);
+				if (isFirst) {
+					sprintf(nextPath, "%s]", ++fragPath);
+					isFirst = false;
+				} else {
+					sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
+				}
+				PRINTF("Next Path: %s\n", nextPath);
+			}
+			if (strlen(nextPath) == 0) {
+				PRINTF("Attribute: NULL\n");
+				PRINTF("Next Path: NULL\n");
+				nextAttribute = NULL;
+			}
+		}
+	} else {
+		obj = strdup(attribute);
+		if ((nextAttribute = strtok(path, "\\")) != NULL) {
+			if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
 				PRINTF("Attribute: %s\n", nextAttribute);
-
-				if(strchr(nextAttribute, '[')) {
-					sprintf(nextPath, "%s\\%s", ++nextAttribute, strtok(NULL, "\\"));
-					PRINTF("Next Path: %s\n", nextPath);
-				} else {
-					strcpy(nextPath, nextAttribute);
-					PRINTF("Next Path: %s\n", nextPath);
-				}
 			} else {
-				nextAttribute = strtok(path, "]");
-				bool isFirst = true;
-				char *fragPath = NULL;
-				while ((fragPath = strtok(NULL, "]")) != NULL) {
-					PRINTF("Attribute: %s]\n", fragPath);
-					if (isFirst) {
-						sprintf(nextPath, "%s]", ++fragPath);
-						isFirst = false;
-					} else {
-						sprintf(nextPath, "%s/%s]", nextPath, ++fragPath);
-					}
-					PRINTF("Next Path: %s\n", nextPath);
-				}
-				if (strlen(nextPath) == 0) {
-					PRINTF("Attribute: NULL\n");
-					PRINTF("Next Path: NULL\n");
-					nextAttribute = NULL;
-				}
-			}
-		} else {
-			if ((nextAttribute = strtok(path, "\\")) != NULL) {
-				if ((nextAttribute = strtok(NULL, "\\")) != NULL) {
-					PRINTF("Attribute: %s\n", nextAttribute);
-				} else {
-					nextAttribute = strtok(path, "\\");
-					PRINTF("Attribute: %s\n", nextAttribute);
-				}
+				nextAttribute = strtok(path, "\\");
+				PRINTF("Attribute: %s\n", nextAttribute);
 			}
 		}
+	}
 
-		if(!strcmp("required", obj)) {
-			free(obj);
-			if(nextAttribute == NULL) {
-				return this->VT->findRequiredByID(this, key);
-			} else {
-				PortTypeRef* ptypref = this->VT->findRequiredByID(this, key);
-				if(ptypref != NULL) {
-					return ptypref->VT->findByPath(ptypref, nextPath);
-				} else {
-					return NULL;
-				}
-			}
-		} else if(!strcmp("provided", obj)) {
-			free(obj);
-			if(nextAttribute == NULL) {
-				return this->VT->findProvidedByID(this, key);
-			} else {
-				PortTypeRef* ptypref = this->VT->findProvidedByID(this, key);
-				if(ptypref != NULL) {
-					return ptypref->VT->findByPath(ptypref, nextPath);
-				} else {
-					PRINTF("ERROR: Cannot retrieve provided %s\n", key);
-					return NULL;
-				}
-			}
+	if(!strcmp("required", obj)) {
+		free(obj);
+		if(nextAttribute == NULL) {
+			return this->VT->findRequiredByID(this, key);
 		} else {
-			free(obj);
-			PRINTF("WARNING: Object not found %s\n", key);
-			return NULL;
+			PortTypeRef* ptypref = this->VT->findRequiredByID(this, key);
+			if(ptypref != NULL) {
+				return ptypref->VT->findByPath(ptypref, nextPath);
+			} else {
+				return NULL;
+			}
 		}
+	} else if(!strcmp("provided", obj)) {
+		free(obj);
+		if(nextAttribute == NULL) {
+			return this->VT->findProvidedByID(this, key);
+		} else {
+			PortTypeRef* ptypref = this->VT->findProvidedByID(this, key);
+			if(ptypref != NULL) {
+				return ptypref->VT->findByPath(ptypref, nextPath);
+			} else {
+				PRINTF("ERROR: Cannot retrieve provided %s\n", key);
+				return NULL;
+			}
+		}
+	} else {
+		free(obj);
+		return typeDefinition_VT.findByPath((TypeDefinition*)this, attribute);
 	}
 }
 

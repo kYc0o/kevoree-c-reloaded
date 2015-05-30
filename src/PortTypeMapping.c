@@ -61,11 +61,6 @@ PortTypeMapping_visit(PortTypeMapping * const this, char *parent, fptrVisitActio
 	char path[256];
 	memset(&path[0], 0, sizeof(path));
 
-	/*
-	 * Visit parent
-	 */
-	KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
-
 	if (visitPaths) {
 		sprintf(path, "%s\\ID", parent);
 		action(path, STRING, this->generated_KMF_ID);
@@ -76,6 +71,10 @@ PortTypeMapping_visit(PortTypeMapping * const this, char *parent, fptrVisitActio
 		sprintf(path,"%s\\paramTypes",parent);
 		action(path, STRING, this->paramTypes);
 	} else {
+		/*
+		 * Visit parent
+		 */
+		KMF_VT.visit((KMFContainer*)this, parent, action, secondAction, visitPaths);
 		action("ID", STRING, this->generated_KMF_ID);
 		action(NULL, COLON, NULL);
 		action("beanMethodName", STRING, this->beanMethodName);
