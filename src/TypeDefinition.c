@@ -97,7 +97,7 @@ TypeDefinition_addSuperTypes(TypeDefinition * const this, TypeDefinition *ptr)
 		PRINTF("ERROR: The TypeDefinition cannot be added in TypeDefinition because the key is not defined\n");
 	} else {
 		if(this->superTypes == NULL) {
-			this->superTypes = hashmap_new();
+			this->superTypes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->superTypes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if ((hashmap_put(this->superTypes, internalKey, ptr)) == MAP_OK) {

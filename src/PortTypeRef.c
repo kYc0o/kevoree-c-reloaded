@@ -76,7 +76,7 @@ PortTypeRef_addMappings(PortTypeRef * const this, PortTypeMapping *ptr)
 	{
 		if(this->mappings == NULL)
 		{
-			this->mappings = hashmap_new();
+			this->mappings = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->mappings, internalKey, (void**)(&container)) == MAP_MISSING)
 		{

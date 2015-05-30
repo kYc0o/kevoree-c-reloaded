@@ -74,7 +74,7 @@ Dictionary_addValues(Dictionary * const this, DictionaryValue *ptr)
 	{
 		if(this->values == NULL)
 		{
-			this->values = hashmap_new();
+			this->values = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->values, internalKey, (void**)(&container)) == MAP_MISSING)
 		{

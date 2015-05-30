@@ -84,7 +84,7 @@ DictionaryType_addAttributes(DictionaryType * const this, DictionaryAttribute *p
 		PRINTF("ERROR: The DictionaryAttribute cannot be added in DictionaryType because the key is not defined\n");
 	} else {
 		if(this->attributes == NULL) {
-			this->attributes = hashmap_new();
+			this->attributes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->attributes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->attributes, internalKey, ptr) == MAP_OK) {

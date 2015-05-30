@@ -70,7 +70,7 @@ TypedElement_addGenericTypes(TypedElement * const this, TypedElement *ptr)
 		PRINTF("ERROR: The TypedElement cannot be added in TypedElement because the key is not defined");
 	} else {
 		if(this->genericTypes == NULL) {
-			this->genericTypes = hashmap_new();
+			this->genericTypes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->genericTypes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->genericTypes, internalKey, ptr) == MAP_OK) {

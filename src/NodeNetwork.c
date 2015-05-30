@@ -77,7 +77,7 @@ NodeNetwork_addLink(NodeNetwork * const this, NodeLink *ptr)
 	{
 		if(this->link == NULL)
 		{
-			this->link = hashmap_new();
+			this->link = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->link, internalKey, (void**)(&container)) == MAP_MISSING)
 		{

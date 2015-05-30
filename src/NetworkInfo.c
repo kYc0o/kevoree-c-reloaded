@@ -51,7 +51,7 @@ NetworkInfo_addValues(NetworkInfo * const this, NetworkProperty *ptr)
 		PRINTF("ERROR: The NetworkProperty cannot be added in NetworkInfo because the key is not defined\n");
 	} else {
 		if(this->values == NULL) {
-			this->values = hashmap_new();
+			this->values = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->values, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK) {

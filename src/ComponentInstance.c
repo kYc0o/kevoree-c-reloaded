@@ -110,7 +110,7 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 			/*
 			 * TODO add if == NULL
 			 */
-			this->provided = hashmap_new();
+			this->provided = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->provided, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (MBinding*)ptr;*/
@@ -141,7 +141,7 @@ ComponentInstance_addRequired(ComponentInstance * const this, Port *ptr)
 		PRINTF("ERROR: The Port cannot be added in ComponentInstance because the key is not defined\n");
 	} else {
 		if(this->required == NULL) {
-			this->required = hashmap_new();
+			this->required = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->required, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK)

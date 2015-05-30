@@ -80,7 +80,7 @@ Instance_addFragmentDictionary(Instance * const this, FragmentDictionary *ptr)
 		PRINTF("ERROR: The FragmentDictionary cannot be added in Instance because the key is not defined\n");
 	} else {
 		if(this->fragmentDictionary == NULL) {
-			this->fragmentDictionary = hashmap_new();
+			this->fragmentDictionary = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->fragmentDictionary, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (FragmentDictionary*)ptr;*/

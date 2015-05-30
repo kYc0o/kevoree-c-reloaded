@@ -79,7 +79,7 @@ NodeLink_addNetworkProperties(NodeLink * const this, NetworkProperty *ptr)
 	{
 		if(this->networkProperties == NULL)
 		{
-			this->networkProperties = hashmap_new();
+			this->networkProperties = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->networkProperties, internalKey, (void**)(&container)) == MAP_MISSING)
 		{

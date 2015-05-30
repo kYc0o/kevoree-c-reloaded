@@ -40,6 +40,8 @@ void delete(KMFContainer *object);
 void deleteContainerContents(map_t container);
 void initKMFContainer(KMFContainer * const this);
 
+char* get_key_for_hashmap(any_t t);
+
 char *my_strdup(const char *string);
 
 extern const KMFContainer_VT KMF_VT;

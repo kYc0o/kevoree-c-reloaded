@@ -66,7 +66,7 @@ DeployUnit_addRequiredLibs(DeployUnit * const this, DeployUnit *ptr)
 		PRINTF("The DeployUnit cannot be added in DeployUnit because the key is not defined\n");
 	} else {
 		if(this->requiredLibs == NULL) {
-			this->requiredLibs = hashmap_new();
+			this->requiredLibs = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->requiredLibs, internalKey, (void**)(&container)) == MAP_MISSING) {
 			hashmap_put(this->requiredLibs, internalKey, ptr);

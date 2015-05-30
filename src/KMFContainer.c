@@ -23,6 +23,13 @@ char *my_strdup(const char *string)
 	return r;
 }
 
+char*
+get_key_for_hashmap(any_t t)
+{
+	KMFContainer* c = (KMFContainer*)t;
+	return c->VT->internalGetKey(c); 
+}
+
 void
 initKMFContainer(KMFContainer * const this)
 {

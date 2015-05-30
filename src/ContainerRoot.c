@@ -242,7 +242,7 @@ ContainerRoot_addNodes(ContainerRoot * const this, ContainerNode *ptr)
 		PRINTF("ERROR :The ContainerNode cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->nodes == NULL) {
-			this->nodes = hashmap_new();
+			this->nodes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->nodes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->nodes, internalKey, ptr) == MAP_OK) {
@@ -269,7 +269,7 @@ ContainerRoot_addTypeDefinitions(ContainerRoot * const this, TypeDefinition *ptr
 		PRINTF("ERROR: The TypeDefinition cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->typeDefinitions == NULL) {
-			this->typeDefinitions = hashmap_new();
+			this->typeDefinitions = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->typeDefinitions, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (TypeDefinition*)ptr;*/
@@ -297,7 +297,7 @@ ContainerRoot_addRepositories(ContainerRoot * const this, Repository *ptr)
 		PRINTF("ERROR :The Repository cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->repositories == NULL) {
-			this->repositories = hashmap_new();
+			this->repositories = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->repositories, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->repositories, internalKey, ptr) == MAP_OK) {
@@ -324,7 +324,7 @@ ContainerRoot_addDataTypes(ContainerRoot * const this, TypedElement *ptr)
 		PRINTF("ERROR: The TypedElement cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->dataTypes == NULL) {
-			this->dataTypes = hashmap_new();
+			this->dataTypes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->dataTypes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->dataTypes, internalKey, ptr) == MAP_OK) {
@@ -351,7 +351,7 @@ ContainerRoot_addLibraries(ContainerRoot * const this, TypeLibrary *ptr)
 		PRINTF("ERROR: The TypeLibrary cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->libraries == NULL) {
-			this->libraries = hashmap_new();
+			this->libraries = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->libraries, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->libraries, internalKey, ptr) == MAP_OK) {
@@ -378,7 +378,7 @@ static ContainerRoot_addHubs(ContainerRoot * const this, Channel *ptr)
 		PRINTF("ERROR: The Channel cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->hubs == NULL) {
-			this->hubs = hashmap_new();
+			this->hubs = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->hubs, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->hubs, internalKey, ptr) == MAP_OK) {
@@ -405,7 +405,7 @@ ContainerRoot_addBindings(ContainerRoot * const this, MBinding *ptr)
 		PRINTF("ERROR: The MBinding cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->mBindings == NULL) {
-			this->mBindings = hashmap_new();
+			this->mBindings = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->mBindings, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->mBindings, internalKey, ptr) == MAP_OK) {
@@ -433,7 +433,7 @@ ContainerRoot_addDeployUnits(ContainerRoot * const this, DeployUnit *ptr)
 		PRINTF("ERROR: The DeployUnit cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->deployUnits == NULL) {
-			this->deployUnits = hashmap_new();
+			this->deployUnits = hashmap_new(get_key_for_hashmap);
 		} if(hashmap_get(this->deployUnits, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->deployUnits, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
@@ -459,7 +459,7 @@ ContainerRoot_addNodeNetworks(ContainerRoot * const this, NodeNetwork *ptr)
 		PRINTF("ERROR: The NodeNetwork cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->nodeNetworks == NULL) {
-			this->nodeNetworks = hashmap_new();
+			this->nodeNetworks = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->nodeNetworks, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->nodeNetworks, internalKey, ptr) == MAP_OK) {
@@ -486,7 +486,7 @@ ContainerRoot_addGroups(ContainerRoot * const this, Group *ptr)
 		PRINTF("ERROR: The Group cannot be added in ContainerRoot because the key is not defined\n");
 	} else {
 		if(this->groups == NULL) {
-			this->groups = hashmap_new();
+			this->groups = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->groups, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->groups, internalKey, ptr) == MAP_OK) {

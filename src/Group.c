@@ -70,7 +70,7 @@ Group_addSubNodes(Group * const this, ContainerNode *ptr)
 		PRINTF("ERROR: The ContainerNode cannot be added in Group because the key is not defined\n");
 	} else {
 		if(this->subNodes == NULL) {
-			this->subNodes = hashmap_new();
+			this->subNodes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->subNodes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if ((hashmap_put(this->subNodes, internalKey, ptr)) == MAP_OK) {

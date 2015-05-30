@@ -136,7 +136,7 @@ ContainerNode_addComponents(ContainerNode * const this, ComponentInstance *ptr)
 		PRINTF("ERROR: The ComponentInstance cannot be added in ContainerNode because the key is not defined\n");
 	} else {
 		if(this->components == NULL) {
-			this->components = hashmap_new();
+			this->components = hashmap_new(get_key_for_hashmap);
 		}
 
 		if(hashmap_get(this->components, internalKey, (void**)(&container)) == MAP_MISSING) {
@@ -171,7 +171,7 @@ ContainerNode_addHosts(ContainerNode * const this, ContainerNode *ptr)
 			/*
 			 * TODO if result == NULL
 			 */
-			this->hosts = hashmap_new();
+			this->hosts = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->hosts, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if ((hashmap_put(this->hosts, internalKey, ptr)) == MAP_OK) {
@@ -208,7 +208,7 @@ ContainerNode_addGroups(ContainerNode * const this, Group *ptr)
 		PRINTF("The Group cannot be added in ContainerNode because the key is not defined\n");
 	} else {
 		if(this->groups == NULL) {
-			this->groups = hashmap_new();
+			this->groups = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->groups, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if ((hashmap_put(this->groups, internalKey, ptr)) == MAP_OK) {
@@ -233,7 +233,7 @@ ContainerNode_addNetworkInformation(ContainerNode * const this, NetworkInfo *ptr
 		PRINTF("ERROR: The NetworkInfo cannot be added in ContainerNode because the key is not defined\n");
 	} else {
 		if(this->networkInformation == NULL) {
-			this->networkInformation = hashmap_new();
+			this->networkInformation = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->networkInformation, internalKey, (void**)(&container)) == MAP_MISSING) {
 			/*container = (NetworkInfo*)ptr;*/

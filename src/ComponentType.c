@@ -81,7 +81,7 @@ ComponentType_addRequired(ComponentType * const this, PortTypeRef *ptr)
 		PRINTF("ERROR: The PortTypeRef cannot be added in ComponentType because the key is not defined");
 	} else {
 		if(this->required == NULL) {
-			this->required = hashmap_new();
+			this->required = hashmap_new(get_key_for_hashmap);
 		}
 
 		if(hashmap_get(this->required, internalKey, (void**)(&container)) == MAP_MISSING) {
@@ -109,7 +109,7 @@ ComponentType_addProvided(ComponentType * const this, PortTypeRef *ptr)
 		PRINTF("ERROR: The PortTypeRef cannot be added in ComponentType because the key is not defined");
 	} else {
 		if(this->provided == NULL) {
-			this->provided = hashmap_new();
+			this->provided = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->provided, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->provided, internalKey, ptr) == MAP_OK) {

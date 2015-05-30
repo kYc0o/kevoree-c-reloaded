@@ -72,7 +72,7 @@ TypeLibrary_addSubTypes(TypeLibrary * const this, TypeDefinition *ptr)
 	{
 		if(this->subTypes == NULL)
 		{
-			this->subTypes = hashmap_new();
+			this->subTypes = hashmap_new(get_key_for_hashmap);
 		}
 		if(hashmap_get(this->subTypes, internalKey, (void**)(&container)) == MAP_MISSING)
 		{

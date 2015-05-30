@@ -12,9 +12,11 @@
 /*
  * Return an empty hashmap, or NULL on failure.
  */
-map_t hashmap_new() {
+map_t hashmap_new(PFgetKey getKey) {
 	hashmap_map* m = (hashmap_map*) malloc(sizeof(hashmap_map));
 	if(!m) goto err;
+	
+	m->getKey = getKey;
 
 	m->data = (hashmap_element*) calloc(INITIAL_SIZE, sizeof(hashmap_element));
 	if(!m->data) goto err;
@@ -23,7 +25,6 @@ map_t hashmap_new() {
 
 	return m;
 	err:
-		printf("Hay cojone!\n");
 		if (m)
 			hashmap_free(m);
 		return NULL;
@@ -35,7 +36,7 @@ hashmap_find(hashmap_map* m, const char* key)
 	int i = 0;
 	
 	while (i < (m->table_size)) {
-		if (strcmp(m->data[i].key, key) == 0)
+		if (strcmp(m->getKey(m->data[i].data), key) == 0)
 			return i;
 		i++;
 	}
@@ -63,7 +64,6 @@ int hashmap_put(map_t in, char* key, any_t value){
 		free(m->data);
 		m->data = elems;
 		
-		m->data[m->table_size-1].key = key;
 		m->data[m->table_size-1].data = value;
 	}
 	else {

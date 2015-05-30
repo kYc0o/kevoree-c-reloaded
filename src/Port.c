@@ -87,7 +87,7 @@ Port_addBindings(Port * const this, MBinding *ptr)
 	{
 		if(this->bindings == NULL)
 		{
-			this->bindings = hashmap_new();
+			this->bindings = hashmap_new(get_key_for_hashmap);
 		}
 
 		if(hashmap_get(this->bindings, internalKey, (void**)(&container)) == MAP_MISSING)
