@@ -26,7 +26,7 @@ char *my_strdup(const char *string)
 char*
 KMFContainer_get_path(void* this) {
 	KMFContainer* c = (KMFContainer*)this;
-	return strdup(c->path);
+	return strdup("");
 }
 
 char*
@@ -49,15 +49,12 @@ initKMFContainer(KMFContainer * const this)
 	 * KMFContainer
 	 */
 	this->eContainer = NULL;
-	this->path = NULL;
 }
 
 static void
 delete_KMFContainer(KMFContainer * const this)
 {
-	if (this->path != NULL) {
-		free(this->path);
-	}
+
 }
 
 void

@@ -312,6 +312,17 @@ static void
 	}
 }
 
+static char*
+DeployUnit_getPath(KMFContainer* kmf)
+{
+	DeployUnit* obj = (DeployUnit*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("deployUnits[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "deployUnits[%s]", obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const DeployUnit_VT deployUnit_VT = {
 		.super = &namedElement_VT,
 		/*
@@ -320,7 +331,7 @@ const DeployUnit_VT deployUnit_VT = {
 		 */
 		.metaClassName = DeployUnit_metaClassName,
 		.internalGetKey = DeployUnit_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = DeployUnit_getPath,
 		.visit = DeployUnit_visit,
 		.findByPath = DeployUnit_findByPath,
 		.delete = delete_DeployUnit,

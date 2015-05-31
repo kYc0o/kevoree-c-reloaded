@@ -67,10 +67,6 @@ TypeDefinition_addDictionaryType(TypeDefinition * const this, DictionaryType *pt
 	}
 	this->dictionaryType = ptr;
 	ptr->eContainer = this;
-	char* this_path = this->VT->getPath(this);
-	ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/dictionaryType[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
-	sprintf(ptr->path, "%s/dictionaryType[%s]", this_path, ptr->VT->internalGetKey(ptr));
-	free(this_path);
 }
 
 void
@@ -84,8 +80,6 @@ TypeDefinition_removeDictionaryType(TypeDefinition * const this, DictionaryType 
 {
 	this->dictionaryType = NULL;
 	ptr->eContainer = NULL;
-	free(ptr->path);
-	ptr->path = NULL;
 }
 
 void
@@ -357,6 +351,17 @@ void
 	}
 }
 
+char*
+TypeDefinition_getPath(KMFContainer* kmf)
+{
+	TypeDefinition* td = (TypeDefinition*)kmf;
+	char* tmp = (td->eContainer)?get_eContainer_path(td):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("typeDefinitions[]") + strlen(td->VT->internalGetKey(td)) + 1);
+	sprintf(r, "typeDefinitions[%s]", td->VT->internalGetKey(td));
+	free(tmp);
+	return r;
+}
+
 const TypeDefinition_VT typeDefinition_VT = {
 		.super = &namedElement_VT,
 		/*
@@ -365,7 +370,7 @@ const TypeDefinition_VT typeDefinition_VT = {
 		 */
 		.metaClassName = TypeDefinition_metaClassName,
 		.internalGetKey = TypeDefinition_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = TypeDefinition_getPath,
 		.visit = TypeDefinition_visit,
 		.findByPath = TypeDefinition_findByPath,
 		.delete = delete_TypeDefinition,

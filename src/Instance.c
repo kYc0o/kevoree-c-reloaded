@@ -65,10 +65,6 @@ Instance_addDictionary(Instance * const this, Dictionary *ptr)
 	}
 	this->dictionary = ptr;
 	ptr->eContainer = this;
-	char* this_path = this->VT->getPath(this);
-	ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
-	sprintf(ptr->path, "%s/dictionary[%s]", this_path, ptr->VT->internalGetKey(ptr));
-	free(this_path);
 }
 
 void
@@ -88,10 +84,6 @@ Instance_addFragmentDictionary(Instance * const this, FragmentDictionary *ptr)
 			/*container = (FragmentDictionary*)ptr;*/
 			if(hashmap_put(this->fragmentDictionary, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/fragmentDictionary[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/fragmentDictionary[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: fragmentDictionary cannot be added!\n");
 			}
@@ -110,9 +102,7 @@ Instance_removeTypeDefinition(Instance * const this, TypeDefinition *ptr)
 void
 Instance_removeDictionary(Instance * const this, Dictionary *ptr)
 {
-	free(ptr->path);
 	ptr->eContainer = NULL;
-	ptr->path = NULL;
 	this->dictionary = NULL;
 }
 
@@ -127,8 +117,6 @@ Instance_removeFragmentDictionary(Instance * const this, FragmentDictionary *ptr
 	else {
 		if(hashmap_remove(this->fragmentDictionary, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: component %s cannot be removed!\n", internalKey);
 		}

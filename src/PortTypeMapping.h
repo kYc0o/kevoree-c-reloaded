@@ -29,7 +29,6 @@ typedef struct _PortTypeMapping {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * PortTypeMapping
 	 */

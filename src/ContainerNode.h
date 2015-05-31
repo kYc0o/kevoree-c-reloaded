@@ -74,7 +74,6 @@ typedef struct _ContainerNode {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

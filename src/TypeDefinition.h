@@ -47,7 +47,6 @@ typedef struct _TypeDefinition {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */
@@ -77,6 +76,8 @@ void TypeDefinition_removeDeployUnit(TypeDefinition * const this, DeployUnit *pt
 void TypeDefinition_removeDictionaryType(TypeDefinition * const this, DictionaryType *ptr);
 void TypeDefinition_removeSuperTypes(TypeDefinition * const this, TypeDefinition *ptr);
 void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAction action, fptrVisitActionRef secondAction, bool visitPaths);
+
+char* TypeDefinition_getPath(KMFContainer*);
 
 extern const TypeDefinition_VT typeDefinition_VT;
 

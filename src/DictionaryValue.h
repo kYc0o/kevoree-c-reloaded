@@ -25,7 +25,6 @@ typedef struct _DictionaryValue {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * DictionaryValue
 	 */

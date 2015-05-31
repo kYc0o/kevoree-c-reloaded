@@ -364,6 +364,17 @@ static void
 	}
 }
 
+static char*
+NodeNetwork_getPath(KMFContainer* kmf)
+{
+	NodeNetwork* obj = (NodeNetwork*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("nodeNetworks[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "nodeNetworks[%s]", obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const NodeNetwork_VT nodeNetwork_VT = {
 		.super = &KMF_VT,
 		/*
@@ -371,7 +382,7 @@ const NodeNetwork_VT nodeNetwork_VT = {
 		 */
 		.metaClassName = NodeNetwork_metaClassName,
 		.internalGetKey = NodeNetwork_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = NodeNetwork_getPath,
 		.visit = NodeNetwork_visit,
 		.findByPath = NodeNetwork_findByPath,
 		.delete = delete_NodeNetwork,

@@ -38,7 +38,6 @@ typedef struct _NodeLink {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NodeLink
 	 */

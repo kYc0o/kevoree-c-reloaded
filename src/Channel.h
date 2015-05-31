@@ -49,7 +49,6 @@ typedef struct _Channel {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

@@ -241,6 +241,17 @@ static void
 	}
 }
 
+static char*
+Channel_getPath(KMFContainer* kmf)
+{
+	Channel* channel = (Channel*)kmf;
+	char* tmp = (channel->eContainer)?get_eContainer_path(channel):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("hubs[]") + strlen(channel->VT->internalGetKey(channel)) + 1);
+	sprintf(r, "hubs[%s]", channel->VT->internalGetKey(channel));
+	free(tmp);
+	return r;
+}
+
 const Channel_VT channel_VT = {
 		/*
 		 * KMFContainer
@@ -249,7 +260,7 @@ const Channel_VT channel_VT = {
 		.super = &instance_VT,
 		.metaClassName = Channel_metaClassName,
 		.internalGetKey = Channel_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = Channel_getPath,
 		.visit = Channel_visit,
 		.findByPath = Channel_findByPath,
 		.delete = delete_Channel,

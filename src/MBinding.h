@@ -40,7 +40,6 @@ typedef struct _MBinding {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * MBinding
 	 */

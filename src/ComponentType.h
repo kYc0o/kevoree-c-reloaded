@@ -57,7 +57,6 @@ typedef struct _ComponentType {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

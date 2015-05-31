@@ -45,7 +45,6 @@ typedef struct _PortTypeRef {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

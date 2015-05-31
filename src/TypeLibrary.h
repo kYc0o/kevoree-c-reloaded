@@ -37,7 +37,6 @@ typedef struct _TypeLibrary {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

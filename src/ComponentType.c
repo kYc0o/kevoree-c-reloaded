@@ -87,10 +87,6 @@ ComponentType_addRequired(ComponentType * const this, PortTypeRef *ptr)
 		if(hashmap_get(this->required, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/required[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: required cannot be added!\n");
 			}
@@ -116,10 +112,6 @@ ComponentType_addProvided(ComponentType * const this, PortTypeRef *ptr)
 		if(hashmap_get(this->provided, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->provided, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/provided[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: provided cannot be added!\n");
 			}
@@ -139,8 +131,6 @@ ComponentType_removeRequired(ComponentType * const this, PortTypeRef *ptr)
 	} else {
 		if(hashmap_remove(this->required, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: required %s cannot be removed!\n", internalKey);
 		}
@@ -157,8 +147,6 @@ ComponentType_removeProvided(ComponentType * const this, PortTypeRef *ptr)
 	} else {
 		if(hashmap_remove(this->provided, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: required %s cannot be removed!\n", internalKey);
 		}
@@ -331,7 +319,7 @@ const ComponentType_VT componentType_VT = {
 		 */
 		.metaClassName = ComponentType_metaClassName,
 		.internalGetKey = ComponentType_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = TypeDefinition_getPath,
 		.visit = ComponentType_visit,
 		.findByPath = ComponentType_findByPath,
 		.delete = delete_ComponentType,

@@ -45,7 +45,6 @@ typedef struct _NodeNetwork {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NodeNetwork
 	 */

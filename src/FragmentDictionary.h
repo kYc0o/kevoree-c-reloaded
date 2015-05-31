@@ -35,7 +35,6 @@ typedef struct _FragmentDictionary {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * Dictionary
 	 * TODO fix size

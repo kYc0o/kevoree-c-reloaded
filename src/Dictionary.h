@@ -36,7 +36,6 @@ typedef struct _Dictionary {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * Dictionary
 	 * TODO fix id size

@@ -31,7 +31,6 @@ typedef struct _NetworkProperty {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

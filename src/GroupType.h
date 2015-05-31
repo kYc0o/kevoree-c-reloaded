@@ -41,7 +41,6 @@ typedef struct _GroupType {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

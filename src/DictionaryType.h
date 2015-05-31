@@ -36,7 +36,6 @@ typedef struct _DictionaryType {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * DictionaryType
 	 */

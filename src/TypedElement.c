@@ -250,6 +250,17 @@ static void
 	}
 }
 
+char*
+TypedElement_getPath(KMFContainer* kmf)
+{
+	TypedElement* te = (TypedElement*)kmf;
+	char* tmp = (te->eContainer)?get_eContainer_path(te):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("dataTypes[]") + strlen(te->VT->internalGetKey(te)) + 1);
+	sprintf(r, "dataTypes[%s]", te->VT->internalGetKey(te));
+	free(tmp);
+	return r;
+}
+
 const TypedElement_VT typedElement_VT = {
 		.super = &namedElement_VT,
 		/*
@@ -258,7 +269,7 @@ const TypedElement_VT typedElement_VT = {
 		 */
 		.metaClassName = TypedElement_metaClassName,
 		.internalGetKey = TypedElement_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = TypedElement_getPath,
 		.visit = TypedElement_visit,
 		.findByPath = TypedElement_findByPath,
 		.delete = delete_TypedElement,

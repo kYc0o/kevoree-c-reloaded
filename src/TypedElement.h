@@ -37,7 +37,6 @@ typedef struct _TypedElement {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */
@@ -54,6 +53,8 @@ void initTypedElement(TypedElement * const this);
 TypedElement *TypedElement_findGenericTypesByID(TypedElement * const this, char *id);
 void TypedElement_addGenericTypes(TypedElement * const this, TypedElement *ptr);
 void TypedElement_removeGenericTypes(TypedElement * const this, TypedElement *ptr);
+
+char* TypedElement_getPath(KMFContainer* kmf);
 
 extern const TypedElement_VT typedElement_VT;
 

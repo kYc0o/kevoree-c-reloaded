@@ -83,10 +83,6 @@ PortTypeRef_addMappings(PortTypeRef * const this, PortTypeMapping *ptr)
 			if(hashmap_put(this->mappings, internalKey, ptr) == MAP_OK)
 			{
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/mappings[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/mappings[%s]", this_path, internalKey);
-				free(this_path);
 			}
 		}
 	}
@@ -112,8 +108,6 @@ PortTypeRef_removeMappings(PortTypeRef * const this, PortTypeMapping *ptr)
 		if(hashmap_remove(this->mappings, internalKey) == MAP_OK)
 		{
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		}
 	}
 }
@@ -318,6 +312,34 @@ static void
 	}
 }
 
+static char*
+PortTypeRef_getPath(KMFContainer* kmf)
+{
+	any_t any;
+	PortTypeRef* obj = (PortTypeRef*)kmf;
+	char* internalKey = obj->VT->internalGetKey(obj);
+	
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	
+	ComponentType* container = (ComponentType*)obj->eContainer;
+	if (hashmap_get(container->provided, internalKey, (void**)(&any)) == MAP_OK) {
+		char* r = (char*)malloc(strlen(tmp) + strlen("/provided[]") + strlen(internalKey) + 1);
+		sprintf(r, "%s/provided[%s]", tmp, internalKey);
+		free(tmp);
+		return r;
+	}
+	else if (hashmap_get(container->required, internalKey, (void**)(&any)) == MAP_OK) {
+		char* r = (char*)malloc(strlen(tmp) + strlen("/required[]") + strlen(internalKey) + 1);
+		sprintf(r, "%s/required[%s]", tmp, internalKey);
+		free(tmp);
+		return r;
+	}
+	else {
+		free(tmp);
+		return strdup("");
+	}
+}
+
 const PortTypeRef_VT portTypeRef_VT = {
 		.super = &namedElement_VT,
 		/*
@@ -326,7 +348,7 @@ const PortTypeRef_VT portTypeRef_VT = {
 		 */
 		.metaClassName = PortTypeRef_metaClassName,
 		.internalGetKey = PortTypeRef_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = PortTypeRef_getPath,
 		.visit = PortTypeRef_visit,
 		.findByPath = PortTypeRef_findByPath,
 		.delete = delete_PortTypeRef,

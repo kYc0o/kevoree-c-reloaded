@@ -50,7 +50,6 @@ typedef struct _Instance {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

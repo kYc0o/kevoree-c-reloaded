@@ -166,8 +166,8 @@ int main(void)
 	new_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 	free(jsonModel);
 	
-	//delete((KMFContainer*)new_model);
-	//exit(0);
+	delete((KMFContainer*)new_model);
+	exit(0);
 	
 	muntrace();
 
@@ -211,7 +211,9 @@ int main(void)
 		PRINTF("INFO: Number of adaptations: %d\n", adaptListLength);
 		while (list_length(plannedAdaptations) > 0) {
 			AdaptationPrimitive *c = (AdaptationPrimitive*)list_pop(plannedAdaptations);
-			printf("%s: Priority: %d Type: %d\n", c->ref->path, c->priority, c->primitiveType);
+			char* tmp_path = c->ref->VT->getPath(c->ref);
+			printf("%s: Priority: %d Type: %d\n", tmp_path, c->priority, c->primitiveType);
+			free(tmp_path);
 			c->delete(c);
 		}
 	} else {

@@ -37,7 +37,6 @@ typedef struct _DeployUnit {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */

@@ -36,7 +36,6 @@ void initContainerRoot(ContainerRoot * const this)
 	this->deployUnits = NULL;
 	this->nodeNetworks = NULL;
 	this->groups = NULL;
-	this->path = strdup("");
 }
 
 static char
@@ -247,9 +246,6 @@ ContainerRoot_addNodes(ContainerRoot * const this, ContainerNode *ptr)
 		if(hashmap_get(this->nodes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->nodes, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = NULL;
-				//ptr->path = malloc(sizeof(char) * (strlen("nodes[]") + strlen(internalKey)) + 1);
-				//sprintf(ptr->path, "nodes[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: Node cannot be added!\n");
 			}
@@ -276,8 +272,6 @@ ContainerRoot_addTypeDefinitions(ContainerRoot * const this, TypeDefinition *ptr
 			/*container = (TypeDefinition*)ptr;*/
 			if(hashmap_put(this->typeDefinitions, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("typeDefinitions[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "typeDefinitions[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: TypeDefinition cannot be added!\n");
 			}
@@ -303,8 +297,6 @@ ContainerRoot_addRepositories(ContainerRoot * const this, Repository *ptr)
 		if(hashmap_get(this->repositories, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->repositories, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("repositories[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "repositories[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: Repository cannot be added!\n");
 			}
@@ -330,8 +322,6 @@ ContainerRoot_addDataTypes(ContainerRoot * const this, TypedElement *ptr)
 		if(hashmap_get(this->dataTypes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->dataTypes, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("dataTypes[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "dataTypes[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: TypedElement cannot be added!\n");
 			}
@@ -357,8 +347,6 @@ ContainerRoot_addLibraries(ContainerRoot * const this, TypeLibrary *ptr)
 		if(hashmap_get(this->libraries, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->libraries, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("dataTypes[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "dataTypes[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: TypeLibrary cannot be added!\n");
 			}
@@ -384,8 +372,6 @@ static ContainerRoot_addHubs(ContainerRoot * const this, Channel *ptr)
 		if(hashmap_get(this->hubs, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->hubs, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("hubs[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "hubs[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: Channel cannot be added!\n");
 			}
@@ -411,8 +397,6 @@ ContainerRoot_addBindings(ContainerRoot * const this, MBinding *ptr)
 		if(hashmap_get(this->mBindings, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->mBindings, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("mBindings[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "mBindings[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: MBinding cannot be added!\n");
 			}
@@ -438,8 +422,6 @@ ContainerRoot_addDeployUnits(ContainerRoot * const this, DeployUnit *ptr)
 		} if(hashmap_get(this->deployUnits, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->deployUnits, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("deployUnits[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "deployUnits[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: DeployUnit cannot be added!\n");
 			}
@@ -465,8 +447,6 @@ ContainerRoot_addNodeNetworks(ContainerRoot * const this, NodeNetwork *ptr)
 		if(hashmap_get(this->nodeNetworks, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->nodeNetworks, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("nodeNetworks[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "nodeNetworks[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: NodeNetwork cannot be added!\n");
 			}
@@ -492,8 +472,6 @@ ContainerRoot_addGroups(ContainerRoot * const this, Group *ptr)
 		if(hashmap_get(this->groups, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->groups, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("groups[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "groups[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: Group cannot be added!\n");
 			}
@@ -513,8 +491,6 @@ ContainerRoot_removeNodes(ContainerRoot * const this, ContainerNode *ptr)
 	} else {
 		if(hashmap_remove(this->nodes, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from nodes!\n", internalKey);
 		}
@@ -531,8 +507,6 @@ ContainerRoot_removeTypeDefinitions(ContainerRoot * const this, TypeDefinition *
 	} else {
 		if(hashmap_remove(this->typeDefinitions, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from typeDefinitions!\n", internalKey);
 		}
@@ -549,9 +523,6 @@ ContainerRoot_removeRepositories(ContainerRoot * const this, Repository *ptr)
 	} else {
 		if(hashmap_remove(this->repositories, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
-
 		} else {
 			PRINTF("ERROR: Cannot remove %s from repositories!\n", internalKey);
 		}
@@ -567,8 +538,6 @@ ContainerRoot_removeDataTypes(ContainerRoot * const this, TypedElement *ptr)
 	} else {
 		if(hashmap_remove(this->dataTypes, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from dataTypes!\n", internalKey);
 		}
@@ -585,8 +554,6 @@ ContainerRoot_removeLibraries(ContainerRoot * const this, TypeLibrary *ptr)
 	} else {
 		if(hashmap_remove(this->libraries, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from libraries!\n", internalKey);
 		}
@@ -603,8 +570,6 @@ ContainerRoot_removeHubs(ContainerRoot * const this, Channel *ptr)
 	} else {
 		if(hashmap_remove(this->hubs, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from hubs!\n", internalKey);
 		}
@@ -621,8 +586,6 @@ ContainerRoot_removeBindings(ContainerRoot * const this, MBinding *ptr)
 	} else {
 		if(hashmap_remove(this->mBindings, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from hubs!\n", internalKey);
 		}
@@ -640,7 +603,6 @@ ContainerRoot_removeDeployUnits(ContainerRoot * const this,  DeployUnit *ptr)
 		if(hashmap_remove(this->deployUnits, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
 			free(internalKey);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from deployUnits!\n", internalKey);
 		}
@@ -657,8 +619,6 @@ ContainerRoot_removeNodeNetworks(ContainerRoot * const this, NodeNetwork *ptr)
 	} else {
 		if(hashmap_remove(this->nodeNetworks, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from nodeNetworks!\n", internalKey);
 		}
@@ -675,8 +635,6 @@ ContainerRoot_removeGroups(ContainerRoot * const this, Group *ptr)
 	} else {
 		if(hashmap_remove(this->groups, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: Cannot remove %s from groups!\n", internalKey);
 		}

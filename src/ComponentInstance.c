@@ -119,10 +119,6 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 				 * TODO add if == NULL
 				 */
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/provided[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: provided cannot be added!\n");
 			}
@@ -149,10 +145,6 @@ ComponentInstance_addRequired(ComponentInstance * const this, Port *ptr)
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK)
 			{
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/required[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: required cannot be added!\n");
 			}
@@ -172,8 +164,6 @@ ComponentInstance_removeProvided(ComponentInstance * const this, Port *ptr)
 	} else {
 		if(hashmap_remove(this->provided, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: provided %s cannot be removed!\n", internalKey);
 		}
@@ -190,8 +180,6 @@ ComponentInstance_removeRequired(ComponentInstance * const this, Port *ptr)
 	} else {
 		if(hashmap_remove(this->required, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: required %s cannot be removed!\n", internalKey);
 		}
@@ -351,6 +339,17 @@ static void
 	}
 }
 
+static char*
+ComponentInstance_getPath(KMFContainer* kmf)
+{
+	ComponentInstance* obj = (ComponentInstance*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("/components[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "%s/components[%s]", tmp, obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const ComponentInstance_VT componentInstance_VT = {
 		/*
 		 * KMFContainer_VT
@@ -359,7 +358,7 @@ const ComponentInstance_VT componentInstance_VT = {
 		.super = &instance_VT,
 		.metaClassName = ComponentInstance_metaClassName,
 		.internalGetKey = ComponentInstance_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = ComponentInstance_getPath,
 		.visit = ComponentInstance_visit,
 		.findByPath = ComponentInstance_findByPath,
 		.delete = delete_ComponentInstance,

@@ -56,10 +56,6 @@ NetworkInfo_addValues(NetworkInfo * const this, NetworkProperty *ptr)
 		if(hashmap_get(this->values, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/values[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/values[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: value cannot be added!\n");
 			}
@@ -79,8 +75,6 @@ NetworkInfo_removeValues(NetworkInfo * const this, NetworkProperty *ptr)
 	} else {
 		if(hashmap_remove(this->values, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: value %s cannot be removed!\n", internalKey);
 		}
@@ -256,6 +250,17 @@ static void
 	}
 }
 
+static char*
+NetworkInfo_getPath(KMFContainer* kmf)
+{
+	NetworkInfo* obj = (NetworkInfo*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("/networkInformation[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "%s/networkInformation[%s]", tmp, obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const NetworkInfo_VT networkInfo_VT = {
 		.super = &namedElement_VT,
 		/*
@@ -264,7 +269,7 @@ const NetworkInfo_VT networkInfo_VT = {
 		 */
 		.metaClassName = NetworkInfo_metaClassName,
 		.internalGetKey = NetworkInfo_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = NetworkInfo_getPath,
 		.visit = NetworkInfo_visit,
 		.findByPath = NetworkInfo_findByPath,
 		.delete = delete_NetworkInfo,

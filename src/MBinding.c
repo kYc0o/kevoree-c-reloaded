@@ -251,6 +251,17 @@ static void
 	}
 }
 
+static char*
+MBinding_getPath(KMFContainer* kmf)
+{
+	MBinding* obj = (MBinding*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("mBindings[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "mBindings[%s]", obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const MBinding_VT mBinding_VT = {
 		.super = &KMF_VT,
 		/*
@@ -258,7 +269,7 @@ const MBinding_VT mBinding_VT = {
 		 */
 		.metaClassName = MBinding_metaClassName,
 		.internalGetKey = MBinding_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = MBinding_getPath,
 		.visit = MBinding_visit,
 		.findByPath = MBinding_findByPath,
 		.delete = delete_MBinding,

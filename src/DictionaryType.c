@@ -89,10 +89,6 @@ DictionaryType_addAttributes(DictionaryType * const this, DictionaryAttribute *p
 		if(hashmap_get(this->attributes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->attributes, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				char* this_path = this->VT->getPath(this);
-				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/attributes[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/attributes[%s]", this_path, internalKey);
-				free(this_path);
 			} else {
 				PRINTF("ERROR: attribute cannot be added!\n");
 			}
@@ -112,8 +108,6 @@ DictionaryType_removeAttributes(DictionaryType * const this, DictionaryAttribute
 	} else {
 		if(hashmap_remove(this->attributes, internalKey) == MAP_OK) {
 			ptr->eContainer = NULL;
-			free(ptr->path);
-			ptr->path = NULL;
 		} else {
 			PRINTF("ERROR: attribute %s cannot be removed!\n", internalKey);
 		}
@@ -272,6 +266,17 @@ static void
 	}
 }
 
+static char*
+DictionaryType_getPath(KMFContainer* kmf)
+{
+	DictionaryType* obj = (DictionaryType*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("/dictionaryType[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "%s/dictionaryType[%s]", tmp, obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const DictionaryType_VT dictionaryType_VT = {
 		.super = &KMF_VT,
 		/*
@@ -280,7 +285,7 @@ const DictionaryType_VT dictionaryType_VT = {
 		 */
 		.metaClassName = DictionaryType_metaClassName,
 		.internalGetKey = DictionaryType_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = DictionaryType_getPath,
 		.visit = DictionaryType_visit,
 		.findByPath = DictionaryType_findByPath,
 		.delete = delete_DictionaryType,

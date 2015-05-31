@@ -233,6 +233,17 @@ void
 	}
 }
 
+static char*
+Group_getPath(KMFContainer* kmf)
+{
+	Group* obj = (Group*)kmf;
+	char* tmp = (obj->eContainer)?get_eContainer_path(obj):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("groups[]") + strlen(obj->VT->internalGetKey(obj)) + 1);
+	sprintf(r, "groups[%s]", obj->VT->internalGetKey(obj));
+	free(tmp);
+	return r;
+}
+
 const Group_VT group_VT = {
 		/*
 		 * KMFContainer_VT
@@ -241,7 +252,7 @@ const Group_VT group_VT = {
 		.super = &instance_VT,
 		.metaClassName = Group_metaClassName,
 		.internalGetKey = Group_internalGetKey,
-		.getPath = KMFContainer_get_path,
+		.getPath = Group_getPath,
 		.visit = Group_visit,
 		.findByPath = Group_findByPath,
 		.delete = delete_Group,

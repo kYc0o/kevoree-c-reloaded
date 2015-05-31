@@ -40,7 +40,6 @@ typedef struct _ChannelType {
 	 * KMFContainer
 	 */
 	KMFContainer *eContainer;
-	char *path;
 	/*
 	 * NamedElement
 	 */
