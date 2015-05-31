@@ -82,8 +82,10 @@ Dictionary_addValues(Dictionary * const this, DictionaryValue *ptr)
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK)
 			{
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/values[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/values[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/values[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/values[%s]", this_path, internalKey);
+				free(this_path);
 			}
 		}
 	}
@@ -280,6 +282,7 @@ const Dictionary_VT dictionary_VT = {
 		 */
 		.metaClassName = Dictionary_metaClassName,
 		.internalGetKey = Dictionary_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = Dictionary_visit,
 		.findByPath = Dictionary_findByPath,
 		.delete = delete_Dictionary,

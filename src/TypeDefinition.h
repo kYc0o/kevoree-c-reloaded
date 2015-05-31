@@ -26,6 +26,7 @@ typedef struct _TypeDefinition_VT {
 	NamedElement_VT *super;
 	fptrKMFMetaClassName metaClassName;
 	fptrKMFInternalGetKey internalGetKey;
+	fptrKMFGetPath getPath;
 	fptrVisit visit;
 	fptrFindByPath findByPath;
 	fptrDelete delete;

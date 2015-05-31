@@ -176,7 +176,9 @@ NodeNetwork_visit(NodeNetwork * const this, char *parent, fptrVisitAction action
 
 	if(this->target != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\target", parent, this->target->path);
+			char* tmp_path = this->target->VT->getPath(this->target);
+			sprintf(path,"%s/%s\\target", parent, tmp_path);
+			free(tmp_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("target", SQBRACKET, NULL);
@@ -193,7 +195,9 @@ NodeNetwork_visit(NodeNetwork * const this, char *parent, fptrVisitAction action
 
 	if(this->initBy != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\initBy", parent, this->initBy->path);
+			char* tmp_path = this->initBy->VT->getPath(this->initBy);
+			sprintf(path,"%s/%s\\initBy", parent, tmp_path);
+			free(tmp_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("initBy", SQBRACKET, NULL);
@@ -367,6 +371,7 @@ const NodeNetwork_VT nodeNetwork_VT = {
 		 */
 		.metaClassName = NodeNetwork_metaClassName,
 		.internalGetKey = NodeNetwork_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = NodeNetwork_visit,
 		.findByPath = NodeNetwork_findByPath,
 		.delete = delete_NodeNetwork,

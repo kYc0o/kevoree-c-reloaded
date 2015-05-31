@@ -97,6 +97,7 @@ const FragmentDictionary_VT fragmentDictionary_VT = {
 		 */
 		.metaClassName = FragmentDictionary_metaClassName,
 		.internalGetKey = FragmentDictionary_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = FragmentDictionary_visit,
 		.findByPath = FragmentDictionary_findByPath,
 		.delete = delete_FragmentDictionary,

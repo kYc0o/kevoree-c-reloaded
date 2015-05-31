@@ -247,8 +247,9 @@ ContainerRoot_addNodes(ContainerRoot * const this, ContainerNode *ptr)
 		if(hashmap_get(this->nodes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->nodes, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen("nodes[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "nodes[%s]", internalKey);
+				ptr->path = NULL;
+				//ptr->path = malloc(sizeof(char) * (strlen("nodes[]") + strlen(internalKey)) + 1);
+				//sprintf(ptr->path, "nodes[%s]", internalKey);
 			} else {
 				PRINTF("ERROR: Node cannot be added!\n");
 			}
@@ -1134,6 +1135,7 @@ ContainerRoot_VT containerRoot_VT = {
 		.super = &KMF_VT,
 		.metaClassName = ContainerRoot_metaClassName,
 		.internalGetKey = ContainerRoot_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = ContainerRoot_visit,
 		.findByPath = ContainerRoot_findByPath,
 		.delete = delete_ContainerRoot,

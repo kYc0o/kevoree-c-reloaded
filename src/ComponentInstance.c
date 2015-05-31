@@ -119,8 +119,10 @@ ComponentInstance_addProvided(ComponentInstance * const this, Port *ptr)
 				 * TODO add if == NULL
 				 */
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/provided[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/provided[]") +	strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/provided[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: provided cannot be added!\n");
 			}
@@ -147,8 +149,10 @@ ComponentInstance_addRequired(ComponentInstance * const this, Port *ptr)
 			if(hashmap_put(this->required, internalKey, ptr) == MAP_OK)
 			{
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/required[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/required[]") +	strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/required[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: required cannot be added!\n");
 			}
@@ -355,6 +359,7 @@ const ComponentInstance_VT componentInstance_VT = {
 		.super = &instance_VT,
 		.metaClassName = ComponentInstance_metaClassName,
 		.internalGetKey = ComponentInstance_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = ComponentInstance_visit,
 		.findByPath = ComponentInstance_findByPath,
 		.delete = delete_ComponentInstance,

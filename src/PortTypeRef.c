@@ -83,8 +83,10 @@ PortTypeRef_addMappings(PortTypeRef * const this, PortTypeMapping *ptr)
 			if(hashmap_put(this->mappings, internalKey, ptr) == MAP_OK)
 			{
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/mappings[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/mappings[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/mappings[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/mappings[%s]", this_path, internalKey);
+				free(this_path);
 			}
 		}
 	}
@@ -157,7 +159,9 @@ PortTypeRef_visit(PortTypeRef * const this, char *parent, fptrVisitAction action
 
 	if(this->ref != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\ref", parent, this->ref->path);
+			char* tmp_path = this->ref->VT->getPath(this->ref);
+			sprintf(path,"%s/%s\\ref", parent, tmp_path);
+			free(tmp_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("ref", SQBRACKET, NULL);
@@ -322,6 +326,7 @@ const PortTypeRef_VT portTypeRef_VT = {
 		 */
 		.metaClassName = PortTypeRef_metaClassName,
 		.internalGetKey = PortTypeRef_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = PortTypeRef_visit,
 		.findByPath = PortTypeRef_findByPath,
 		.delete = delete_PortTypeRef,

@@ -67,8 +67,10 @@ TypeDefinition_addDictionaryType(TypeDefinition * const this, DictionaryType *pt
 	}
 	this->dictionaryType = ptr;
 	ptr->eContainer = this;
-	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionaryType[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
-	sprintf(ptr->path, "%s/dictionaryType[%s]", this->path, ptr->VT->internalGetKey(ptr));
+	char* this_path = this->VT->getPath(this);
+	ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/dictionaryType[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
+	sprintf(ptr->path, "%s/dictionaryType[%s]", this_path, ptr->VT->internalGetKey(ptr));
+	free(this_path);
 }
 
 void
@@ -191,7 +193,9 @@ void TypeDefinition_visit(TypeDefinition * const this, char *parent, fptrVisitAc
 
 	if(this->deployUnits != NULL) {
 		if (visitPaths) {
-			sprintf(path, "%s/%s\\typeDefinition", parent, this->deployUnits->path);
+			char* tmp_path = this->deployUnits->VT->getPath(this->deployUnits);
+			sprintf(path, "%s/%s\\typeDefinition", parent, tmp_path);
+			free(tmp_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("deployUnit", SQBRACKET, NULL);
@@ -361,6 +365,7 @@ const TypeDefinition_VT typeDefinition_VT = {
 		 */
 		.metaClassName = TypeDefinition_metaClassName,
 		.internalGetKey = TypeDefinition_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = TypeDefinition_visit,
 		.findByPath = TypeDefinition_findByPath,
 		.delete = delete_TypeDefinition,

@@ -121,6 +121,7 @@ const PortTypeMapping_VT portTypeMapping_VT = {
 		 */
 		.metaClassName = PortTypeMapping_metaClassName,
 		.internalGetKey = PortTypeMapping_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = PortTypeMapping_visit,
 		.findByPath = PortTypeMapping_findByPath,
 		.delete = delete_PortTypeMapping

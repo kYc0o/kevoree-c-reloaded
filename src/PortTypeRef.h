@@ -25,6 +25,7 @@ typedef struct _PortTypeRef_VT {
 	 */
 	fptrKMFMetaClassName metaClassName;
 	fptrKMFInternalGetKey internalGetKey;
+	fptrKMFGetPath getPath;
 	fptrVisit visit;
 	fptrFindByPath findByPath;
 	fptrDelete delete;

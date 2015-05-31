@@ -241,6 +241,7 @@ const Group_VT group_VT = {
 		.super = &instance_VT,
 		.metaClassName = Group_metaClassName,
 		.internalGetKey = Group_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = Group_visit,
 		.findByPath = Group_findByPath,
 		.delete = delete_Group,

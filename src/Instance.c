@@ -65,8 +65,10 @@ Instance_addDictionary(Instance * const this, Dictionary *ptr)
 	}
 	this->dictionary = ptr;
 	ptr->eContainer = this;
-	ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
-	sprintf(ptr->path, "%s/dictionary[%s]", this->path, ptr->VT->internalGetKey(ptr));
+	char* this_path = this->VT->getPath(this);
+	ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/dictionary[]") + strlen(ptr->VT->internalGetKey(ptr))) + 1);
+	sprintf(ptr->path, "%s/dictionary[%s]", this_path, ptr->VT->internalGetKey(ptr));
+	free(this_path);
 }
 
 void
@@ -86,8 +88,10 @@ Instance_addFragmentDictionary(Instance * const this, FragmentDictionary *ptr)
 			/*container = (FragmentDictionary*)ptr;*/
 			if(hashmap_put(this->fragmentDictionary, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/fragmentDictionary[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/fragmentDictionary[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/fragmentDictionary[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/fragmentDictionary[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: fragmentDictionary cannot be added!\n");
 			}
@@ -170,7 +174,9 @@ Instance_visit(Instance * const this, char *parent, fptrVisitAction action, fptr
 
 	if(this->typeDefinition != NULL) {
 		if (visitPaths) {
-			sprintf(path, "%s/%s\\typeDefinition", parent, this->typeDefinition->path);
+			char* tmp_path = this->typeDefinition->VT->getPath(this->typeDefinition);
+			sprintf(path, "%s/%s\\typeDefinition", parent, tmp_path);
+			free(tmp_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("typeDefinition", SQBRACKET, NULL);
@@ -373,6 +379,7 @@ const Instance_VT instance_VT = {
 		.super = &namedElement_VT,
 		.metaClassName = Instance_metaClassName,
 		.internalGetKey = Instance_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = Instance_visit,
 		.findByPath = Instance_findByPath,
 		.delete = delete_Instance,

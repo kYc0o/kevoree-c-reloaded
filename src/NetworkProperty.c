@@ -89,6 +89,7 @@ const NetworkProperty_VT networkProperty = {
 		 */
 		.metaClassName = NetworkProperty_metaClassName,
 		.internalGetKey = NetworkProperty_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = NetworkProperty_visit,
 		.findByPath = NetworkProperty_findByPath,
 		.delete = delete_NetworkProperty,

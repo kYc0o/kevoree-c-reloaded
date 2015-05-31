@@ -320,6 +320,7 @@ const DeployUnit_VT deployUnit_VT = {
 		 */
 		.metaClassName = DeployUnit_metaClassName,
 		.internalGetKey = DeployUnit_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = DeployUnit_visit,
 		.findByPath = DeployUnit_findByPath,
 		.delete = delete_DeployUnit,

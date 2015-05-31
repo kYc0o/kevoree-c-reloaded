@@ -249,6 +249,7 @@ const TypeLibrary_VT typeLibrary_VT = {
 		 */
 		.metaClassName = TypeLibrary_metaClassName,
 		.internalGetKey = TypeLibrary_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = TypeLibrary_visit,
 		.findByPath = TypeLibrary_findByPath,
 		.delete = delete_TypeLibrary,

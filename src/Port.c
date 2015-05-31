@@ -156,7 +156,9 @@ Port_visit(Port * const this, char *parent, fptrVisitAction action, fptrVisitAct
 
 	if(this->portTypeRef != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\portTypeRef", parent, this->portTypeRef->path);
+			char* ref_path = this->portTypeRef->VT->getPath(this->portTypeRef);
+			sprintf(path,"%s/%s\\portTypeRef", parent, ref_path);
+			free(ref_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("portTypeRef", SQBRACKET, NULL);
@@ -284,6 +286,7 @@ const Port_VT port_VT = {
 		 */
 		.metaClassName = Port_metaClassName,
 		.internalGetKey = Port_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = Port_visit,
 		.findByPath = Port_findByPath,
 		.delete = delete_Port,

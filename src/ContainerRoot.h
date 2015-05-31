@@ -56,6 +56,7 @@ typedef struct _ContainerRoot_VT {
 	KMFContainer_VT *super;
 	fptrKMFMetaClassName metaClassName;
 	fptrKMFInternalGetKey internalGetKey;
+	fptrKMFGetPath getPath;
 	fptrVisit visit;
 	fptrFindByPath findByPath;
 	fptrDelete delete;

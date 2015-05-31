@@ -166,6 +166,9 @@ int main(void)
 	new_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 	free(jsonModel);
 	
+	//delete((KMFContainer*)new_model);
+	//exit(0);
+	
 	muntrace();
 
 	/*new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);*/

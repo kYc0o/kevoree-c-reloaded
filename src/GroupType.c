@@ -58,6 +58,7 @@ const GroupType_VT groupType_VT = {
 		.super = &typeDefinition_VT,
 		.metaClassName = GroupType_metaClassName,
 		.internalGetKey = /*TypeDefinition_internalGetKey*/GroupType_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = TypeDefinition_visit,
 		.findByPath = TypeDefinition_findByPath,
 		.delete = delete_GroupType,

@@ -56,8 +56,10 @@ NetworkInfo_addValues(NetworkInfo * const this, NetworkProperty *ptr)
 		if(hashmap_get(this->values, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->values, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/values[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/values[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/values[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/values[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: value cannot be added!\n");
 			}
@@ -262,6 +264,7 @@ const NetworkInfo_VT networkInfo_VT = {
 		 */
 		.metaClassName = NetworkInfo_metaClassName,
 		.internalGetKey = NetworkInfo_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = NetworkInfo_visit,
 		.findByPath = NetworkInfo_findByPath,
 		.delete = delete_NetworkInfo,

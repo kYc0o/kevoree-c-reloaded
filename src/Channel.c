@@ -249,6 +249,7 @@ const Channel_VT channel_VT = {
 		.super = &instance_VT,
 		.metaClassName = Channel_metaClassName,
 		.internalGetKey = Channel_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = Channel_visit,
 		.findByPath = Channel_findByPath,
 		.delete = delete_Channel,

@@ -147,6 +147,7 @@ const ChannelType_VT channelType_VT = {
 		.super = &typeDefinition_VT,
 		.metaClassName = ChannelType_metaClassName,
 		.internalGetKey = ChannelType_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = ChannelType_visit,
 		.findByPath = ChannelType_findByPath,
 		.delete = delete_ChannelType,

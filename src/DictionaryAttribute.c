@@ -134,6 +134,7 @@ const DictionaryAttribute_VT dictionaryAttribute_VT = {
 		 */
 		.metaClassName = DictionaryAttribute_metaClassName,
 		.internalGetKey = DictionaryAttribute_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = DictionaryAttribute_visit,
 		.findByPath = DictionaryAttribute_findByPath,
 		.delete = delete_DictionaryAttribute,

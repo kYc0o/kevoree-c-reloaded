@@ -89,8 +89,10 @@ DictionaryType_addAttributes(DictionaryType * const this, DictionaryAttribute *p
 		if(hashmap_get(this->attributes, internalKey, (void**)(&container)) == MAP_MISSING) {
 			if(hashmap_put(this->attributes, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/attributes[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/attributes[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/attributes[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/attributes[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: attribute cannot be added!\n");
 			}
@@ -278,6 +280,7 @@ const DictionaryType_VT dictionaryType_VT = {
 		 */
 		.metaClassName = DictionaryType_metaClassName,
 		.internalGetKey = DictionaryType_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = DictionaryType_visit,
 		.findByPath = DictionaryType_findByPath,
 		.delete = delete_DictionaryType,

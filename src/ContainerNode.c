@@ -143,8 +143,10 @@ ContainerNode_addComponents(ContainerNode * const this, ComponentInstance *ptr)
 			/*container = (ComponentInstance*)ptr;*/
 			if(hashmap_put(this->components, internalKey, ptr) == MAP_OK) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) + strlen("/components[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/components[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) + strlen("/components[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/components[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: component cannot be added!\n");
 			}
@@ -239,8 +241,10 @@ ContainerNode_addNetworkInformation(ContainerNode * const this, NetworkInfo *ptr
 			/*container = (NetworkInfo*)ptr;*/
 			if(hashmap_put(this->networkInformation, internalKey, ptr) == 0) {
 				ptr->eContainer = this;
-				ptr->path = malloc(sizeof(char) * (strlen(this->path) +	strlen("/networkInformation[]") + strlen(internalKey)) + 1);
-				sprintf(ptr->path, "%s/networkInformation[%s]", this->path, internalKey);
+				char* this_path = this->VT->getPath(this);
+				ptr->path = malloc(sizeof(char) * (strlen(this_path) +	strlen("/networkInformation[]") + strlen(internalKey)) + 1);
+				sprintf(ptr->path, "%s/networkInformation[%s]", this_path, internalKey);
+				free(this_path);
 			} else {
 				PRINTF("ERROR: networkInformation cannot be added!\n");
 			}
@@ -399,7 +403,9 @@ ContainerNode_visit(ContainerNode * const this, char *parent, fptrVisitAction ac
 
 	if(this->host != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\host", parent, this->host->path);
+			char* this_path = this->host->VT->getPath(this->host);
+			sprintf(path,"%s/%s\\host", parent, this_path);
+			free(this_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("host", SQBRACKET, NULL);
@@ -588,6 +594,17 @@ void
 	}
 }
 
+static char*
+ContainerNode_getPath(KMFContainer* kmf)
+{
+	ContainerNode* node = (ContainerNode*)kmf;
+	char* tmp = (node->eContainer)?get_eContainer_path(node):strdup("");
+	char* r = (char*)malloc(strlen(tmp) + strlen("nodes[]") + strlen(node->VT->internalGetKey(node)) + 1);
+	sprintf(r, "nodes[%s]", node->VT->internalGetKey(node));
+	free(tmp);
+	return r;
+}
+
 const ContainerNode_VT containerNode_VT = {
 		.super = &instance_VT,
 		/*
@@ -596,6 +613,7 @@ const ContainerNode_VT containerNode_VT = {
 		 */
 		.metaClassName = ContainerNode_metaClassName,
 		.internalGetKey = ContainerNode_internalGetKey,
+		.getPath = ContainerNode_getPath,
 		.visit = ContainerNode_visit,
 		.findByPath = ContainerNode_findByPath,
 		.delete = delete_ContainerNode,

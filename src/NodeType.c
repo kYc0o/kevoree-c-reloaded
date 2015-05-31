@@ -63,6 +63,7 @@ const NodeType_VT nodeType_VT = {
 		.super = &typeDefinition_VT,
 		.metaClassName = NodeType_metaClassName,
 		.internalGetKey = NodeType_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = NodeType_visit,
 		.findByPath = NodeType_findByPath,
 		.delete = delete_NodeType,

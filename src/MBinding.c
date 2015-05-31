@@ -97,7 +97,9 @@ MBinding_visit(MBinding * const this, char *parent, fptrVisitAction action, fptr
 
 	if(this->port != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\port", parent, this->port->path);
+			char* tmp_path = this->port->VT->getPath(this->port);
+			sprintf(path,"%s/%s\\port", parent, tmp_path);
+			free(tmp_path);
 			action(path, REFERENCE, parent);
 		} else {
 			action("port", SQBRACKET, NULL);
@@ -113,7 +115,9 @@ MBinding_visit(MBinding * const this, char *parent, fptrVisitAction action, fptr
 
 	if(this->channel != NULL) {
 		if (visitPaths) {
-			sprintf(path,"%s/%s\\hub", parent, this->channel->path);
+			char* tmp_channel = this->channel->VT->getPath(this->channel);
+			sprintf(path,"%s/%s\\hub", parent, tmp_channel);
+			free(tmp_channel);
 			action(path, REFERENCE, parent);
 		} else {
 			action("hub", SQBRACKET, NULL);
@@ -254,6 +258,7 @@ const MBinding_VT mBinding_VT = {
 		 */
 		.metaClassName = MBinding_metaClassName,
 		.internalGetKey = MBinding_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = MBinding_visit,
 		.findByPath = MBinding_findByPath,
 		.delete = delete_MBinding,

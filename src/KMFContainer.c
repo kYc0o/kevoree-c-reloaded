@@ -24,6 +24,18 @@ char *my_strdup(const char *string)
 }
 
 char*
+KMFContainer_get_path(void* this) {
+	KMFContainer* c = (KMFContainer*)this;
+	return strdup(c->path);
+}
+
+char*
+get_eContainer_path(KMFContainer* kmf)
+{
+	return kmf->eContainer->VT->getPath(kmf->eContainer);
+}
+
+char*
 get_key_for_hashmap(any_t t)
 {
 	KMFContainer* c = (KMFContainer*)t;
@@ -81,6 +93,7 @@ const KMFContainer_VT KMF_VT = {
 		.super = NULL,
 		.metaClassName = NULL,
 		.internalGetKey = NULL,
+		.getPath = KMFContainer_get_path,
 		.visit = KMFContainer_visit,
 		.findByPath = NULL,
 		.delete = delete_KMFContainer

@@ -98,6 +98,7 @@ const DictionaryValue_VT dictionaryValue_VT = {
 		 */
 		.metaClassName = DictionaryValue_metaClassName,
 		.internalGetKey = DictionaryValue_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = DictionaryValue_visit,
 		.findByPath = DictionaryValue_findByPath,
 		.delete = delete_DictionaryValue

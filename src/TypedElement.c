@@ -258,6 +258,7 @@ const TypedElement_VT typedElement_VT = {
 		 */
 		.metaClassName = TypedElement_metaClassName,
 		.internalGetKey = TypedElement_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = TypedElement_visit,
 		.findByPath = TypedElement_findByPath,
 		.delete = delete_TypedElement,

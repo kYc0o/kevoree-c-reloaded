@@ -88,6 +88,7 @@ const Repository_VT repository_VT = {
 		 */
 		.metaClassName = Repository_metaClassName,
 		.internalGetKey = Repository_internalGetKey,
+		.getPath = KMFContainer_get_path,
 		.visit = Repository_visit,
 		.findByPath = Repository_findByPath,
 		.delete = delete_Repository

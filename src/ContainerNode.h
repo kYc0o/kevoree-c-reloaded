@@ -35,6 +35,7 @@ typedef struct _ContainerNode_VT {
 	Instance_VT *super;
 	fptrKMFMetaClassName metaClassName;
 	fptrKMFInternalGetKey internalGetKey;
+	fptrKMFGetPath getPath;
 	fptrVisit visit;
 	fptrFindByPath findByPath;
 	fptrDelete delete;

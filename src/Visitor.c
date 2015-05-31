@@ -77,7 +77,9 @@ void Visitor_visitPathRefs(hashmap_map *m, char *container, char *path, fptrVisi
 	for(i = 0; i< m->table_size; i++) {
 		any_t data = (any_t) (m->data[i].data);
 		KMFContainer* n = data;
-		sprintf(path, "%s/%s\\%s", parent, n->path, container);
+		char* this_path = n->VT->getPath(n);
+		sprintf(path, "%s/%s\\%s", parent, this_path, container);
+		free(this_path);
 		action(path, REFERENCE, parent);
 	}
 }
