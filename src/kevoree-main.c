@@ -166,8 +166,8 @@ int main(void)
 	new_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 	free(jsonModel);
 	
-	delete((KMFContainer*)new_model);
-	exit(0);
+	//delete((KMFContainer*)new_model);
+	//exit(0);
 	
 	muntrace();
 
