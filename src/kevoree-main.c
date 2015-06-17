@@ -133,7 +133,7 @@ int main(void)
 
 	printf("INFO: Starting Kevoree adaptations\n");
 
-	FILE *new_model_json = fopen("models/20nodes1component.json", "r");
+	FILE *new_model_json = fopen("../models/20nodes1component.json", "r");
 	fseek(new_model_json, 0L, SEEK_END);
 	int modelLength = ftell(new_model_json);
 	fseek(new_model_json, 0L, SEEK_SET);
