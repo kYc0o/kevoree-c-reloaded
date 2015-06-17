@@ -4,9 +4,9 @@
     "nodes": [
         {
             "eClass": "org.kevoree.ContainerNode",
-            "name": "n1759",
+            "name": "nb372",
             "started": "true",
-            "metaData": "{\"x\":803,\"y\":52}",
+            "metaData": "{\"x\":1267,\"y\":360}",
             "typeDefinition": [
                 "typeDefinitions[ContikiNode/0.0.1]"
             ],
@@ -18,7 +18,7 @@
             "dictionary": [
                 {
                     "eClass": "org.kevoree.Dictionary",
-                    "generated_KMF_ID": "0.44028098252601921432122800473",
+                    "generated_KMF_ID": "0.123657654505223041432124851613",
                     "values": []
                 }
             ],
@@ -26,17 +26,17 @@
             "components": [
                 {
                     "eClass": "org.kevoree.ComponentInstance",
-                    "name": "bk1759",
+                    "name": "lxb372",
                     "started": "true",
-                    "metaData": "{\"x\":922,\"y\":115}",
+                    "metaData": "{\"x\":1222,\"y\":319}",
                     "typeDefinition": [
-                        "typeDefinitions[blink/0.0.1]"
+                        "typeDefinitions[sensing/0.0.1]"
                     ],
                     "namespace": [],
                     "dictionary": [
                         {
                             "eClass": "org.kevoree.Dictionary",
-                            "generated_KMF_ID": "0.244668840663507581432123271370",
+                            "generated_KMF_ID": "0.96535480115562681432124871253",
                             "values": [
                                 {
                                     "eClass": "org.kevoree.DictionaryValue",
@@ -59,7 +59,7 @@
                         {
                             "eClass": "org.kevoree.NetworkProperty",
                             "name": "local",
-                            "value": "fe80::1759"
+                            "value": "fe80::b372"
                         }
                     ]
                 }
@@ -67,9 +67,9 @@
         },
         {
             "eClass": "org.kevoree.ContainerNode",
-            "name": "nb772",
+            "name": "nb488",
             "started": "true",
-            "metaData": "{\"x\":653,\"y\":51}",
+            "metaData": "{\"x\":1268,\"y\":458}",
             "typeDefinition": [
                 "typeDefinitions[ContikiNode/0.0.1]"
             ],
@@ -81,7 +81,7 @@
             "dictionary": [
                 {
                     "eClass": "org.kevoree.Dictionary",
-                    "generated_KMF_ID": "0.280824760207906371432123339315",
+                    "generated_KMF_ID": "0.71419032104313371432124762480",
                     "values": []
                 }
             ],
@@ -89,9 +89,198 @@
             "components": [
                 {
                     "eClass": "org.kevoree.ComponentInstance",
-                    "name": "hwb772",
+                    "name": "bkb488",
                     "started": "true",
-                    "metaData": "{\"x\":761,\"y\":118}",
+                    "metaData": "{\"x\":1223,\"y\":394}",
+                    "typeDefinition": [
+                        "typeDefinitions[blink/0.0.1]"
+                    ],
+                    "namespace": [],
+                    "dictionary": [
+                        {
+                            "eClass": "org.kevoree.Dictionary",
+                            "generated_KMF_ID": "0.92470887908712031432124815954",
+                            "values": [
+                                {
+                                    "eClass": "org.kevoree.DictionaryValue",
+                                    "name": "interval",
+                                    "value": "1000"
+                                }
+                            ]
+                        }
+                    ],
+                    "fragmentDictionary": [],
+                    "provided": [],
+                    "required": []
+                }
+            ],
+            "networkInformation": [
+                {
+                    "eClass": "org.kevoree.NetworkInfo",
+                    "name": "ip",
+                    "values": [
+                        {
+                            "eClass": "org.kevoree.NetworkProperty",
+                            "name": "local",
+                            "value": "fe80::b488"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "eClass": "org.kevoree.ContainerNode",
+            "name": "n2451",
+            "started": "true",
+            "metaData": "{\"x\":1138,\"y\":656}",
+            "typeDefinition": [
+                "typeDefinitions[ContikiNode/0.0.1]"
+            ],
+            "hosts": [],
+            "host": [],
+            "groups": [
+                "groups[group0]"
+            ],
+            "dictionary": [
+                {
+                    "eClass": "org.kevoree.Dictionary",
+                    "generated_KMF_ID": "0.55506877251900731432124571610",
+                    "values": []
+                }
+            ],
+            "fragmentDictionary": [],
+            "components": [
+                {
+                    "eClass": "org.kevoree.ComponentInstance",
+                    "name": "lx2451",
+                    "started": "true",
+                    "metaData": "{\"x\":1151,\"y\":693}",
+                    "typeDefinition": [
+                        "typeDefinitions[sensing/0.0.1]"
+                    ],
+                    "namespace": [],
+                    "dictionary": [
+                        {
+                            "eClass": "org.kevoree.Dictionary",
+                            "generated_KMF_ID": "0.51902025728486481432124611813",
+                            "values": [
+                                {
+                                    "eClass": "org.kevoree.DictionaryValue",
+                                    "name": "interval",
+                                    "value": "1000"
+                                }
+                            ]
+                        }
+                    ],
+                    "fragmentDictionary": [],
+                    "provided": [],
+                    "required": []
+                }
+            ],
+            "networkInformation": [
+                {
+                    "eClass": "org.kevoree.NetworkInfo",
+                    "name": "ip",
+                    "values": [
+                        {
+                            "eClass": "org.kevoree.NetworkProperty",
+                            "name": "local",
+                            "value": "fe80::2451"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "eClass": "org.kevoree.ContainerNode",
+            "name": "n3758",
+            "started": "true",
+            "metaData": "{\"x\":817,\"y\":653}",
+            "typeDefinition": [
+                "typeDefinitions[ContikiNode/0.0.1]"
+            ],
+            "hosts": [],
+            "host": [],
+            "groups": [
+                "groups[group0]"
+            ],
+            "dictionary": [
+                {
+                    "eClass": "org.kevoree.Dictionary",
+                    "generated_KMF_ID": "0.55784740601666271432124376455",
+                    "values": []
+                }
+            ],
+            "fragmentDictionary": [],
+            "components": [
+                {
+                    "eClass": "org.kevoree.ComponentInstance",
+                    "name": "bk3758",
+                    "started": "true",
+                    "metaData": "{\"x\":943,\"y\":718}",
+                    "typeDefinition": [
+                        "typeDefinitions[blink/0.0.1]"
+                    ],
+                    "namespace": [],
+                    "dictionary": [
+                        {
+                            "eClass": "org.kevoree.Dictionary",
+                            "generated_KMF_ID": "0.65135152544826271432124390045",
+                            "values": [
+                                {
+                                    "eClass": "org.kevoree.DictionaryValue",
+                                    "name": "interval",
+                                    "value": "1000"
+                                }
+                            ]
+                        }
+                    ],
+                    "fragmentDictionary": [],
+                    "provided": [],
+                    "required": []
+                }
+            ],
+            "networkInformation": [
+                {
+                    "eClass": "org.kevoree.NetworkInfo",
+                    "name": "ip",
+                    "values": [
+                        {
+                            "eClass": "org.kevoree.NetworkProperty",
+                            "name": "local",
+                            "value": "fe80::3758"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "eClass": "org.kevoree.ContainerNode",
+            "name": "n2755",
+            "started": "true",
+            "metaData": "{\"x\":655,\"y\":653}",
+            "typeDefinition": [
+                "typeDefinitions[ContikiNode/0.0.1]"
+            ],
+            "hosts": [],
+            "host": [],
+            "groups": [
+                "groups[group0]"
+            ],
+            "dictionary": [
+                {
+                    "eClass": "org.kevoree.Dictionary",
+                    "generated_KMF_ID": "0.53797553176991641432124283059",
+                    "values": []
+                }
+            ],
+            "fragmentDictionary": [],
+            "components": [
+                {
+                    "eClass": "org.kevoree.ComponentInstance",
+                    "name": "hw2755",
+                    "started": "true",
+                    "metaData": "{\"x\":794,\"y\":712}",
                     "typeDefinition": [
                         "typeDefinitions[hello_world/0.0.1]"
                     ],
@@ -99,7 +288,7 @@
                     "dictionary": [
                         {
                             "eClass": "org.kevoree.Dictionary",
-                            "generated_KMF_ID": "0.125406553270295261432123361237",
+                            "generated_KMF_ID": "0.39251068630255761432124317104",
                             "values": [
                                 {
                                     "eClass": "org.kevoree.DictionaryValue",
@@ -122,7 +311,7 @@
                         {
                             "eClass": "org.kevoree.NetworkProperty",
                             "name": "local",
-                            "value": "fe80::b772"
+                            "value": "fe80::2755"
                         }
                     ]
                 }
@@ -130,7 +319,7 @@
         },
         {
             "eClass": "org.kevoree.ContainerNode",
-            "name": "n2151",
+            "name": "n3554",
             "started": "true",
             "metaData": "{\"x\":499,\"y\":50}",
             "typeDefinition": [
@@ -152,7 +341,7 @@
             "components": [
                 {
                     "eClass": "org.kevoree.ComponentInstance",
-                    "name": "bk2151",
+                    "name": "bk3554",
                     "started": "true",
                     "metaData": "{\"x\":576,\"y\":113}",
                     "typeDefinition": [
@@ -185,7 +374,7 @@
                         {
                             "eClass": "org.kevoree.NetworkProperty",
                             "name": "lo",
-                            "value": "fe80::2151"
+                            "value": "fe80::3554"
                         }
                     ]
                 }
@@ -193,9 +382,9 @@
         },
         {
             "eClass": "org.kevoree.ContainerNode",
-            "name": "nb870",
+            "name": "na473",
             "started": "true",
-            "metaData": "{\"x\":354,\"y\":153}",
+            "metaData": "{\"x\":350,\"y\":459}",
             "typeDefinition": [
                 "typeDefinitions[ContikiNode/0.0.1]"
             ],
@@ -207,7 +396,7 @@
             "dictionary": [
                 {
                     "eClass": "org.kevoree.Dictionary",
-                    "generated_KMF_ID": "0.133597850101068621432123764697",
+                    "generated_KMF_ID": "0.57034520385786891433872665280",
                     "values": []
                 }
             ],
@@ -215,72 +404,9 @@
             "components": [
                 {
                     "eClass": "org.kevoree.ComponentInstance",
-                    "name": "hwb870",
+                    "name": "lxa473",
                     "started": "true",
-                    "metaData": "{\"x\":498,\"y\":217}",
-                    "typeDefinition": [
-                        "typeDefinitions[hello_world/0.0.1]"
-                    ],
-                    "namespace": [],
-                    "dictionary": [
-                        {
-                            "eClass": "org.kevoree.Dictionary",
-                            "generated_KMF_ID": "0.73711027111858131432123794332",
-                            "values": [
-                                {
-                                    "eClass": "org.kevoree.DictionaryValue",
-                                    "name": "name",
-                                    "value": "Inti"
-                                }
-                            ]
-                        }
-                    ],
-                    "fragmentDictionary": [],
-                    "provided": [],
-                    "required": []
-                }
-            ],
-            "networkInformation": [
-                {
-                    "eClass": "org.kevoree.NetworkInfo",
-                    "name": "ip",
-                    "values": [
-                        {
-                            "eClass": "org.kevoree.NetworkProperty",
-                            "name": "local",
-                            "value": "fe80::b870"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "eClass": "org.kevoree.ContainerNode",
-            "name": "n1459",
-            "started": "true",
-            "metaData": "{\"x\":354,\"y\":252}",
-            "typeDefinition": [
-                "typeDefinitions[ContikiNode/0.0.1]"
-            ],
-            "hosts": [],
-            "host": [],
-            "groups": [
-                "groups[group0]"
-            ],
-            "dictionary": [
-                {
-                    "eClass": "org.kevoree.Dictionary",
-                    "generated_KMF_ID": "0.70933706359937791432123833544",
-                    "values": []
-                }
-            ],
-            "fragmentDictionary": [],
-            "components": [
-                {
-                    "eClass": "org.kevoree.ComponentInstance",
-                    "name": "lx1459",
-                    "started": "true",
-                    "metaData": "{\"x\":474,\"y\":307}",
+                    "metaData": "{\"x\":448,\"y\":515}",
                     "typeDefinition": [
                         "typeDefinitions[sensing/0.0.1]"
                     ],
@@ -288,7 +414,7 @@
                     "dictionary": [
                         {
                             "eClass": "org.kevoree.Dictionary",
-                            "generated_KMF_ID": "0.70674828044138851432123848469",
+                            "generated_KMF_ID": "0.92644165991805491433872691394",
                             "values": [
                                 {
                                     "eClass": "org.kevoree.DictionaryValue",
@@ -310,8 +436,8 @@
                     "values": [
                         {
                             "eClass": "org.kevoree.NetworkProperty",
-                            "name": "local",
-                            "value": "fe80::1459"
+                            "name": "lo",
+                            "value": "fe80::a473"
                         }
                     ]
                 }
@@ -319,7 +445,7 @@
         },
         {
             "eClass": "org.kevoree.ContainerNode",
-            "name": "nb771",
+            "name": "n3254",
             "started": "true",
             "metaData": "{\"x\":353,\"y\":353}",
             "typeDefinition": [
@@ -341,7 +467,7 @@
             "components": [
                 {
                     "eClass": "org.kevoree.ComponentInstance",
-                    "name": "hwb771",
+                    "name": "hw3254",
                     "started": "true",
                     "metaData": "{\"x\":448,\"y\":419}",
                     "typeDefinition": [
@@ -374,133 +500,7 @@
                         {
                             "eClass": "org.kevoree.NetworkProperty",
                             "name": "local",
-                            "value": "fe80::b771"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "eClass": "org.kevoree.ContainerNode",
-            "name": "n2251",
-            "started": "true",
-            "metaData": "{\"x\":1128,\"y\":55}",
-            "typeDefinition": [
-                "typeDefinitions[ContikiNode/0.0.1]"
-            ],
-            "hosts": [],
-            "host": [],
-            "groups": [
-                "groups[group0]"
-            ],
-            "dictionary": [
-                {
-                    "eClass": "org.kevoree.Dictionary",
-                    "generated_KMF_ID": "0.103688640287145971432125140977",
-                    "values": []
-                }
-            ],
-            "fragmentDictionary": [],
-            "components": [
-                {
-                    "eClass": "org.kevoree.ComponentInstance",
-                    "name": "hw2251",
-                    "started": "true",
-                    "metaData": "{\"x\":1322,\"y\":132}",
-                    "typeDefinition": [
-                        "typeDefinitions[hello_world/0.0.1]"
-                    ],
-                    "namespace": [],
-                    "dictionary": [
-                        {
-                            "eClass": "org.kevoree.Dictionary",
-                            "generated_KMF_ID": "0.478929068660363551432125174141",
-                            "values": [
-                                {
-                                    "eClass": "org.kevoree.DictionaryValue",
-                                    "name": "name",
-                                    "value": "Inti"
-                                }
-                            ]
-                        }
-                    ],
-                    "fragmentDictionary": [],
-                    "provided": [],
-                    "required": []
-                }
-            ],
-            "networkInformation": [
-                {
-                    "eClass": "org.kevoree.NetworkInfo",
-                    "name": "ip",
-                    "values": [
-                        {
-                            "eClass": "org.kevoree.NetworkProperty",
-                            "name": "local",
-                            "value": "fe80::2251"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "eClass": "org.kevoree.ContainerNode",
-            "name": "n1559",
-            "started": "true",
-            "metaData": "{\"x\":957,\"y\":54}",
-            "typeDefinition": [
-                "typeDefinitions[ContikiNode/0.0.1]"
-            ],
-            "hosts": [],
-            "host": [],
-            "groups": [
-                "groups[group0]"
-            ],
-            "dictionary": [
-                {
-                    "eClass": "org.kevoree.Dictionary",
-                    "generated_KMF_ID": "0.82558026234619321432125237187",
-                    "values": []
-                }
-            ],
-            "fragmentDictionary": [],
-            "components": [
-                {
-                    "eClass": "org.kevoree.ComponentInstance",
-                    "name": "hw1559",
-                    "started": "true",
-                    "metaData": "{\"x\":1048,\"y\":117}",
-                    "typeDefinition": [
-                        "typeDefinitions[hello_world/0.0.1]"
-                    ],
-                    "namespace": [],
-                    "dictionary": [
-                        {
-                            "eClass": "org.kevoree.Dictionary",
-                            "generated_KMF_ID": "0.25617986987344921432125299046",
-                            "values": [
-                                {
-                                    "eClass": "org.kevoree.DictionaryValue",
-                                    "name": "name",
-                                    "value": "Inti"
-                                }
-                            ]
-                        }
-                    ],
-                    "fragmentDictionary": [],
-                    "provided": [],
-                    "required": []
-                }
-            ],
-            "networkInformation": [
-                {
-                    "eClass": "org.kevoree.NetworkInfo",
-                    "name": "ip",
-                    "values": [
-                        {
-                            "eClass": "org.kevoree.NetworkProperty",
-                            "name": "local",
-                            "value": "fe80::1559"
+                            "value": "fe80::3254"
                         }
                     ]
                 }
@@ -791,14 +791,14 @@
                 "typeDefinitions[UDPGroup/0.0.1]"
             ],
             "subNodes": [
-                "nodes[n1759]",
-                "nodes[nb772]",
-                "nodes[n2151]",
-                "nodes[nb870]",
-                "nodes[n1459]",
-                "nodes[nb771]",
-                "nodes[n2251]",
-                "nodes[n1559]"
+                "nodes[nb372]",
+                "nodes[nb488]",
+                "nodes[n2451]",
+                "nodes[n3758]",
+                "nodes[n2755]",
+                "nodes[n3554]",
+                "nodes[na473]",
+                "nodes[n3254]"
             ],
             "dictionary": [
                 {
@@ -816,7 +816,7 @@
             "fragmentDictionary": [
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "n1759",
+                    "name": "nb372",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -828,7 +828,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "nb772",
+                    "name": "nb488",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -840,7 +840,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "n2151",
+                    "name": "n2451",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -852,7 +852,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "nb870",
+                    "name": "n3758",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -864,7 +864,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "n1459",
+                    "name": "n2755",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -876,7 +876,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "nb771",
+                    "name": "na473",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -888,7 +888,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "n2251",
+                    "name": "n3254",
                     "generated_KMF_ID": "",
                     "values": [
                         {
@@ -900,7 +900,7 @@
                 },
                 {
                     "eClass": "org.kevoree.FragmentDictionary",
-                    "name": "n1559",
+                    "name": "n3554",
                     "generated_KMF_ID": "",
                     "values": [
                         {
