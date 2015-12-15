@@ -10,6 +10,7 @@
 #include "AdaptationPrimitive.h"
 #include "Planner.h"
 #include "Visitor.h"
+#include "KMFContainer.h"
 
 #include "lib/list.h"
 #include "jsonparse.h"
@@ -23,8 +24,13 @@
 #define PRINTF(...)
 #endif
 
+#define NUM_OF_EXP 27
+#define NUM_OF_COMP 100
+#define NUM_OF_IT 10
+
 static ContainerRoot *current_model = NULL;
 static ContainerRoot *new_model = NULL;
+static char modelName[32];
 
 char buffer[100];
 
@@ -32,7 +38,7 @@ void write_to_file(char *buf)
 {
 	FILE *current_model_json;
 
-	current_model_json = fopen("current_model.json", "a");
+	current_model_json = fopen(modelName, "a");
 
 	if(current_model_json)
 	{
@@ -124,12 +130,12 @@ ContainerRoot*
 open_model(const char* filename)
 {
 	struct jsonparse_state jsonState;
-	
+
 	FILE *new_model_json = fopen(filename, "r");
 	fseek(new_model_json, 0L, SEEK_END);
 	int modelLength = ftell(new_model_json);
 	fseek(new_model_json, 0L, SEEK_SET);
-	
+
 	char *jsonModel = malloc(modelLength + 1);
 	int ch;
 	bool firstChar = true;
@@ -147,10 +153,10 @@ open_model(const char* filename)
 
 	fclose(new_model_json);
 	jsonparse_setup(&jsonState, jsonModel, modelLength + 1);
-	
+
 	ContainerRoot * model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 	free(jsonModel);
-	
+
 	return model;
 }
 
@@ -210,23 +216,23 @@ printNodes(any_t extraData, any_t item)
 	ContainerNode *node = (ContainerNode*)item;
 	nodeItem->nodeName = node->name;
 	hashmap_iterate(node->networkInformation, fillAddress, &nodeItem->nodeIp);
-	
+
 	struct SuperData* data = (struct SuperData*)extraData;
-	
+
 	nodeItem->requiredDeployUnit = data->requiredDU;
 	nodeItem->requiresDeployUnit = 0;
-	
+
 	// print components and their type
 	printf("Node %s\n", node->name);
 	hashmap_iterate(node->components, printComponents, nodeItem);
-	
+
 	if (nodeItem->requiresDeployUnit) {
 		// add element to list
 		list_t l = *data->l;
 		list_add(l, nodeItem);
 	}
-	
-	
+
+
 	return MAP_OK;
 }
 
@@ -264,7 +270,7 @@ filter_nodes(ContainerRoot* model, int children_count, char* childrenIP[], const
 		void* item = list_pop(nodes);
 		free(item);
 	}
-	
+
 	// now add elements to the empty list
 	while (list_length(tmp) > 0) {
 		void* item = list_pop(tmp);
@@ -272,30 +278,279 @@ filter_nodes(ContainerRoot* model, int children_count, char* childrenIP[], const
 	}
 }
 
+/********************************************************************************************/
+static int
+get_map_num(int maxNum)
+{
+	return (int)((double)rand() / RAND_MAX * maxNum);
+}
+
+
+static void generate_exp_models(char *baseName, int maxComp)
+{
+	int i;
+	int j;
+	ContainerRoot *expModel;
+	ComponentInstance *comp;
+	TypeDefinition *compType;
+	hashmap_map *typDefs;
+	ContainerNode *node;
+	hashmap_map *nodes;
+	Dictionary *dico;
+	DictionaryValue *dicVal;
+	char compName[32];
+	int k = 0;
+	int mapPos;
+
+
+	for (i = 1; i <= NUM_OF_EXP; i++) {
+		for (j = 0; j < NUM_OF_IT; j++) {
+			expModel = open_model("../models/9nodes0component-compactLille.json");
+			/*
+			 * Add random components to model
+			 */
+
+			for (int count = 0 ; count < i ; count++) {
+				nodes = (hashmap_map*)expModel->nodes;
+				bool found = false;
+				while(!found) {
+					node = (ContainerNode*)nodes->data[get_map_num(9)].data;
+					printf("INFO: Looking for ContainerNode %s\n", node->VT->internalGetKey(node));
+					int t = i / 9;
+					if ( i % 9 != 0) {
+						t++;
+					}
+					if (hashmap_length(node->components) < t) {
+						found = true;
+					}
+				}
+
+				found = false;
+				int randNumb;
+				int z;
+				hashmap_map *n;
+				n = (hashmap_map*)node->components;
+				typDefs = (hashmap_map*)expModel->typeDefinitions;
+				while (!found) {
+					bool tmp = false;
+					randNumb = get_map_num(4);
+					compType = (TypeDefinition*)typDefs->data[randNumb + 2].data;
+					for (z = 0; n != NULL && z < n->table_size; z++) {
+						ComponentInstance *ci;
+						ci = (ComponentInstance*)n->data[z].data;
+						if (ci->typeDefinition == compType) {
+							tmp = true;
+						}
+					}
+					found = !tmp;
+				}
+
+
+				printf("INFO: Looking for TypeDefinition %s\n", compType->VT->internalGetKey(compType));
+
+				comp = new_ComponentInstance();
+				sprintf(compName, "c%d", k++);
+				comp->name = strdup(compName);
+				comp->started = true;
+				comp->metaData = strdup("");
+				comp->VT->addTypeDefinition(comp, compType);
+
+				dico = new_Dictionary();
+				dicVal = new_DictionaryValue();
+				switch (randNumb) {
+				case 2:
+					dicVal->name = strdup("name");
+					dicVal->value = strdup("Paco");
+					break;
+				case 3:
+					dicVal->name = strdup("count");
+					dicVal->value = strdup("10");
+					dico->VT->addValues(dico, dicVal);
+					dicVal = new_DictionaryValue();
+					dicVal->name = strdup("interval");
+					dicVal->value = strdup("1000");
+					break;
+				case 0:
+				case 1:
+					dicVal->name = strdup("interval");
+					dicVal->value = strdup("1000");
+					break;
+
+				default:
+					break;
+				}
+				dico->VT->addValues(dico, dicVal);
+				comp->VT->addDictionary(comp, dico);
+
+				node->VT->addComponents(node, comp);
+
+			}
+
+			/*
+			 * Serialize model to JSON file
+			 */
+			sprintf(modelName, "%s_%d_%d.json", baseName, i, j);
+			expModel->VT->visit(expModel, "", actionstore, NULL, false);
+			delete((KMFContainer*)expModel);
+			printf("INFO: %s created!\n", modelName);
+		}
+	}
+}
 
 /********************************************************************************************/
 
+static void generate_exp_models2(char *baseName, int maxComp, int numbOfComp)
+{
+	int i;
+	int j;
+	ContainerRoot *expModel;
+	ComponentInstance *comp;
+	TypeDefinition *compType;
+	hashmap_map *typDefs;
+	ContainerNode *node;
+	hashmap_map *nodes;
+	Dictionary *dico;
+	DictionaryValue *dicVal;
+	char compName[32];
+	int k = 0;
+	int mapPos;
+
+	expModel = open_model("../models/BaseModel.json");
+
+
+	for (i = 1; i <= numbOfComp; i++) {
+		ContainerNode *node = new_ContainerNode();
+		node->name = malloc(4);
+		sprintf(node->name, "n%d", i);
+		node->typeDefinition = expModel->VT->findTypeDefsByID(expModel, "ContikiNode/0.0.1");
+		node->metaData = "";
+		node->started = true;
+		node->VT->addGroups(node, expModel->VT->findGroupsByID(expModel, "group0"));
+
+		NetworkInfo *netInfo = new_NetworkInfo();
+		netInfo->name = strdup("ip");
+
+		NetworkProperty *netProp = new_NetworkProperty();
+		netProp->name = strdup("local");
+		netProp->value = strdup("ip6_number");
+
+		netInfo->VT->addValues(netInfo, netProp);
+
+		node->VT->addNetworkInformation(node, netInfo);
+
+		expModel->VT->addNodes(expModel, node);
+	}
+
+	for (j = 0; j < NUM_OF_IT; j++) {
+		/*
+		 * Add random components to model
+		 */
+
+		for (int count = 0 ; count < 50 ; count++) {
+			nodes = (hashmap_map*)expModel->nodes;
+			bool found = false;
+			while(!found) {
+				node = (ContainerNode*)nodes->data[get_map_num(50)].data;
+				printf("INFO: Looking for ContainerNode %s\n", node->VT->internalGetKey(node));
+				int t = 50 / 9;
+				if ( 50 % 9 != 0) {
+					t++;
+				}
+				if (hashmap_length(node->components) < t) {
+					found = true;
+				}
+			}
+
+			found = false;
+			int randNumb;
+			int z;
+			hashmap_map *n;
+			n = (hashmap_map*)node->components;
+			typDefs = (hashmap_map*)expModel->typeDefinitions;
+			while (!found) {
+				bool tmp = false;
+				randNumb = get_map_num(4);
+				compType = (TypeDefinition*)typDefs->data[randNumb + 2].data;
+				for (z = 0; n != NULL && z < n->table_size; z++) {
+					ComponentInstance *ci;
+					ci = (ComponentInstance*)n->data[z].data;
+					if (ci->typeDefinition == compType) {
+						tmp = true;
+					}
+				}
+				found = !tmp;
+			}
+
+
+			printf("INFO: Looking for TypeDefinition %s\n", compType->VT->internalGetKey(compType));
+
+			comp = new_ComponentInstance();
+			sprintf(compName, "c%d", k++);
+			comp->name = strdup(compName);
+			comp->started = true;
+			comp->metaData = strdup("");
+			comp->VT->addTypeDefinition(comp, compType);
+
+			dico = new_Dictionary();
+			dicVal = new_DictionaryValue();
+			switch (randNumb) {
+			case 2:
+				dicVal->name = strdup("name");
+				dicVal->value = strdup("Paco");
+				break;
+			case 3:
+				dicVal->name = strdup("count");
+				dicVal->value = strdup("10");
+				dico->VT->addValues(dico, dicVal);
+				dicVal = new_DictionaryValue();
+				dicVal->name = strdup("interval");
+				dicVal->value = strdup("1000");
+				break;
+			case 0:
+			case 1:
+				dicVal->name = strdup("interval");
+				dicVal->value = strdup("1000");
+				break;
+
+			default:
+				break;
+			}
+			dico->VT->addValues(dico, dicVal);
+			comp->VT->addDictionary(comp, dico);
+
+			node->VT->addComponents(node, comp);
+
+		}
+
+		/*
+		 * Serialize model to JSON file
+		 */
+		sprintf(modelName, "%s_%d.json", baseName, j);
+		expModel->VT->visit(expModel, "", actionstore, NULL, false);
+		delete((KMFContainer*)expModel);
+		printf("INFO: %s created!\n", modelName);
+	}
+}
+
+/********************************************************************************************/
+
+/********************************************************************************************/
 int main(void)
 {
-	
+
 	printf("INFO: Starting kevoree C implementation\n");
-	struct jsonparse_state jsonState;
+	/*struct jsonparse_state jsonState;
 	TraceSequence *ts;
 
 	jsonparse_setup(&jsonState, DEFAULTMODEL, strlen(DEFAULTMODEL) + 1);
 	current_model = JSONKevDeserializer(&jsonState, jsonparse_next(&jsonState));
 
-	/*current_model->VT->visit(current_model, NULL, actionprintf, NULL, false);*/
+	//mtrace();
 
-
-	mtrace();
-	
 	printf("INFO: Starting Kevoree adaptations\n");
-	new_model = open_model("models/20nodes1component.json");
-	
-	muntrace();
+	new_model = open_model("../models/20nodes1component.json");
 
-	/*new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);*/
+	//muntrace();
 
 	if(new_model != NULL) {
 		printf("INFO: new_model loaded successfully!\n");
@@ -304,15 +559,13 @@ int main(void)
 		printf("ERROR: new_model cannot be loaded\n");
 	}
 
-	/*new_model->VT->visit(new_model, NULL, actionprintf, NULL, false);*/
-
 	if(new_model != NULL) {
 		ts = ModelCompare(new_model, current_model, "n1759");
 		if (ts != NULL) {
 			/*char *tsString = ts->toString(ts);
 			printf("\n%s\n", tsString);
 			free(tsString);*/
-		} else {
+/*		} else {
 			printf("ERROR: Cannot create traceSequence\n");
 		}
 	}
@@ -343,13 +596,13 @@ int main(void)
 
 	delete((KMFContainer*)current_model);
 	delete((KMFContainer*)new_model);
-	
+
 	printf("Info: Loading the Lille's model\n");
-	
-	ContainerRoot* model = open_model("models/10nodes1component-compactLille.json");
-	
-	
-	
+
+	ContainerRoot* model = open_model("../models/9nodes0component-compactLille.json");
+
+
+
 	LIST(nodes);
 	list_init(nodes);
 	char* children[] = {"fe80::3758", "fe80::3554"};
@@ -359,6 +612,10 @@ int main(void)
 	for (struct NodeItem* p =list_head(nodes); p != NULL ; p = list_item_next(p)) {
 		printf("Info: Node %s has address %s\n", p->nodeName, p->nodeIp);
 	}
+
+	//generate_exp_models("../models/generated/lilleM", 0);*/
+	generate_exp_models2("../models/cooja/coojaNode", 4, 50);
+
 
 	return EXIT_SUCCESS;
 }
