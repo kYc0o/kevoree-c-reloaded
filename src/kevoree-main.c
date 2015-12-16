@@ -423,8 +423,17 @@ static void generate_exp_models2(char *baseName, int maxComp, int numbOfComp)
 		node->name = malloc(4);
 		sprintf(node->name, "n%d", i);
 		node->typeDefinition = expModel->VT->findTypeDefsByID(expModel, "ContikiNode/0.0.1");
-		node->metaData = "";
+		node->metaData = strdup("");
 		node->started = true;
+		printf("Groupd %s at address %\n", expModel->VT->findGroupsByID(expModel, "group0"));
+		if (expModel->VT->findGroupsByID(expModel, "group0") == 0){
+			fprintf(stderr, "ERROR: The group was not found\n");	
+			exit(1);
+		}
+		if (node->typeDefinition == 0) {
+			fprintf(stderr, "Error locating typedefinition\n");
+			exit(1);
+		}
 		node->VT->addGroups(node, expModel->VT->findGroupsByID(expModel, "group0"));
 
 		NetworkInfo *netInfo = new_NetworkInfo();
@@ -440,13 +449,13 @@ static void generate_exp_models2(char *baseName, int maxComp, int numbOfComp)
 
 		expModel->VT->addNodes(expModel, node);
 	}
-
-	for (j = 0; j < NUM_OF_IT; j++) {
 		/*
 		 * Add random components to model
 		 */
 
 		for (int count = 0 ; count < 50 ; count++) {
+
+			printf("Iteration %d\n", count);
 			nodes = (hashmap_map*)expModel->nodes;
 			bool found = false;
 			while(!found) {
@@ -525,11 +534,10 @@ static void generate_exp_models2(char *baseName, int maxComp, int numbOfComp)
 		/*
 		 * Serialize model to JSON file
 		 */
-		sprintf(modelName, "%s_%d.json", baseName, j);
+		sprintf(modelName, "%s_%d.json", baseName, 0);
 		expModel->VT->visit(expModel, "", actionstore, NULL, false);
 		delete((KMFContainer*)expModel);
 		printf("INFO: %s created!\n", modelName);
-	}
 }
 
 /********************************************************************************************/
