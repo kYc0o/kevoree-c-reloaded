@@ -441,7 +441,8 @@ static void generate_exp_models2(char *baseName, int maxComp, int numbOfComp)
 
 		NetworkProperty *netProp = new_NetworkProperty();
 		netProp->name = strdup("local");
-		netProp->value = strdup("ip6_number");
+		netProp->value = (char*) malloc(32);
+		sprintf(netProp->value, "fe80::212:74%02x:%x:%x%02x", (unsigned int)i,(unsigned int)i, (unsigned int)i, (unsigned int)i);
 
 		netInfo->VT->addValues(netInfo, netProp);
 
